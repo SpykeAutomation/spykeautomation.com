@@ -1,0 +1,29 @@
+---
+const steps = [
+  { label: 'Core platform', state: 'done' },
+  { label: 'Private beta', state: 'now' },
+  { label: 'Public beta', state: 'future' },
+  { label: 'Public release', state: 'future' },
+];
+---
+
+<section class="roadmap">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>We're in beta. <span class="mu">Want in?</span></h2>
+      <p>A small group of automation engineers is testing Spyke now. Request access to join the next round.</p>
+    </div>
+    <div class="road">
+      {steps.map((step) => (
+        <div class={`road-step ${step.state}`}>
+          <div class="road-node"></div>
+          <h3>{step.label}</h3>
+        </div>
+      ))}
+    </div>
+    <div class="road-cta">
+      <a class="btn btn-dark btn-lg" href="#" data-access>Request Early Access</a>
+      <span class="note">Beta spots are limited — we'll reach out when one opens.</span>
+    </div>
+  </div>
+</section>

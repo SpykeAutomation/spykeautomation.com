@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Roadmap from '../components/Roadmap.astro';
+import Footer from '../components/Footer.astro';
+import AccessModal from '../components/AccessModal.astro';
+---
+
+<Layout>
+  <Nav />
+  <Hero />
+  <Roadmap />
+  <Footer />
+  <AccessModal />
+</Layout>
+
+<script>
+  // ----- Showcase tabs: switch the displayed product card -----
+  document.querySelectorAll<HTMLElement>('.showcase .tabs .tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const key = tab.getAttribute('data-tab');
+      tab.parentElement?.querySelectorAll('.tab').forEach((t) => t.classList.toggle('active', t === tab));
+      document.querySelectorAll<HTMLElement>('.showcase .frame .shot-img').forEach((img) => {
+        img.classList.toggle('on', img.getAttribute('data-panel') === key);
+      });
+    });
+  });
+
+  // ----- Request-access modal -----
+  (() => {
+    const overlay = document.getElementById('accessModal');
+    if (!overlay) return;
+    const modal = overlay.querySelector<HTMLElement>('.modal');
+    const form = document.getElementById('accessForm') as HTMLFormElement | null;
+    // Set PUBLIC_FORM_ENDPOINT in .env to capture signups (e.g. a Formspree URL).
+    // When unset, the modal runs in demo mode: it shows the success state and logs the email.
+    const ENDPOINT = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+
+    const openModal = () => {
+      overlay.classList.add('open');
+      modal?.classList.remove('done');
+      const input = form?.querySelector('input');
+      setTimeout(() => input?.focus(), 40);
+    };
+    const closeModal = () => overlay.classList.remove('open');
+
+    document.querySelectorAll('[data-access]').forEach((btn) =>
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal();
+      }),
+    );
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+    overlay.querySelectorAll('.x, .m-close2').forEach((b) => b.addEventListener('click', closeModal));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = form.querySelector('input') as HTMLInputElement | null;
+      const email = (input?.value ?? '').trim();
+      if (!email || email.indexOf('@') < 1) {
+        input?.focus();
+        return;
+      }
+      const done = () => modal?.classList.add('done');
+      if (!ENDPOINT) {
+        console.log('[demo] signup:', email);
+        done();
+        return;
+      }
+      fetch(ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) })
+        .then(done)
+        .catch(done);
+    });
+  })();
+</script>

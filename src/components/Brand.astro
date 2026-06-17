@@ -1,0 +1,15 @@
+---
+// Spyke wordmark + chevron logo. Sizing comes from the surrounding context
+// (.pill .brand, .foot-brand .brand) via global.css.
+interface Props {
+  href?: string;
+}
+const { href = '/' } = Astro.props;
+---
+
+<a class="brand" href={href}>
+  <svg class="logo" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 46 L50 22 L78 46" />
+    <path d="M22 74 L50 50 L78 74" />
+  </svg>Spyke
+</a>
