@@ -1,6 +1,7 @@
 ---
 import Brand from './Brand.astro';
 const GITHUB_URL = 'https://github.com/SpykeAutomation';
+const DOCS_URL = 'https://docs.spykeautomation.com';
 ---
 
 <div class="navbar">
@@ -8,7 +9,7 @@ const GITHUB_URL = 'https://github.com/SpykeAutomation';
     <Brand href="/" />
     <div class="links" id="navLinks">
       <a href="#">Product</a>
-      <a href="#">Docs</a>
+      <a href={DOCS_URL}>Docs</a>
       <a href="#">Pricing</a>
       <a href="#">Company</a>
       <a class="links-gh" href={GITHUB_URL}>GitHub</a>

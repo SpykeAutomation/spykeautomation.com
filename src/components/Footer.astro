@@ -2,6 +2,7 @@
 import Brand from './Brand.astro';
 import ChevronTexture from './ChevronTexture.astro';
 const GITHUB_URL = 'https://github.com/SpykeAutomation';
+const DOCS_URL = 'https://docs.spykeautomation.com';
 const year = 2026;
 ---
 
@@ -14,7 +15,7 @@ const year = 2026;
     <div class="foot-cols">
       <div class="fcol">
         <h4>Product</h4>
-        <a href="#">Overview</a><a href="#">Pricing</a><a href="#">Docs</a><a href="#">Roadmap</a>
+        <a href="#">Overview</a><a href="#">Pricing</a><a href={DOCS_URL}>Docs</a><a href="#">Roadmap</a>
       </div>
       <div class="fcol">
         <h4>Company</h4>
@@ -22,7 +23,7 @@ const year = 2026;
       </div>
       <div class="fcol">
         <h4>Resources</h4>
-        <a href={GITHUB_URL}>GitHub</a><a href="#">CLI reference</a><a href="#">Changelog</a>
+        <a href={GITHUB_URL}>GitHub</a><a href={`${DOCS_URL}/reference/cli/`}>CLI reference</a><a href="#">Changelog</a>
       </div>
     </div>
   </div>
