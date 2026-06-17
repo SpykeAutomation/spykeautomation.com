@@ -16,6 +16,29 @@ import AccessModal from '../components/AccessModal.astro';
 </Layout>
 
 <script>
+  // ----- Mobile nav menu (hamburger) -----
+  (() => {
+    const pill = document.querySelector('.pill');
+    const toggle = document.getElementById('menuToggle');
+    if (!pill || !toggle) return;
+    const close = () => {
+      pill.classList.remove('menu-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+    toggle.addEventListener('click', () => {
+      const open = pill.classList.toggle('menu-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // Close after tapping a menu link, tapping outside the pill, or pressing Escape
+    pill.querySelectorAll('.links a').forEach((a) => a.addEventListener('click', close));
+    document.addEventListener('click', (e) => {
+      if (!pill.contains(e.target as Node)) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  })();
+
   // ----- Showcase tabs: switch the displayed product card -----
   document.querySelectorAll<HTMLElement>('.showcase .tabs .tab').forEach((tab) => {
     tab.addEventListener('click', () => {
