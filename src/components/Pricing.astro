@@ -1,0 +1,228 @@
+---
+const DOCS_URL = 'https://docs.spykeautomation.com';
+---
+
+<section class="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Free to start <span class="mu">with customizable add-ons</span></h2>
+      <p>Everything you need to keep track of your PLC programs, free. Add storage as your projects grow.</p>
+    </div>
+
+    <div class="price-wrap">
+      <article class="price-card">
+        <h3 class="pc-name">Community</h3>
+
+        <div class="pc-price">
+          <span class="pc-amt">$0</span>
+          <span class="pc-per">/ user / month</span>
+        </div>
+
+        <p class="pc-sub">For small teams and individuals working on personal projects.</p>
+
+        <a class="pc-btn" href="#" data-access>Get started</a>
+        <p class="pc-note">No credit card required</p>
+
+        <hr class="pc-div" />
+
+        <p class="pc-label">Features include</p>
+        <ul class="pc-list">
+          <li>
+            <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 13l4 4 10-11" /></svg></span>
+            PLC source code management
+          </li>
+          <li>
+            <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 13l4 4 10-11" /></svg></span>
+            2 GiB storage
+          </li>
+          <li>
+            <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 13l4 4 10-11" /></svg></span>
+            Community support
+          </li>
+          <li>
+            <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 13l4 4 10-11" /></svg></span>
+            <a class="pc-link" href={`${DOCS_URL}/how-to/install/`}>Docs for setup</a>
+          </li>
+        </ul>
+
+        <p class="pc-label">Paid add-ons</p>
+        <ul class="pc-list">
+          <li>
+            <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg></span>
+            Storage
+          </li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing {
+    padding: 104px 0;
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+  }
+
+  .price-wrap {
+    display: flex;
+    justify-content: center;
+  }
+
+  .price-card {
+    position: relative;
+    width: 100%;
+    max-width: 404px;
+    color: #fff;
+    background: rgba(8, 9, 12, 0.93);
+    -webkit-backdrop-filter: blur(22px) saturate(120%);
+    backdrop-filter: blur(22px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 26px;
+    padding: 44px 46px 40px;
+    box-shadow:
+      0 1px 2px rgba(20, 24, 32, 0.06),
+      0 40px 80px -36px rgba(14, 16, 20, 0.5);
+    overflow: hidden;
+  }
+  /* soft glass sheen along the top edge */
+  .price-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 36%);
+  }
+  .price-card > * {
+    position: relative;
+  }
+
+  .pc-name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+  }
+
+  .pc-price {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  .pc-amt {
+    font-size: 54px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1;
+  }
+  .pc-per {
+    font-size: 14px;
+    font-weight: 600;
+    color: #969aa2;
+  }
+
+  .pc-sub {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #abafb7;
+  }
+
+  .pc-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    height: 50px;
+    border-radius: 11px;
+    background: #f4f4f5;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 17px;
+    transition: background 0.15s;
+  }
+  .pc-btn:hover {
+    background: #fff;
+  }
+
+  .pc-note {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 13px;
+    color: #8c9098;
+  }
+
+  .pc-div {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 26px 0 22px;
+  }
+
+  .pc-label {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #9498a0;
+  }
+
+  .pc-list {
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+  }
+  .pc-list + .pc-label {
+    margin-top: 26px;
+  }
+  .pc-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14.5px;
+    color: #d6d9de;
+  }
+
+  .ic {
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ic svg {
+    width: 13px;
+    height: 13px;
+    fill: none;
+    stroke: #eceef1;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pc-link {
+    color: #e2e5ea;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: rgba(255, 255, 255, 0.35);
+  }
+  .pc-link:hover {
+    color: #fff;
+    text-decoration-color: #fff;
+  }
+
+  @media (max-width: 600px) {
+    .pricing {
+      padding: 56px 0;
+    }
+    .price-card {
+      padding: 36px 28px 32px;
+    }
+  }
+</style>
