@@ -56,8 +56,6 @@ a{color:inherit;text-decoration:none;}
 .pill.menu-open .menu-toggle span:nth-child(1){transform:translateY(6px) rotate(45deg);}
 .pill.menu-open .menu-toggle span:nth-child(2){opacity:0;}
 .pill.menu-open .menu-toggle span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
-/* Extra GitHub item shown only inside the open mobile menu */
-.links-gh{display:none;}
 
 /* ===== HERO ===== */
 .hero{position:relative;padding:78px 0 0;}
@@ -189,9 +187,8 @@ h1 .em{color:var(--ink);} h1 .mu{color:var(--mute);font-weight:600;}
   .pill{padding:7px 7px 7px 16px;}
   .pill .brand{font-size:17px;}
   .pill .brand .logo{width:25px;height:25px;flex:0 0 25px;}
-  /* Tight space in the pill — drop the standalone GitHub icon; it moves into the menu */
-  .nav-cta .gh-ico{display:none;}
-  .links-gh{display:block;}
+  /* Tight space in the pill — show the GitHub logo only, without its label */
+  .nav-cta .gh-ico .gh-label{display:none;}
   .navbtn{padding:8px 14px;font-size:13.5px;}
   .hero{padding:44px 0 0;}
   h1{font-size:30px;letter-spacing:-.5px;line-height:1.12;}
