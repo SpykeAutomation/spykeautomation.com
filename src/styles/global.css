@@ -145,3 +145,54 @@ h1 .em{color:var(--ink);} h1 .mu{color:var(--mute);font-weight:600;}
 .modal.done .m-done{display:block;}
 .m-done .check{width:54px;height:54px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;}
 .m-done .check svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ===== RESPONSIVE ===== */
+/* Tablet and below */
+@media (max-width:900px){
+  .wrap{padding-inline:24px;}
+  /* No mobile menu, so drop the centered nav links */
+  .pill .links{display:none;}
+  .navbar{padding:16px 16px 0;}
+  .hero{padding:56px 0 0;}
+  h1{font-size:40px;letter-spacing:-1px;}
+  .cta-row{margin-top:28px;}
+  .showcase{margin-top:44px;}
+  .sec-head{margin-bottom:48px;}
+  .sec-head h2{font-size:32px;letter-spacing:-1px;}
+  .sec-head p{font-size:16px;}
+  .roadmap{padding:72px 0;}
+  .foot-brand .brand{font-size:40px;}
+  .foot-brand .brand .logo{width:54px;height:54px;flex:0 0 54px;}
+  .foot-cols{gap:48px;}
+}
+
+/* Phone */
+@media (max-width:600px){
+  .wrap{padding-inline:18px;}
+  .navbar{padding:12px 10px 0;}
+  .pill{padding:7px 7px 7px 16px;}
+  .pill .brand{font-size:17px;}
+  .pill .brand .logo{width:25px;height:25px;flex:0 0 25px;}
+  /* Tight space in the pill — keep brand + the primary CTA, drop the GitHub link */
+  .nav-cta .gh-ico{display:none;}
+  .navbtn{padding:8px 14px;font-size:13.5px;}
+  .hero{padding:44px 0 0;}
+  h1{font-size:30px;letter-spacing:-.5px;line-height:1.12;}
+  /* Stack the two hero buttons full-width */
+  .cta-row{flex-direction:column;align-items:stretch;gap:10px;}
+  .cta-row .btn{width:100%;justify-content:center;}
+  .stage{padding:20px 0 36px;}
+  .tab{padding:14px 14px;font-size:13px;}
+  .sec-head h2{font-size:26px;}
+  .roadmap{padding:56px 0;}
+  /* 4-up timeline doesn't fit — go 2x2 and drop the connecting line */
+  .road{grid-template-columns:repeat(2,1fr);row-gap:30px;}
+  .road::before{display:none;}
+  .road-step{padding:0 8px;}
+  /* Stack the footer */
+  .foot-top{flex-direction:column;align-items:flex-start;gap:32px;}
+  .foot-brand .brand{font-size:34px;gap:14px;}
+  .foot-brand .brand .logo{width:46px;height:46px;flex:0 0 46px;}
+  .foot-cols{gap:36px;}
+  .foot-base{flex-direction:column;align-items:flex-start;gap:12px;}
+}
