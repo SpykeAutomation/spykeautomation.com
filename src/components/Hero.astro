@@ -20,20 +20,20 @@ const GITHUB_URL = 'https://github.com/SpykeAutomation';
   <!-- SHOWCASE -->
   <div class="showcase" id="product">
     <div class="wrap">
-      <div class="tabs">
-        <div class="tab active" data-tab="ladder">
+      <div class="tabs" role="tablist" aria-label="Code view">
+        <button class="tab active" type="button" role="tab" id="tab-ladder" data-tab="ladder" aria-selected="true" aria-controls="panel-ladder">
           <svg viewBox="0 0 24 24"><path d="M4 6h7M4 12h10M4 18h6" /><circle cx="17" cy="7" r="2" /></svg>Ladder Logic
-        </div>
-        <div class="tab" data-tab="st">
+        </button>
+        <button class="tab" type="button" role="tab" id="tab-st" data-tab="st" aria-selected="false" aria-controls="panel-st" tabindex="-1">
           <svg viewBox="0 0 24 24"><path d="M9 8l-4 4 4 4M15 8l4 4-4 4" /></svg>Structured Text
-        </div>
+        </button>
       </div>
     </div>
     <div class="stage">
       <ChevronTexture vw={1600} vh={760} stroke="#16181D" className="grid-bg" seed={7} />
       <div class="frame">
-        <img class="shot-img on" data-panel="ladder" src="/hero_card.png" alt="Ladder-logic semantic diff between versions v14 and v15" />
-        <img class="shot-img" data-panel="st" src="/st_card.png" alt="Structured Text unified diff between versions v14 and v15" />
+        <img class="shot-img on" id="panel-ladder" role="tabpanel" aria-labelledby="tab-ladder" data-panel="ladder" src="/hero_card.png" alt="Ladder-logic semantic diff between versions v14 and v15" />
+        <img class="shot-img" id="panel-st" role="tabpanel" aria-labelledby="tab-st" data-panel="st" src="/st_card.png" alt="Structured Text unified diff between versions v14 and v15" />
       </div>
     </div>
   </div>

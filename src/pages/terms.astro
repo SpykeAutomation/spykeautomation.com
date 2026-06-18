@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const updated = 'June 17, 2026';
+const CONTACT = 'hello@spykeautomation.com';
+---
+
+<Layout
+  title="Terms of Service — Spyke Automation"
+  description="The terms that govern your use of the Spyke Automation website and early-access program."
+>
+  <Nav />
+  <main class="legal">
+    <div class="wrap">
+      <h1>Terms of Service</h1>
+      <p class="updated">Last updated: {updated}</p>
+
+      <p class="lead">
+        These terms govern your use of <strong>spykeautomation.com</strong> and the Spyke Automation
+        early-access program. By using the site or requesting access, you agree to them. If you do
+        not agree, please don't use the site.
+      </p>
+
+      <h2>The website</h2>
+      <p>
+        This site describes Spyke Automation, an open-source version control system for industrial
+        automation, which is currently in private beta. Information here is provided for general
+        purposes and may change as the product develops.
+      </p>
+
+      <h2>Early access</h2>
+      <ul>
+        <li>
+          Requesting early access does not guarantee a spot. We invite participants in rounds and
+          may decline or revoke access at our discretion.
+        </li>
+        <li>
+          Beta software is provided <strong>as is</strong> and may be incomplete, change without
+          notice, or be discontinued. Don't rely on it for safety-critical or production work.
+        </li>
+        <li>You are responsible for keeping any credentials we issue to you secure.</li>
+      </ul>
+
+      <h2>Acceptable use</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Use the site or program for any unlawful purpose.</li>
+        <li>Attempt to disrupt, probe, or gain unauthorized access to our systems.</li>
+        <li>Misrepresent your identity or submit information you are not authorized to share.</li>
+      </ul>
+
+      <h2>Intellectual property</h2>
+      <p>
+        The Spyke name, logo, and site content are owned by Spyke Automation. Our open-source
+        software is licensed separately under the terms stated in its public repository, and those
+        license terms govern your use of the code.
+      </p>
+
+      <h2>Disclaimers and liability</h2>
+      <p>
+        The site and early-access program are provided without warranties of any kind, to the
+        fullest extent permitted by law. We are not liable for any indirect or consequential damages
+        arising from your use of the site or the beta software.
+      </p>
+
+      <h2>Changes to these terms</h2>
+      <p>
+        We may update these terms from time to time. When we do, we will revise the "Last updated"
+        date above. Continued use of the site after changes means you accept the updated terms.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about these terms? Email <a href={`mailto:${CONTACT}`}>{CONTACT}</a>.
+      </p>
+    </div>
+  </main>
+  <Footer />
+</Layout>

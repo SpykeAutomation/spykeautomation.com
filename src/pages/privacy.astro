@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const updated = 'June 17, 2026';
+const CONTACT = 'hello@spykeautomation.com';
+---
+
+<Layout
+  title="Privacy Policy — Spyke Automation"
+  description="How Spyke Automation collects, uses, and protects information from visitors to spykeautomation.com."
+>
+  <Nav />
+  <main class="legal">
+    <div class="wrap">
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last updated: {updated}</p>
+
+      <p class="lead">
+        This policy explains what information Spyke Automation ("we", "us") collects through
+        <strong>spykeautomation.com</strong>, why we collect it, and the choices you have. We keep
+        data collection to the minimum needed to run an early-access program and improve the site.
+      </p>
+
+      <h2>Information we collect</h2>
+      <ul>
+        <li>
+          <strong>Information you give us.</strong> When you request early access, we collect the
+          email address you submit. If you email us, we keep your message and contact details so we
+          can reply.
+        </li>
+        <li>
+          <strong>Basic usage data.</strong> Like most websites, our hosting and any analytics may
+          record standard technical information such as your IP address, browser type, and the pages
+          you view. We use this in aggregate to understand traffic and improve the site.
+        </li>
+      </ul>
+
+      <h2>How we use information</h2>
+      <ul>
+        <li>To contact you about early access and product availability.</li>
+        <li>To respond to your questions and support requests.</li>
+        <li>To operate, secure, and improve the website.</li>
+      </ul>
+
+      <h2>How we share information</h2>
+      <p>
+        We do <strong>not</strong> sell your personal information. We share it only with service
+        providers that help us run the site and our early-access program (for example, form,
+        email, and hosting providers), and only as needed to provide those services. We may also
+        disclose information if required by law.
+      </p>
+
+      <h2>Data retention</h2>
+      <p>
+        We keep early-access emails until you ask us to remove them or until we no longer need them
+        for the program. You can request deletion at any time using the contact details below.
+      </p>
+
+      <h2>Your choices</h2>
+      <p>
+        You can ask us to access, correct, or delete the personal information we hold about you, or
+        to stop contacting you, by emailing <a href={`mailto:${CONTACT}`}>{CONTACT}</a>. Any
+        product update emails will also include a way to opt out.
+      </p>
+
+      <h2>Changes to this policy</h2>
+      <p>
+        We may update this policy as the product evolves. When we do, we will revise the "Last
+        updated" date above. Material changes will be highlighted on this page.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy? Email <a href={`mailto:${CONTACT}`}>{CONTACT}</a>.
+      </p>
+    </div>
+  </main>
+  <Footer />
+</Layout>

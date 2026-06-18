@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import AccessModal from '../components/AccessModal.astro';
 
 interface Props {
   title?: string;
@@ -10,6 +11,9 @@ const {
   title = 'Spyke Automation — version control for industrial automation',
   description = 'Open-source version control system for industrial automation. Review PLC changes — ladder logic and structured text — rung by rung, with history in plain Git.',
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/hero_card.png', Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -18,7 +22,20 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Spyke Automation" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,5 +46,91 @@ const {
   </head>
   <body>
     <slot />
+    <AccessModal />
   </body>
 </html>
+
+<script>
+  // ----- Mobile nav menu (hamburger) — present on every page via <Nav> -----
+  (() => {
+    const pill = document.querySelector('.pill');
+    const toggle = document.getElementById('menuToggle');
+    if (!pill || !toggle) return;
+    const close = () => {
+      pill.classList.remove('menu-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+    toggle.addEventListener('click', () => {
+      const open = pill.classList.toggle('menu-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // Close after tapping a menu link, tapping outside the pill, or pressing Escape
+    pill.querySelectorAll('.links a').forEach((a) => a.addEventListener('click', close));
+    document.addEventListener('click', (e) => {
+      if (!pill.contains(e.target as Node)) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  })();
+
+  // ----- Request-access modal — opened by any [data-access] element -----
+  (() => {
+    const overlay = document.getElementById('accessModal');
+    if (!overlay) return;
+    const modal = overlay.querySelector<HTMLElement>('.modal');
+    const form = document.getElementById('accessForm') as HTMLFormElement | null;
+    // Set PUBLIC_FORM_ENDPOINT in .env to capture signups (e.g. a Formspree URL).
+    // When unset, the modal runs in demo mode: it shows the success state and logs the email.
+    const ENDPOINT = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+
+    let lastFocused: HTMLElement | null = null;
+    const openModal = () => {
+      lastFocused = document.activeElement as HTMLElement | null;
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      modal?.classList.remove('done');
+      const input = form?.querySelector('input');
+      setTimeout(() => input?.focus(), 40);
+    };
+    const closeModal = () => {
+      if (!overlay.classList.contains('open')) return;
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      lastFocused?.focus();
+    };
+
+    document.querySelectorAll('[data-access]').forEach((btn) =>
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal();
+      }),
+    );
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+    overlay.querySelectorAll('.x, .m-close2').forEach((b) => b.addEventListener('click', closeModal));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = form.querySelector('input') as HTMLInputElement | null;
+      const email = (input?.value ?? '').trim();
+      if (!email || email.indexOf('@') < 1) {
+        input?.focus();
+        return;
+      }
+      const done = () => modal?.classList.add('done');
+      if (!ENDPOINT) {
+        console.log('[demo] signup:', email);
+        done();
+        return;
+      }
+      fetch(ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) })
+        .then(done)
+        .catch(done);
+    });
+  })();
+</script>

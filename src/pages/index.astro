@@ -5,7 +5,6 @@ import Hero from '../components/Hero.astro';
 import Pricing from '../components/Pricing.astro';
 import Roadmap from '../components/Roadmap.astro';
 import Footer from '../components/Footer.astro';
-import AccessModal from '../components/AccessModal.astro';
 ---
 
 <Layout>
@@ -14,93 +13,39 @@ import AccessModal from '../components/AccessModal.astro';
   <Roadmap />
   <Pricing />
   <Footer />
-  <AccessModal />
 </Layout>
 
 <script>
-  // ----- Mobile nav menu (hamburger) -----
-  (() => {
-    const pill = document.querySelector('.pill');
-    const toggle = document.getElementById('menuToggle');
-    if (!pill || !toggle) return;
-    const close = () => {
-      pill.classList.remove('menu-open');
-      toggle.setAttribute('aria-expanded', 'false');
-    };
-    toggle.addEventListener('click', () => {
-      const open = pill.classList.toggle('menu-open');
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    // Close after tapping a menu link, tapping outside the pill, or pressing Escape
-    pill.querySelectorAll('.links a').forEach((a) => a.addEventListener('click', close));
-    document.addEventListener('click', (e) => {
-      if (!pill.contains(e.target as Node)) close();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') close();
-    });
-  })();
-
   // ----- Showcase tabs: switch the displayed product card -----
-  document.querySelectorAll<HTMLElement>('.showcase .tabs .tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const key = tab.getAttribute('data-tab');
-      tab.parentElement?.querySelectorAll('.tab').forEach((t) => t.classList.toggle('active', t === tab));
-      document.querySelectorAll<HTMLElement>('.showcase .frame .shot-img').forEach((img) => {
-        img.classList.toggle('on', img.getAttribute('data-panel') === key);
-      });
-    });
-  });
-
-  // ----- Request-access modal -----
   (() => {
-    const overlay = document.getElementById('accessModal');
-    if (!overlay) return;
-    const modal = overlay.querySelector<HTMLElement>('.modal');
-    const form = document.getElementById('accessForm') as HTMLFormElement | null;
-    // Set PUBLIC_FORM_ENDPOINT in .env to capture signups (e.g. a Formspree URL).
-    // When unset, the modal runs in demo mode: it shows the success state and logs the email.
-    const ENDPOINT = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+    const tabs = Array.from(document.querySelectorAll<HTMLElement>('.showcase .tabs .tab'));
+    const panels = Array.from(document.querySelectorAll<HTMLElement>('.showcase .frame .shot-img'));
+    if (!tabs.length) return;
 
-    const openModal = () => {
-      overlay.classList.add('open');
-      modal?.classList.remove('done');
-      const input = form?.querySelector('input');
-      setTimeout(() => input?.focus(), 40);
+    const select = (tab: HTMLElement, focus = false) => {
+      const key = tab.getAttribute('data-tab');
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.setAttribute('tabindex', on ? '0' : '-1');
+      });
+      panels.forEach((img) => img.classList.toggle('on', img.getAttribute('data-panel') === key));
+      if (focus) tab.focus();
     };
-    const closeModal = () => overlay.classList.remove('open');
 
-    document.querySelectorAll('[data-access]').forEach((btn) =>
-      btn.addEventListener('click', (e) => {
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (e) => {
+        let next = -1;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % tabs.length;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + tabs.length) % tabs.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = tabs.length - 1;
+        if (next < 0) return;
         e.preventDefault();
-        openModal();
-      }),
-    );
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeModal();
-    });
-    overlay.querySelectorAll('.x, .m-close2').forEach((b) => b.addEventListener('click', closeModal));
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-    });
-
-    form?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const input = form.querySelector('input') as HTMLInputElement | null;
-      const email = (input?.value ?? '').trim();
-      if (!email || email.indexOf('@') < 1) {
-        input?.focus();
-        return;
-      }
-      const done = () => modal?.classList.add('done');
-      if (!ENDPOINT) {
-        console.log('[demo] signup:', email);
-        done();
-        return;
-      }
-      fetch(ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) })
-        .then(done)
-        .catch(done);
+        select(tabs[next], true);
+      });
     });
   })();
 </script>
