@@ -1,40 +1,308 @@
 ---
-import ChevronTexture from './ChevronTexture.astro';
-const GITHUB_URL = 'https://github.com/SpykeAutomation';
+const DOCS_URL = 'https://docs.spykeautomation.com';
+
+// ---------------------------------------------------------------------------
+// The hero is the product's own diff view: two snapshots of the same routine,
+// side by side. Everything below draws one rung into a fixed 700x210 grid.
+//
+// Unchanged elements are placed at identical x in both panels on purpose — that
+// alignment is what lets the eye catch the difference without reading anything.
+// ---------------------------------------------------------------------------
+
+const INK = '#171717';
+const MUTED = '#262626'; // tag names — grey here reads as washed out once downscaled
+const RAIL = '#b4b4b4';
+const ADD = '#047857';
+const ADD_SOFT = '#ecfdf5';
+const DEL = '#d20f39';
+const DEL_SOFT = '#fff1f2';
+
+// Each panel renders around 560px wide, so this 700-unit grid is drawn at roughly
+// 0.8 scale. Type and stroke weights below are sized to land correctly AFTER that
+// reduction — a 13px label arrives at ~10px, a 2.5 stroke at ~2px. Shrink the
+// panel and everything thins out; that is what makes a ladder drawing look dull.
+const W = 700;
+const H = 210;
+const RAIL_L = 14;
+const RAIL_R = 686;
+
+const WY = 92; // the rung wire
+const CT = 78; // contact top
+const CB = 106; // contact bottom
+const LY = 58; // tag name baseline — sits clear of the +/− badge on a marked contact
+
+const STROKE = 2.5; // wires and contacts
+const F_TAG = 13; // tag names
+const F_TITLE = 14; // EQU / MOV
+const F_FIELD = 12; // operand names and values
+
+const SANS = 'Instrument Sans, sans-serif';
+
+const wire = (x1: number, x2: number, y: number = WY) =>
+  `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}"/>`;
+
+/** Examine-if-closed: two bars. */
+const xic = (x: number) =>
+  `<line x1="${x}" y1="${CT}" x2="${x}" y2="${CB}"/><line x1="${x + 16}" y1="${CT}" x2="${x + 16}" y2="${CB}"/>`;
+
+/** Examine-if-open: two bars with a slash through them. */
+const xio = (x: number) => `${xic(x)}<line x1="${x}" y1="${CB}" x2="${x + 16}" y2="${CT}"/>`;
+
+// A coil is two arcs facing each other: —( )—. Each arc's chord is vertical, but
+// the curve bellies OUTWARD past it by exactly its radius. The wire must stop at
+// the belly, not the chord, or it runs straight through the curve and out the
+// far side. These two helpers are the only correct places to end a coil's wire.
+const COIL_R = 14;
+const COIL_GAP = 16; // the opening between the two arcs
+const coilIn = (cx: number) => cx - COIL_R;
+const coilOut = (cx: number) => cx + COIL_GAP + COIL_R;
+
+/** An output coil. `letter` marks a latch (L) and is omitted for a plain OTE. */
+const coil = (cx: number, letter = '') =>
+  `<path d="M${cx} ${CT} A ${COIL_R} ${COIL_R} 0 0 0 ${cx} ${CB}" fill="none"/>` +
+  `<path d="M${cx + COIL_GAP} ${CT} A ${COIL_R} ${COIL_R} 0 0 1 ${cx + COIL_GAP} ${CB}" fill="none"/>` +
+  (letter
+    ? `<text x="${cx + COIL_GAP / 2}" y="${WY + 4}" font-family="${SANS}" font-size="11" fill="${INK}" text-anchor="middle">${letter}</text>`
+    : '');
+
+const label = (cx: number, text: string, fill = MUTED) =>
+  `<text x="${cx}" y="${LY}" font-family="${SANS}" font-size="${F_TAG}" fill="${fill}" text-anchor="middle">${text}</text>`;
+
+/**
+ * An instruction block (EQU, MOV): a titled box with right-aligned operand values.
+ *
+ * `fill` matters on a marked block. A mark ring is drawn BEHIND the ink, which works
+ * for a contact — it's just two bars, so the tint shows through around them. A block
+ * is a filled box, so a white fill hides the tint and the mark survives only as a
+ * thin outline. An added or removed block has to carry the tint itself.
+ */
+const block = (
+  x: number,
+  y: number,
+  w: number,
+  title: string,
+  rows: [string, string][],
+  fill = '#fff',
+) => {
+  const h = 22 + rows.length * 24;
+  let out = `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="${fill}" stroke="${INK}" stroke-width="2"/>`;
+  out += `<line x1="${x}" y1="${y + 22}" x2="${x + w}" y2="${y + 22}" stroke="${INK}" stroke-width="1.5"/>`;
+  out += `<text x="${x + w / 2}" y="${y + 15}" font-family="${SANS}" font-size="${F_TITLE}" font-weight="600" fill="${INK}" text-anchor="middle">${title}</text>`;
+  rows.forEach(([name, value], i) => {
+    const ry = y + 22 + i * 24 + 16;
+    out += `<text x="${x + 8}" y="${ry}" font-family="${SANS}" font-size="${F_FIELD}" fill="#6b6b6b">${name}</text>`;
+    out += `<text x="${x + w - 8}" y="${ry}" font-family="${SANS}" font-size="${F_FIELD}" fill="${INK}" text-anchor="end">${value}</text>`;
+  });
+  return out;
+};
+
+/**
+ * The ring that marks an element as added or removed. Drawn under the element.
+ *
+ * `mark` names the ring's slot in the play-in sequence (m1–m4 in global.css) and
+ * `len` sets the stroke-dasharray for the draw-on: a little LONGER than the
+ * ring's own perimeter, so the outline still reads as solid once drawn.
+ */
+const markBox = (x: number, y: number, w: number, h: number, kind: 'add' | 'del', mark = '', len = 0) =>
+  `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="${kind === 'add' ? ADD_SOFT : DEL_SOFT}" stroke="${kind === 'add' ? ADD : DEL}" stroke-width="2.5"${mark ? ` class="mk ${mark}" style="--len:${len}"` : ''}/>`;
+
+/** The +/− badge on the ring's top-right corner. Drawn last, above everything. */
+const badge = (x: number, y: number, kind: 'add' | 'del', mark = '') => {
+  const cls = mark ? ` class="mk ${mark}"` : '';
+  return (
+    `<circle cx="${x}" cy="${y}" r="9" fill="${kind === 'add' ? ADD : DEL}"${cls}/>` +
+    `<text x="${x}" y="${y + 4.5}"${cls} font-family="${SANS}" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">${kind === 'add' ? '+' : '−'}</text>`
+  );
+};
+
+const rails =
+  `<line x1="${RAIL_L}" y1="8" x2="${RAIL_L}" y2="${H - 8}" stroke="${RAIL}" stroke-width="${STROKE}"/>` +
+  `<line x1="${RAIL_R}" y1="8" x2="${RAIL_R}" y2="${H - 8}" stroke="${RAIL}" stroke-width="${STROKE}"/>`;
+
+/** Wrap the drawn parts into a rung SVG. `marks` sit behind, `badges` in front. */
+const svg = (aria: string, marks: string, ink: string, text: string, badges = '') => `
+<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${aria}">
+  ${rails}
+  ${marks}
+  <g stroke="${INK}" stroke-width="${STROKE}" fill="none" stroke-linecap="round">${ink}</g>
+  ${text}
+  ${badges}
+</svg>`;
+
+// --- shared geometry, so the two panels line up -----------------------------
+// Contact x-positions are spaced by the width of the tag name above them, not by
+// the symbol — "Cell.HMI.StopRequest" is far wider than the two bars it labels.
+const EQU_X = 40;
+const EQU_W = 150;
+const EQU_Y = 56;
+const EQU_R = EQU_X + EQU_W; // 190
+
+// Contacts, by centre. Unchanged ones sit at the same x in both snapshots.
+const C_AUTOMATIC = 247; // v15 only
+const C_READY = 361; // in both
+const C_STOPREQ = 496; // v15 only
+const C_MSTART = 300; // rung 2, both
+const C_MSTIME = 430; // rung 2, both
+
+const COIL_X = 610; // both rungs, both snapshots
+const COIL_LABEL = COIL_X + COIL_GAP / 2;
+
+const NODE = 532; // where the output branch drops away from the rung
+const MOV_X = 548;
+const MOV_W = 118;
+const MOV_Y = 125;
+const MOV_R = MOV_X + MOV_W; // 666
+const BRANCH_Y = 160;
+
+/** Where a contact's two bars sit, given its centre. */
+const bars = (cx: number) => cx - 8;
+
+/** The coil-plus-MOV output branch. The caller wires up to `coilIn(COIL_X)`. */
+const outputBranch = (letter: string) =>
+  coil(COIL_X, letter) +
+  wire(coilOut(COIL_X), RAIL_R) +
+  `<line x1="${NODE}" y1="${WY}" x2="${NODE}" y2="${BRANCH_Y}"/>` +
+  wire(NODE, MOV_X, BRANCH_Y) +
+  wire(MOV_R, RAIL_R, BRANCH_Y);
+
+const EQU_100: [string, string][] = [
+  ['Source A', 'Cycle.Step'],
+  ['Source B', '100'],
+];
+const EQU_120: [string, string][] = [
+  ['Source A', 'Cycle.Step'],
+  ['Source B', '120'],
+];
+const MOV_120: [string, string][] = [
+  ['Source', '120'],
+  ['Dest', 'Cycle.Step'],
+];
+const MOV_140: [string, string][] = [
+  ['Source', '140'],
+  ['Dest', 'Cycle.Step'],
+];
+
+// ============================ v14 · rung 1 ==================================
+const v14r1 = svg(
+  'Snapshot v14, rung 1: an EQU compare on Cycle.Step feeds Cell.ReadyForWork, latching MachineStart and moving 120 into Cycle.Step',
+  '',
+  wire(RAIL_L, EQU_X) +
+    wire(EQU_R, bars(C_READY)) +
+    xic(bars(C_READY)) +
+    wire(bars(C_READY) + 16, coilIn(COIL_X)) +
+    outputBranch('L'),
+  block(EQU_X, EQU_Y, EQU_W, 'EQU', EQU_100) +
+    block(MOV_X, MOV_Y, MOV_W, 'MOV', MOV_120) +
+    label(C_READY, 'Cell.ReadyForWork') +
+    label(COIL_LABEL, 'MachineStart'),
+);
+
+// ============================ v14 · rung 2 ==================================
+const v14r2 = svg(
+  'Snapshot v14, rung 2: MachineStart and MachineStartTime.DN drive the RequestPart coil',
+  '',
+  wire(RAIL_L, EQU_X) +
+    wire(EQU_R, bars(C_MSTART)) +
+    xic(bars(C_MSTART)) +
+    wire(bars(C_MSTART) + 16, bars(C_MSTIME)) +
+    xio(bars(C_MSTIME)) +
+    wire(bars(C_MSTIME) + 16, coilIn(COIL_X)) +
+    coil(COIL_X) +
+    wire(coilOut(COIL_X), RAIL_R),
+  block(EQU_X, EQU_Y, EQU_W, 'EQU', EQU_120) +
+    label(C_MSTART, 'MachineStart') +
+    label(C_MSTIME, 'MachineStartTime.DN') +
+    label(COIL_LABEL, 'RequestPart'),
+);
+
+// ============================ v15 · rung 1 ==================================
+// Two contacts added: Cell.Automatic and Cell.HMI.StopRequest.
+const v15r1 = svg(
+  'Snapshot v15, rung 1: two contacts have been added — Cell.Automatic and Cell.HMI.StopRequest — in series with Cell.ReadyForWork',
+  markBox(bars(C_AUTOMATIC) - 22, 70, 60, 46, 'add', 'm1', 240) +
+    markBox(bars(C_STOPREQ) - 22, 70, 60, 46, 'add', 'm2', 240),
+  wire(RAIL_L, EQU_X) +
+    wire(EQU_R, bars(C_AUTOMATIC)) +
+    xic(bars(C_AUTOMATIC)) +
+    wire(bars(C_AUTOMATIC) + 16, bars(C_READY)) +
+    xic(bars(C_READY)) +
+    wire(bars(C_READY) + 16, bars(C_STOPREQ)) +
+    xio(bars(C_STOPREQ)) +
+    wire(bars(C_STOPREQ) + 16, coilIn(COIL_X)) +
+    outputBranch('L'),
+  block(EQU_X, EQU_Y, EQU_W, 'EQU', EQU_100) +
+    block(MOV_X, MOV_Y, MOV_W, 'MOV', MOV_120) +
+    label(C_AUTOMATIC, 'Cell.Automatic') +
+    label(C_READY, 'Cell.ReadyForWork') +
+    label(C_STOPREQ, 'Cell.HMI.StopRequest') +
+    label(COIL_LABEL, 'MachineStart'),
+  badge(bars(C_AUTOMATIC) + 38, 70, 'add', 'm1') + badge(bars(C_STOPREQ) + 38, 70, 'add', 'm2'),
+);
+
+// ============================ v15 · rung 2 ==================================
+// MachineStartTime.DN removed; a MOV of 140 into Cycle.Step added on a branch.
+const v15r2 = svg(
+  'Snapshot v15, rung 2: the MachineStartTime.DN contact has been removed, and a MOV of 140 into Cycle.Step has been added alongside the RequestPart coil',
+  markBox(bars(C_MSTIME) - 22, 70, 60, 46, 'del', 'm3', 240) +
+    markBox(MOV_X - 6, MOV_Y - 6, MOV_W + 12, 82, 'add', 'm4', 460),
+  wire(RAIL_L, EQU_X) +
+    wire(EQU_R, bars(C_MSTART)) +
+    xic(bars(C_MSTART)) +
+    wire(bars(C_MSTART) + 16, bars(C_MSTIME)) +
+    xio(bars(C_MSTIME)) +
+    wire(bars(C_MSTIME) + 16, coilIn(COIL_X)) +
+    coil(COIL_X) +
+    wire(coilOut(COIL_X), RAIL_R) +
+    `<line x1="${NODE}" y1="${WY}" x2="${NODE}" y2="${BRANCH_Y}"/>` +
+    wire(NODE, MOV_X, BRANCH_Y) +
+    wire(MOV_R, RAIL_R, BRANCH_Y),
+  block(EQU_X, EQU_Y, EQU_W, 'EQU', EQU_120) +
+    block(MOV_X, MOV_Y, MOV_W, 'MOV', MOV_140, ADD_SOFT) +
+    label(C_MSTART, 'MachineStart') +
+    label(C_MSTIME, 'MachineStartTime.DN') +
+    label(COIL_LABEL, 'RequestPart'),
+  badge(bars(C_MSTIME) + 38, 70, 'del', 'm3') + badge(MOV_R + 6, MOV_Y - 6, 'add', 'm4'),
+);
+
+const panels = [
+  { version: 'v14', rungs: [v14r1, v14r2] },
+  { version: 'v15', rungs: [v15r1, v15r2] },
+];
 ---
 
 <section class="hero">
-  <div class="wrap hero-center">
-    <h1>
-      <span class="em">Open-source version control</span><br />
-      <span class="em">system for</span> <span class="mu">Industrial Automation</span>
-    </h1>
-    <div class="cta-row">
-      <a class="btn btn-dark btn-lg" href="#" data-access>Request Early Access</a>
-      <a class="btn btn-out btn-lg" href={GITHUB_URL}>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>View on GitHub
-      </a>
+  <div class="wrap">
+    <h1 class="rise" data-rise>Change tracking for PLC&nbsp;programs</h1>
+    <p class="sub rise" data-rise>
+      Spyke reduces production risk with a record of every PLC change and a reliable
+      path back to working code.
+    </p>
+    <div class="hero-actions rise d2" data-rise>
+      <a class="btn btn-white" href="#features">See how it works</a>
+      <a class="btn btn-dark" href={DOCS_URL}>Read docs</a>
     </div>
   </div>
 
-  <!-- SHOWCASE -->
-  <div class="showcase" id="product">
-    <div class="wrap">
-      <div class="tabs" role="tablist" aria-label="Code view">
-        <button class="tab active" type="button" role="tab" id="tab-ladder" data-tab="ladder" aria-selected="true" aria-controls="panel-ladder">
-          <svg viewBox="0 0 24 24"><path d="M4 6h7M4 12h10M4 18h6" /><circle cx="17" cy="7" r="2" /></svg>Ladder Logic
-        </button>
-        <button class="tab" type="button" role="tab" id="tab-st" data-tab="st" aria-selected="false" aria-controls="panel-st" tabindex="-1">
-          <svg viewBox="0 0 24 24"><path d="M9 8l-4 4 4 4M15 8l4 4-4 4" /></svg>Structured Text
-        </button>
-      </div>
-    </div>
-    <div class="stage">
-      <ChevronTexture vw={1600} vh={760} stroke="#16181D" className="grid-bg" seed={7} />
-      <div class="frame">
-        <img class="shot-img on" id="panel-ladder" role="tabpanel" aria-labelledby="tab-ladder" data-panel="ladder" src="/hero_card.png" alt="Ladder-logic semantic diff between versions v14 and v15" />
-        <img class="shot-img" id="panel-st" role="tabpanel" aria-labelledby="tab-st" data-panel="st" src="/st_card.png" alt="Structured Text unified diff between versions v14 and v15" />
-      </div>
+  <!-- data-live plays the sequence once on scroll-in; data-noreplay opts the
+       hero out of the hover-replay the feature tiles get. -->
+  <div class="demo-holder rise d3" data-rise data-live data-noreplay id="how">
+    <div class="diffgrid">
+      {
+        panels.map(({ version, rungs }) => (
+          <div class="vpanel">
+            <div class="vhead">
+              <span class="vtag">{version}</span>
+              <span class="vcount">2 rungs changed</span>
+            </div>
+            {rungs.map((markup, i) => (
+              <div class="rung">
+                <span class="rung-n" aria-hidden="true">{i + 1}</span>
+                <Fragment set:html={markup} />
+              </div>
+            ))}
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>

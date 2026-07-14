@@ -1,0 +1,294 @@
+---
+// A picture of the review app that plays out a whole review: the two comments
+// type themselves, a cursor arrives from the diff, adds the second thumbs-up,
+// and clicks Approve. The markup is authored in its RESTING state (one
+// thumbs-up, "Reviewing", "Approve"); the finished states live in .s-b/.cnt-b
+// spans that the script's classes swap in. Nothing inside is focusable.
+//
+// The rungs reuse the hero's diff treatment: ink stays black, a soft ring with
+// a +/− badge marks the changed element, drawn under the ink so the wire runs
+// through it.
+
+// Sparks are drawn at the button's centre and thrown outward by their own
+// --x/--y/--r, so one keyframe animates all ten. Colours are the page's own.
+const SPARKS: [number, number, number, string][] = [
+  [-58, -30, -35, '#047857'],
+  [-34, -46, 20, '#171717'],
+  [-8, -54, -12, '#047857'],
+  [20, -50, 40, '#b45309'],
+  [46, -34, -25, '#047857'],
+  [62, -6, 15, '#171717'],
+  [-64, -4, 30, '#b45309'],
+  [34, 26, -20, '#047857'],
+  [-40, 28, 25, '#171717'],
+  [6, 36, -40, '#047857'],
+];
+---
+
+<section class="section" id="review">
+  <div class="wrap">
+    <div class="section-head rise" data-rise>
+      <h2>Review changes to critical systems as a team</h2>
+      <p>Keep the change, discussion, and approval in one place so everyone understands what is being updated and why.</p>
+    </div>
+
+    <div class="appmock rise d1" data-rise data-live data-noreplay role="group" aria-label="Preview of the Spyke review app">
+      <div class="appnav">
+        <span class="proj">Packaging_Line</span>
+        <span class="item">Files</span>
+        <span class="item">History</span>
+        <span class="item on">Merge requests</span>
+        <span class="item">Branches</span>
+      </div>
+
+      <div class="appmain">
+        <div class="mr-head">
+          <div class="mr-title">
+            <h3>Add guard door interlock to conveyor start</h3>
+            <span class="swap"><span class="pill neutral s-a">Reviewing</span><span class="pill green s-b">✓ Approved</span></span>
+          </div>
+        </div>
+
+        <div class="mr-body">
+          <div class="diff-col">
+            <div class="file-row">MainProgram / Conveyor_Control</div>
+
+            <div class="rung-diff">
+              <div class="rung-row del">
+                <span class="sign" aria-hidden="true">−</span>
+                <svg viewBox="0 0 560 132" role="img" aria-label="Before: the bypass contact ahead of the conveyor coil, marked as removed">
+                  <line x1="10" y1="8" x2="10" y2="124" stroke="#b4b4b4" stroke-width="2"/>
+                  <line x1="550" y1="8" x2="550" y2="124" stroke="#b4b4b4" stroke-width="2"/>
+                  <rect x="330" y="38" width="60" height="46" rx="8" fill="#fff1f2" stroke="#d20f39" stroke-width="2.5"/>
+                  <g stroke="#171717" stroke-width="2" fill="none" stroke-linecap="round">
+                    <line x1="10" y1="60" x2="102" y2="60"/><line x1="118" y1="60" x2="222" y2="60"/>
+                    <line x1="238" y1="60" x2="352" y2="60"/><line x1="368" y1="60" x2="446" y2="60"/>
+                    <line x1="490" y1="60" x2="550" y2="60"/>
+                    <line x1="102" y1="46" x2="102" y2="74"/><line x1="118" y1="46" x2="118" y2="74"/>
+                    <line x1="222" y1="46" x2="222" y2="74"/><line x1="238" y1="46" x2="238" y2="74"/>
+                    <line x1="352" y1="46" x2="352" y2="74"/><line x1="368" y1="46" x2="368" y2="74"/>
+                    <line x1="70" y1="60" x2="70" y2="112"/><line x1="150" y1="60" x2="150" y2="112"/>
+                    <line x1="70" y1="112" x2="102" y2="112"/><line x1="118" y1="112" x2="150" y2="112"/>
+                    <line x1="102" y1="98" x2="102" y2="126"/><line x1="118" y1="98" x2="118" y2="126"/>
+                    <path d="M460 46 A 14 14 0 0 0 460 74"/><path d="M476 46 A 14 14 0 0 1 476 74"/>
+                  </g>
+                  <g font-family="Instrument Sans, sans-serif" font-size="12" fill="#262626" text-anchor="middle">
+                    <text x="110" y="26">Start_PB</text><text x="230" y="26">Stop_PB</text>
+                    <text x="360" y="26">Bypass_SW</text><text x="468" y="26">Conveyor_Run</text>
+                  </g>
+                  <circle cx="390" cy="38" r="9" fill="#d20f39"/>
+                  <text x="390" y="42.5" font-family="Instrument Sans, sans-serif" font-size="13" font-weight="600" fill="#fff" text-anchor="middle">−</text>
+                </svg>
+              </div>
+              <div class="rung-row add">
+                <span class="sign" aria-hidden="true">+</span>
+                <svg viewBox="0 0 560 132" role="img" aria-label="After: the guard door contact in its place, marked as added">
+                  <line x1="10" y1="8" x2="10" y2="124" stroke="#b4b4b4" stroke-width="2"/>
+                  <line x1="550" y1="8" x2="550" y2="124" stroke="#b4b4b4" stroke-width="2"/>
+                  <rect x="330" y="38" width="60" height="46" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2.5"/>
+                  <g stroke="#171717" stroke-width="2" fill="none" stroke-linecap="round">
+                    <line x1="10" y1="60" x2="102" y2="60"/><line x1="118" y1="60" x2="222" y2="60"/>
+                    <line x1="238" y1="60" x2="352" y2="60"/><line x1="368" y1="60" x2="446" y2="60"/>
+                    <line x1="490" y1="60" x2="550" y2="60"/>
+                    <line x1="102" y1="46" x2="102" y2="74"/><line x1="118" y1="46" x2="118" y2="74"/>
+                    <line x1="222" y1="46" x2="222" y2="74"/><line x1="238" y1="46" x2="238" y2="74"/>
+                    <line x1="352" y1="46" x2="352" y2="74"/><line x1="368" y1="46" x2="368" y2="74"/>
+                    <line x1="70" y1="60" x2="70" y2="112"/><line x1="150" y1="60" x2="150" y2="112"/>
+                    <line x1="70" y1="112" x2="102" y2="112"/><line x1="118" y1="112" x2="150" y2="112"/>
+                    <line x1="102" y1="98" x2="102" y2="126"/><line x1="118" y1="98" x2="118" y2="126"/>
+                    <path d="M460 46 A 14 14 0 0 0 460 74"/><path d="M476 46 A 14 14 0 0 1 476 74"/>
+                  </g>
+                  <g font-family="Instrument Sans, sans-serif" font-size="12" fill="#262626" text-anchor="middle">
+                    <text x="110" y="26">Start_PB</text><text x="230" y="26">Stop_PB</text>
+                    <text x="360" y="26">Guard_Door_OK</text><text x="468" y="26">Conveyor_Run</text>
+                  </g>
+                  <circle cx="390" cy="38" r="9" fill="#047857"/>
+                  <text x="390" y="42.5" font-family="Instrument Sans, sans-serif" font-size="13" font-weight="600" fill="#fff" text-anchor="middle">+</text>
+                </svg>
+              </div>
+            </div>
+
+            <div class="mr-comment c1">
+              <span class="avatar" style="background:#b45309">TW</span>
+              <div>
+                <div class="bubble">Does jog mode need the same check, or is that covered by the safety relay?</div>
+              </div>
+            </div>
+            <div class="mr-comment c2">
+              <span class="avatar" style="background:#525252">MK</span>
+              <div>
+                <div class="bubble">Jog sits in its own routine and already checks the guard. This only changes the auto start — the bypass contact goes with it.</div>
+                <div class="reactions">
+                  <span class="reaction">
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 14V6.8l3-4.8a1.6 1.6 0 0 1 1.9 1.9L8.8 6.3h3.6a1.4 1.4 0 0 1 1.4 1.7l-.9 4.6a1.6 1.6 0 0 1-1.6 1.4H4.5Z"/><path d="M4.5 6.9H2.2v7.1h2.3"/></svg>
+                    <span class="swap"><span class="cnt-a">1</span><span class="cnt-b">2</span></span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rail-col">
+            <h5>Reviewers</h5>
+            <div class="reviewer"><span class="avatar" style="background:#171717">JR</span> Approved</div>
+            <div class="reviewer"><span class="avatar" style="background:#b45309">TW</span> <span class="swap"><span class="s-a">Reviewing</span><span class="s-b">Approved</span></span></div>
+            <span class="rail-btn">
+              <span class="swap"><span class="s-a">Approve</span><span class="s-b">✓ Approved</span></span>
+              <span class="cursor" aria-hidden="true"><span class="cur-in"><svg width="38" height="38" viewBox="0 0 20 20"><path d="M4 2.5 15.5 9.8 10.2 10.6 7.6 15.6Z" fill="#171717" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/></svg></span></span>
+              <span class="btn-ring" aria-hidden="true"></span>
+              <span class="burst" aria-hidden="true">
+                {SPARKS.map(([x, y, r, c]) => <i style={`--x:${x}px;--y:${y}px;--r:${r}deg;--c:${c}`}></i>)}
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // The demo's choreography. State flips (.reacted, .approved) are made by the
+  // cursor's clicks rather than a parallel stopwatch, so the cursor and the UI
+  // can't drift apart. With no JS or reduced motion, the mock just sits at its
+  // authored resting state.
+  (() => {
+    const m = document.querySelector<HTMLElement>('.appmock');
+    if (!m) return;
+    const bubbles = [...m.querySelectorAll<HTMLElement>('.mr-comment .bubble')];
+    const cur = m.querySelector<HTMLElement>('.cursor');
+    const chip = m.querySelector<HTMLElement>('.reaction');
+    const btn = m.querySelector<HTMLElement>('.rail-btn');
+    const diff = m.querySelector<HTMLElement>('.rung-diff');
+    if (!bubbles.length || !cur || !chip || !btn || !diff) return;
+
+    bubbles.forEach((b) => (b.dataset.text = b.textContent?.trim() ?? ''));
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+
+    // The cursor travels in the mock's coordinate space, not the button's.
+    m.appendChild(cur);
+
+    let run = 0;
+    let timers: ReturnType<typeof setTimeout>[] = [];
+    const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
+
+    // The arrow's point sits a few px in from the SVG's corner.
+    const TIP_X = 7;
+    const TIP_Y = 5;
+    const to = (el: HTMLElement, dx = 0, dy = 0) => {
+      const a = el.getBoundingClientRect();
+      const b = m.getBoundingClientRect();
+      return [a.left - b.left + a.width / 2 - TIP_X + dx, a.top - b.top + a.height / 2 - TIP_Y + dy];
+    };
+    const put = (x: number, y: number, ms: number) => {
+      cur.style.transition = ms ? `transform ${ms}ms cubic-bezier(.33,.9,.3,1)` : 'none';
+      cur.style.transform = `translate(${x}px,${y}px)`;
+      // A same-frame "jump then move" coalesces into one animated move from the
+      // old position; forcing a reflow commits the jump first.
+      if (!ms) void cur.offsetWidth;
+    };
+    const click = (fn?: () => void) => {
+      cur.classList.add('press');
+      at(140, () => {
+        cur.classList.remove('press');
+        fn?.();
+      });
+    };
+    const write = (b: HTMLElement, start: number, speed: number) => {
+      const t = b.dataset.text ?? '';
+      at(start, () => {
+        b.classList.add('writing');
+        b.textContent = '';
+        let i = 0;
+        const tick = () => {
+          b.textContent = t.slice(0, ++i);
+          if (i < t.length) timers.push(setTimeout(tick, speed + (i % 5) * 2));
+          else b.classList.remove('writing');
+        };
+        timers.push(setTimeout(tick, speed));
+      });
+    };
+
+    const play = () => {
+      const mine = ++run;
+      timers.forEach(clearTimeout);
+      timers = [];
+      // Retoggle .play so the CSS-driven parts (comment fade-ins, chip pop)
+      // restart in step with the timers on every loop.
+      m.classList.remove('play', 'reacted', 'approved');
+      void m.offsetWidth;
+      m.classList.add('play');
+      cur.classList.remove('press');
+      cur.style.opacity = '0';
+      {
+        const [x, y] = to(diff);
+        put(x, y, 0);
+      }
+      // Lock each bubble to the height of its finished text before emptying it,
+      // so the mock doesn't grow line by line as the comments type out.
+      bubbles.forEach((b) => {
+        b.classList.remove('writing');
+        b.textContent = b.dataset.text ?? '';
+        b.style.minHeight = '';
+        b.style.minHeight = `${b.offsetHeight}px`;
+        b.textContent = '';
+      });
+      write(bubbles[0], 500, 9);
+      write(bubbles[1], 1900, 8);
+      // The cursor starts where the reader's eye already is — on the logic —
+      // then goes to the thumbs-up, then to Approve. No detour past the button.
+      at(4150, () => {
+        const [x, y] = to(diff);
+        put(x, y, 0);
+        cur.style.opacity = '1';
+      });
+      at(4650, () => {
+        const [x, y] = to(chip);
+        put(x + 2, y, 850);
+      });
+      at(5600, () => click(() => m.classList.add('reacted')));
+      at(6000, () => {
+        const [x, y] = to(btn);
+        put(x, y, 900);
+      });
+      at(7050, () => click(() => m.classList.add('approved')));
+      at(7800, () => {
+        cur.style.transition = 'transform .5s ease,opacity .4s ease';
+        cur.style.opacity = '0';
+      });
+      // Hold the approved state, then go around again.
+      at(12000, () => {
+        if (mine === run && looping) play();
+      });
+    };
+
+    // The demo loops while it's on screen and rests while it isn't. Leaving
+    // resets it to the authored finished state so a mid-type freeze is never
+    // what's sitting there when it scrolls back into view.
+    let looping = false;
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            if (!looping) {
+              looping = true;
+              play();
+            }
+          } else if (looping) {
+            looping = false;
+            run++;
+            timers.forEach(clearTimeout);
+            timers = [];
+            m.classList.remove('reacted', 'approved');
+            cur.style.opacity = '0';
+            bubbles.forEach((b) => {
+              b.classList.remove('writing');
+              b.textContent = b.dataset.text ?? '';
+            });
+          }
+        }),
+      { threshold: 0.35 },
+    );
+    io.observe(m);
+  })();
+</script>

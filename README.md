@@ -16,19 +16,14 @@ npm run preview  # preview the production build
 ## Structure
 
 ```
-public/            static assets (diff-card images, favicon)
+public/            static assets (social cards, favicon, CNAME)
 src/
-  layouts/         page shell (head, fonts, global styles)
-  components/      Nav, Hero, Roadmap, Footer, AccessModal, Brand, ChevronTexture
-  pages/           routes (index.astro) + client scripts (tabs, modal)
+  layouts/         page shell (head, fonts, scroll/animation observers)
+  components/      Nav, Hero, Features, Review, CTA, Footer, Brand
+  pages/           routes (index, privacy, terms)
   styles/          global.css (design tokens + all component styles)
 ```
 
-The scattered chevron background texture is generated at build time by
-`ChevronTexture.astro` from a seed (deterministic output).
-
-## Early-access form
-
-The "Request Early Access" modal posts to the endpoint in `PUBLIC_FORM_ENDPOINT`
-(see `.env.example`). Without it, the modal runs in demo mode. Point it at a
-form service such as Formspree to capture signups.
+The landing-page illustrations (ladder diffs, feature tiles, review demo) are
+inline SVG authored in their finished state; scroll-triggered classes run the
+animations, so the page renders complete without JavaScript.
