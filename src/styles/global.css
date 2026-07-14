@@ -29,6 +29,13 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; background: var(--ground); -webkit-text-size-adjust: 100%; }
+/* Wide screens: scale the root up with the viewport so the whole design grows
+   instead of pooling margin around a fixed 72rem column. Everything is sized
+   in rem, so the root is the one knob; media-query rems keep using the 16px
+   default, so the responsive breakpoints don't move. */
+@media (min-width: 90rem) {
+  html { font-size: clamp(16px, 1.11vw, 21px); }
+}
 body {
   font-family: var(--sans);
   background: var(--ground);
