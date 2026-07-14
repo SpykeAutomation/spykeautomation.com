@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import AccessModal from '../components/AccessModal.astro';
 
 interface Props {
   title?: string;
@@ -8,8 +7,9 @@ interface Props {
 }
 
 const {
-  title = 'Spyke Automation — version control for industrial automation',
-  description = 'Open-source version control system for industrial automation. Review PLC changes — ladder logic and structured text — rung by rung, with history in plain Git.',
+  title = 'Spyke Automation — change tracking for PLC programs',
+  description =
+    'Spyke keeps a readable history of your controller projects. Snapshot each export, then review every edit as a ladder diff — not thousands of lines of XML.',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -36,101 +36,115 @@ const ogImage = new URL('/hero_card.png', Astro.site).href;
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
     <title>{title}</title>
+
+    <!-- [data-rise] elements start invisible and are revealed by an
+         IntersectionObserver. With no JS, nothing would ever reveal them. -->
+    <noscript>
+      <style>
+        .rise { opacity: 1; transform: none; filter: none; }
+      </style>
+    </noscript>
   </head>
   <body>
+    <a class="skip" href="#main">Skip to content</a>
     <slot />
-    <AccessModal />
   </body>
 </html>
 
 <script>
-  // ----- Mobile nav menu (hamburger) — present on every page via <Nav> -----
+  // ----- Mobile nav dropdown (hamburger) — present on every page via <Nav> -----
   (() => {
-    const pill = document.querySelector('.pill');
+    const nav = document.getElementById('siteNav');
     const toggle = document.getElementById('menuToggle');
-    if (!pill || !toggle) return;
+    if (!nav || !toggle) return;
+
     const close = () => {
-      pill.classList.remove('menu-open');
+      nav.classList.remove('menu-open');
       toggle.setAttribute('aria-expanded', 'false');
     };
+
     toggle.addEventListener('click', () => {
-      const open = pill.classList.toggle('menu-open');
+      const open = nav.classList.toggle('menu-open');
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-    // Close after tapping a menu link, tapping outside the pill, or pressing Escape
-    pill.querySelectorAll('.links a').forEach((a) => a.addEventListener('click', close));
+
+    // Close after tapping a link, tapping outside the bar, or pressing Escape
+    nav.querySelectorAll('.nav-links a').forEach((a) => a.addEventListener('click', close));
     document.addEventListener('click', (e) => {
-      if (!pill.contains(e.target as Node)) close();
+      if (!nav.contains(e.target as Node)) close();
     });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') close();
     });
   })();
 
-  // ----- Request-access modal — opened by any [data-access] element -----
+  // ----- Reveal-on-scroll for [data-rise] elements -----
   (() => {
-    const overlay = document.getElementById('accessModal');
-    if (!overlay) return;
-    const modal = overlay.querySelector<HTMLElement>('.modal');
-    const form = document.getElementById('accessForm') as HTMLFormElement | null;
-    // Set PUBLIC_FORM_ENDPOINT in .env to capture signups (e.g. a Formspree URL).
-    // When unset, the modal runs in demo mode: it shows the success state and logs the email.
-    const ENDPOINT = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+    const items = document.querySelectorAll('[data-rise]');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    let lastFocused: HTMLElement | null = null;
-    const openModal = () => {
-      lastFocused = document.activeElement as HTMLElement | null;
-      overlay.classList.add('open');
-      overlay.setAttribute('aria-hidden', 'false');
-      modal?.classList.remove('done');
-      const input = form?.querySelector('input');
-      setTimeout(() => input?.focus(), 40);
-    };
-    const closeModal = () => {
-      if (!overlay.classList.contains('open')) return;
-      overlay.classList.remove('open');
-      overlay.setAttribute('aria-hidden', 'true');
-      lastFocused?.focus();
-    };
+    if (reduced || !('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('in'));
+      return;
+    }
 
-    document.querySelectorAll('[data-access]').forEach((btn) =>
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        openModal();
-      }),
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -5% 0px' },
     );
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeModal();
-    });
-    overlay.querySelectorAll('.x, .m-close2').forEach((b) => b.addEventListener('click', closeModal));
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
-    });
 
-    form?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const input = form.querySelector('input') as HTMLInputElement | null;
-      const email = (input?.value ?? '').trim();
-      if (!email || email.indexOf('@') < 1) {
-        input?.focus();
-        return;
-      }
-      const done = () => modal?.classList.add('done');
-      if (!ENDPOINT) {
-        console.log('[demo] signup:', email);
-        done();
-        return;
-      }
-      fetch(ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) })
-        .then(done)
-        .catch(done);
+    items.forEach((el) => io.observe(el));
+  })();
+
+  // ----- [data-live] tile animations: play once on scroll-in, replay on hover -----
+  (() => {
+    const tiles = document.querySelectorAll<HTMLElement>('[data-live]');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Nothing to do without motion or an observer — the cards are already drawn
+    // in their finished state, which is exactly where the animation would land.
+    if (reduced || !('IntersectionObserver' in window)) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('play');
+          io.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.35 },
+    );
+
+    tiles.forEach((el) => io.observe(el));
+
+    // Replay on hover. Touch devices have no hover, and re-firing on every stray
+    // pointer graze would be noise — desktop only. Long sequences (the hero)
+    // opt out with data-noreplay and play only once.
+    if (!window.matchMedia('(hover: hover)').matches) return;
+
+    tiles.forEach((el) => {
+      if (el.hasAttribute('data-noreplay')) return;
+      el.addEventListener('mouseenter', () => {
+        el.classList.remove('play');
+        void el.offsetWidth; // reflow, so re-adding the class restarts the keyframes
+        el.classList.add('play');
+      });
     });
   })();
 </script>

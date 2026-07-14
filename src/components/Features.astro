@@ -1,0 +1,268 @@
+---
+// Each tile animates when it scrolls into view (see LIVING CARDS in global.css).
+// Everything here is authored in its FINAL state — the keyframes run from the
+// "before" state back to what you see below, so with no JS the cards just sit at
+// their finished frame. The only exceptions are .bridge and .curtain, which
+// exist solely for the animation and are transparent at rest.
+---
+
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head rise" data-rise>
+      <h2>The system of record for PLC programs</h2>
+      <p>Know exactly what's running, who changed it and why, review a change before it goes live, and get back to the version that worked.</p>
+    </div>
+
+    <div class="bento">
+
+      <article class="tile tile-lead rise" data-rise data-live>
+        <h3>Easy reviews</h3>
+        <p>Changes between program versions appear as color-coded additions and removals, making it extremely easy to see differences between versions.</p>
+        <div class="frame" aria-hidden="true">
+          <svg viewBox="0 0 560 240" style="width:100%">
+            <line x1="24" y1="10" x2="24" y2="230" stroke="#171717" stroke-width="2.5"/>
+            <line x1="536" y1="10" x2="536" y2="230" stroke="#171717" stroke-width="2.5"/>
+            <text x="10" y="104" font-family="Geist Mono, monospace" font-size="12" fill="#737373" text-anchor="middle">6</text>
+
+            <!-- Added elements follow the hero's diff treatment: a solid ring UNDER the
+                 ink (so the rung wire runs through it, not behind it), the element
+                 itself left black like any other, and a round + badge on the ring's
+                 top-right corner. -->
+            <rect class="add-el" x="308" y="78" width="60" height="46" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2.5"/>
+
+            <g stroke="#171717" stroke-width="2">
+              <line x1="24" y1="100" x2="102" y2="100"/><line x1="118" y1="100" x2="222" y2="100"/>
+              <line x1="238" y1="100" x2="330" y2="100"/><line x1="346" y1="100" x2="446" y2="100"/>
+              <line x1="494" y1="100" x2="536" y2="100"/>
+              <line x1="102" y1="86" x2="102" y2="114"/><line x1="118" y1="86" x2="118" y2="114"/>
+              <line x1="222" y1="86" x2="222" y2="114"/><line x1="238" y1="86" x2="238" y2="114"/>
+              <path d="M462 86 A 16 16 0 0 0 462 114" fill="none"/>
+              <path d="M478 86 A 16 16 0 0 1 478 114" fill="none"/>
+            </g>
+
+            <!-- The wire as it ran BEFORE the contact was inserted. Invisible at rest;
+                 only shows during the animation, and fades as the contact lands. -->
+            <line class="bridge" x1="330" y1="100" x2="346" y2="100" stroke="#171717" stroke-width="2"/>
+
+            <g class="add-el" stroke="#171717" stroke-width="2">
+              <line x1="330" y1="86" x2="330" y2="114"/><line x1="346" y1="86" x2="346" y2="114"/>
+            </g>
+
+            <!-- seal-in branch around Start_PB -->
+            <g stroke="#171717" stroke-width="2">
+              <line x1="64" y1="100" x2="64" y2="162"/><line x1="156" y1="100" x2="156" y2="162"/>
+              <line x1="64" y1="162" x2="102" y2="162"/><line x1="118" y1="162" x2="156" y2="162"/>
+              <line x1="102" y1="148" x2="102" y2="176"/><line x1="118" y1="148" x2="118" y2="176"/>
+            </g>
+
+            <!-- Tag names sit high enough to clear the badge on a marked contact -->
+            <g font-family="Instrument Sans, sans-serif" font-size="12.5" fill="#525252" text-anchor="middle">
+              <text x="110" y="66">Start_PB</text><text x="230" y="66">Stop_PB</text>
+              <text class="add-el" x="338" y="66">Guard_Door_OK</text>
+              <text x="470" y="66">Conveyor_Run</text>
+              <text x="110" y="196">Conveyor_Run</text>
+            </g>
+
+            <circle class="add-badge" cx="368" cy="78" r="9" fill="#047857"/>
+            <text class="add-badge" x="368" y="82.5" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">+</text>
+
+            <!-- scan wipe: sits on top, slides away left-to-right as the rung draws in -->
+            <rect class="curtain" x="0" y="0" width="560" height="240"/>
+          </svg>
+        </div>
+      </article>
+
+      <article class="tile tile-tall rise d1" data-rise data-live>
+        <h3>Centralized repository</h3>
+        <p>A centralized repository holds all the change information and latest program files, eliminating hunting for whichever laptop holds the latest program.</p>
+        <div class="frame" aria-hidden="true">
+          <!-- Every chip is drawn at the panel's centre and thrown out to its scatter
+               position by its own --x/--y/--r, so one keyframe animates all four:
+               they land scattered, then converge back to where they were drawn and
+               the repository takes their place. Chips are invisible at rest. -->
+          <svg class="hub" viewBox="0 0 320 240" preserveAspectRatio="xMidYMid meet">
+            <g font-family="Geist Mono, monospace" font-size="10" fill="#525252">
+              <g class="chip k1" style="--x:-52px; --y:-78px; --r:-6deg">
+                <rect x="95" y="107" width="130" height="26" rx="4" fill="#fff" stroke="#d4d4d4" stroke-width="1.5"/>
+                <rect x="105" y="112" width="9" height="12" rx="1.5" fill="none" stroke="#a3a3a3" stroke-width="1.3"/>
+                <text x="121" y="124">Line3_final.ACD</text>
+              </g>
+              <g class="chip k2" style="--x:64px; --y:-52px; --r:5deg">
+                <rect x="104" y="107" width="112" height="26" rx="4" fill="#fff" stroke="#d4d4d4" stroke-width="1.5"/>
+                <rect x="114" y="112" width="9" height="12" rx="1.5" fill="none" stroke="#a3a3a3" stroke-width="1.3"/>
+                <text x="130" y="124">Line3_v2.ACD</text>
+              </g>
+              <g class="chip k3" style="--x:-58px; --y:36px; --r:3deg">
+                <rect x="81" y="107" width="158" height="26" rx="4" fill="#fff" stroke="#d4d4d4" stroke-width="1.5"/>
+                <rect x="91" y="112" width="9" height="12" rx="1.5" fill="none" stroke="#a3a3a3" stroke-width="1.3"/>
+                <text x="107" y="124">Line3_REAL_final.ACD</text>
+              </g>
+              <g class="chip k4" style="--x:56px; --y:76px; --r:-4deg">
+                <rect x="87" y="107" width="146" height="26" rx="4" fill="#fff" stroke="#d4d4d4" stroke-width="1.5"/>
+                <rect x="97" y="112" width="9" height="12" rx="1.5" fill="none" stroke="#a3a3a3" stroke-width="1.3"/>
+                <text x="113" y="124">Line3_Mike_bkp.ACD</text>
+              </g>
+            </g>
+
+            <!-- the repository the chips converge into -->
+            <g class="repo">
+              <rect x="30" y="66" width="260" height="108" rx="8" fill="#fff" stroke="#171717" stroke-width="2"/>
+              <path d="M30 92h260" stroke="#171717" stroke-width="1.5"/>
+              <text x="44" y="84" font-family="Instrument Sans, sans-serif" font-size="12.5" font-weight="600" fill="#171717">Spyke</text>
+            </g>
+            <g class="repo-row r1">
+              <text x="44" y="112" font-family="Geist Mono, monospace" font-size="10" fill="#737373">v42</text>
+              <text x="70" y="112" font-family="Instrument Sans, sans-serif" font-size="11" fill="#262626">Retune PID loop</text>
+              <text x="276" y="112" font-family="Geist Mono, monospace" font-size="10" fill="#737373" text-anchor="end">MK</text>
+            </g>
+            <g class="repo-row r2">
+              <text x="44" y="134" font-family="Geist Mono, monospace" font-size="10" fill="#737373">v41</text>
+              <text x="70" y="134" font-family="Instrument Sans, sans-serif" font-size="11" fill="#262626">Add guard interlock</text>
+              <text x="276" y="134" font-family="Geist Mono, monospace" font-size="10" fill="#737373" text-anchor="end">JR</text>
+            </g>
+            <g class="repo-row r3">
+              <text x="44" y="156" font-family="Geist Mono, monospace" font-size="10" fill="#737373">v40</text>
+              <text x="70" y="156" font-family="Instrument Sans, sans-serif" font-size="11" fill="#262626">Split infeed routine</text>
+              <text x="276" y="156" font-family="Geist Mono, monospace" font-size="10" fill="#737373" text-anchor="end">MK</text>
+            </g>
+          </svg>
+        </div>
+      </article>
+
+      <article class="tile tile-mid rise" data-rise data-live>
+        <h3>Privacy and security</h3>
+        <p>We understand your programs are your critical assets, so we treat them that way. Spyke encrypts all your program data and never trains AI on it.</p>
+        <div class="frame" aria-hidden="true">
+          <!-- A blurred routine behind a lock badge. The stage stacks its children in
+               one grid cell so ladder, ring, and badge all centre on the same point. -->
+          <div class="lock-stage">
+            <svg class="ladder-mini" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid meet">
+              <g stroke="#171717" stroke-width="1.6" fill="none">
+                <path class="rail" pathLength="1" d="M14 10v130"/>
+                <path class="rail" pathLength="1" d="M286 10v130"/>
+              </g>
+              <g class="lr1">
+                <path d="M14 38h44M66 38h44M118 38h121M257 38h29" stroke="#171717" stroke-width="1.6" fill="none"/>
+                <path d="M58 30v16M66 30v16M110 30v16M118 30v16" stroke="#171717" stroke-width="1.6" fill="none"/>
+                <circle cx="248" cy="38" r="9" stroke="#171717" stroke-width="1.6" fill="none"/>
+                <g fill="#a3a3a3">
+                  <rect x="48" y="18" width="28" height="3" rx="1.5"/>
+                  <rect x="100" y="18" width="28" height="3" rx="1.5"/>
+                  <rect x="234" y="18" width="28" height="3" rx="1.5"/>
+                </g>
+              </g>
+              <g class="lr2">
+                <path d="M14 80h44M66 80h44M118 80h121M257 80h29" stroke="#171717" stroke-width="1.6" fill="none"/>
+                <path d="M58 72v16M66 72v16M110 72v16M118 72v16" stroke="#171717" stroke-width="1.6" fill="none"/>
+                <path d="M106 90L122 70" stroke="#171717" stroke-width="1.6" fill="none"/>
+                <circle cx="248" cy="80" r="9" stroke="#171717" stroke-width="1.6" fill="none"/>
+                <g fill="#a3a3a3">
+                  <rect x="48" y="60" width="28" height="3" rx="1.5"/>
+                  <rect x="100" y="60" width="28" height="3" rx="1.5"/>
+                  <rect x="234" y="60" width="28" height="3" rx="1.5"/>
+                </g>
+              </g>
+              <g class="lr3">
+                <path d="M14 122h44M66 122h84M230 122h56" stroke="#171717" stroke-width="1.6" fill="none"/>
+                <path d="M58 114v16M66 114v16" stroke="#171717" stroke-width="1.6" fill="none"/>
+                <rect x="150" y="108" width="80" height="28" rx="3" stroke="#171717" stroke-width="1.6" fill="#fff"/>
+                <g fill="#a3a3a3">
+                  <rect x="48" y="102" width="28" height="3" rx="1.5"/>
+                  <rect x="160" y="116" width="40" height="3" rx="1.5"/>
+                  <rect x="160" y="124" width="28" height="3" rx="1.5"/>
+                </g>
+              </g>
+            </svg>
+            <div class="lock-ring"></div>
+            <!-- The shackle is a separate path so it can drop and click shut over the body. -->
+            <div class="lock-badge">
+              <svg viewBox="0 0 48 48">
+                <path class="shackle" d="M16 24v-6a8 8 0 0 1 16 0v6" fill="none" stroke="#171717" stroke-width="4" stroke-linecap="round"/>
+                <g class="lock-body">
+                  <rect x="9" y="23" width="30" height="19" rx="5.5" fill="#171717"/>
+                  <circle cx="24" cy="30.5" r="2.4" fill="#fff"/>
+                  <path d="M24 32.2v3.8" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="tile tile-mid rise d1" data-rise data-live>
+        <h3>Merge requests</h3>
+        <p>Propose a change, see the diffs, talk it through, approve. The review is saved in the project history so all your discussions and approvals stay in one place.</p>
+        <div class="frame" aria-hidden="true">
+          <div class="thread">
+            <div class="mr-line them msg-1">
+              <span class="avatar" style="background:#171717">JR</span>
+              <span class="bubble">Should the door check gate jog mode too?</span>
+            </div>
+            <div class="mr-line me msg-2">
+              <span class="avatar" style="background:#525252">MK</span>
+              <span class="bubble">Jog's on rung 12 — separate routine.</span>
+            </div>
+            <div class="mr-line them msg-3">
+              <span class="avatar" style="background:#171717">JR</span>
+              <span class="bubble">Does fault reset still clear it?</span>
+            </div>
+            <div class="mr-line me msg-4">
+              <span class="avatar" style="background:#525252">MK</span>
+              <span class="bubble">Yes — unchanged. Tested on line 3.</span>
+            </div>
+          </div>
+          <div class="mr-verdict">
+            <span class="pill green">✓ Approved</span>
+            <span class="pill neutral">2 of 2 reviews</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tile tile-mid rise d2" data-rise data-live>
+        <h3>Audit trail</h3>
+        <p>Every change carries who made it, when, what it touched, and who approved it — so an audit is a page you open, not a year of email to reconstruct.</p>
+        <div class="frame" aria-hidden="true">
+          <div class="hist-row"><span class="id">v42</span> Retune PID loop <span class="who">today</span></div>
+          <div class="hist-row"><span class="id">v41</span> Add guard door interlock <span class="who">yesterday</span></div>
+          <div class="hist-row"><span class="id">v40</span> Split infeed routine <span class="who">May 12</span></div>
+        </div>
+      </article>
+
+      <article class="tile tile-wide rise" data-rise data-live>
+        <div class="copy">
+          <h3>Based on Git</h3>
+          <p>Make changes without touching the program running the line. Keep your work separate, review it with your team, and only add it to the main project once it is approved.</p>
+        </div>
+        <div class="frame" aria-hidden="true">
+          <svg viewBox="0 0 700 84" style="width:100%">
+            <!-- Trunk (production) with a branch that departs and merges back.
+                 pathLength normalises both paths to 1 unit, so one draw-on keyframe
+                 works for the straight trunk and the curved branch alike. -->
+            <path class="trunk" pathLength="1" d="M30 54 H670" stroke="#d4d4d4" stroke-width="2" fill="none"/>
+            <!-- Both curves span 70 and put their control points on the midpoint x, so
+                 the return is an exact mirror of the departure. Unequal spans or handles
+                 read immediately as a wonky curve. -->
+            <path class="branch" pathLength="1" d="M240 54 C 275 54 275 22 310 22 H 560 C 595 22 595 54 630 54" stroke="#a3a3a3" stroke-width="2" fill="none"/>
+            <circle class="node n1" cx="100" cy="54" r="7" fill="#fff" stroke="#737373" stroke-width="2"/>
+            <circle class="node n2" cx="240" cy="54" r="7" fill="#fff" stroke="#737373" stroke-width="2"/>
+            <circle class="node b1" cx="370" cy="22" r="7" fill="#f5f5f5" stroke="#171717" stroke-width="2"/>
+            <circle class="node b2" cx="510" cy="22" r="7" fill="#f5f5f5" stroke="#171717" stroke-width="2"/>
+            <circle class="node n4 head" cx="630" cy="54" r="7" fill="#fff" stroke="#171717" stroke-width="2.6"/>
+            <!-- Commit messages read as prose (sans); version ids read as identifiers (mono). -->
+            <g font-family="Instrument Sans, sans-serif" font-size="11" fill="#737373" text-anchor="middle">
+              <!-- One label per commit dot, nothing else on the branch — an unattached
+                   label between two dots reads as belonging to one of them. -->
+              <text class="node-lbl b1" x="370" y="10">add guard door interlock</text>
+              <text class="node-lbl b2" x="510" y="10">set timer</text>
+              <text class="node-lbl" x="30" y="44" text-anchor="start">production</text>
+              <text class="node-lbl n1" x="100" y="78" font-family="Geist Mono, monospace" font-size="10">v39</text>
+              <text class="node-lbl n2" x="240" y="78" font-family="Geist Mono, monospace" font-size="10">v40</text>
+              <text class="node-lbl n4" x="630" y="78" font-family="Geist Mono, monospace" font-size="10">v41</text>
+            </g>
+          </svg>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>

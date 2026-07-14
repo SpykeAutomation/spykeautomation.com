@@ -1,34 +1,84 @@
 ---
 import Brand from './Brand.astro';
-import ChevronTexture from './ChevronTexture.astro';
 const GITHUB_URL = 'https://github.com/SpykeAutomation';
 const DOCS_URL = 'https://docs.spykeautomation.com';
 const year = 2026;
 ---
 
 <footer class="site-footer">
-  <ChevronTexture vw={1600} vh={440} stroke="#ffffff" className="foot-tex" seed={23} />
-  <div class="wrap foot-top">
-    <div class="foot-brand">
-      <Brand href="/" />
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <Brand href="/" />
+        <p class="tagline">Change tracking for PLC programs.</p>
+      </div>
+
+      <div>
+        <h5>Product</h5>
+        <ul>
+          <li><a href="/#how">How it works</a></li>
+          <li><a href="/#features">Features</a></li>
+          <li><a href="/#review">Review</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Resources</h5>
+        <ul>
+          <li><a href={DOCS_URL}>Documentation</a></li>
+          <li><a href={`${DOCS_URL}/reference/cli/`}>CLI reference</a></li>
+          <li><a href={GITHUB_URL}>GitHub</a></li>
+          <li><a href={`${GITHUB_URL}/releases`}>Changelog</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href={`${DOCS_URL}/company/`}>About</a></li>
+          <li><a href="mailto:hello@spykeautomation.com">Contact</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="foot-cols">
-      <div class="fcol">
-        <h4>Product</h4>
-        <a href="/#product">Overview</a><a href="/#pricing">Pricing</a><a href={DOCS_URL}>Docs</a><a href="/#roadmap">Roadmap</a>
-      </div>
-      <div class="fcol">
-        <h4>Company</h4>
-        <a href={`${DOCS_URL}/company/`}>About</a><a href="mailto:hello@spykeautomation.com">Contact</a>
-      </div>
-      <div class="fcol">
-        <h4>Resources</h4>
-        <a href={GITHUB_URL}>GitHub</a><a href={`${DOCS_URL}/reference/cli/`}>CLI reference</a><a href={`${GITHUB_URL}/releases`}>Changelog</a>
-      </div>
+
+    <div class="footer-base">
+      <span>© {year} Spyke Automation</span>
+      <span class="footer-legal">
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+      </span>
     </div>
-  </div>
-  <div class="wrap foot-base">
-    <span>© {year} Spyke Automation</span>
-    <span class="foot-legal"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></span>
+
+    {/*
+      Oversized wordmark, bleeding off the bottom of the page.
+
+      This is an SVG rather than styled text because the mark has to span the
+      container exactly. Sizing text with `vw` would depend on Instrument Sans's
+      advance widths, which vary by weight and would leave a ragged gap at one
+      edge. `textLength` pins the width to the viewBox and `lengthAdjust="spacing"`
+      absorbs the difference in the gaps between letters, so the letterforms
+      themselves are never stretched.
+
+      The viewBox is shorter than the glyphs are tall, which is what crops them.
+      Decorative — "Spyke" is already announced by the brand link above.
+    */}
+    <svg
+      class="wordmark"
+      viewBox="0 0 1000 300"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <text
+        x="0"
+        y="259"
+        textLength="1000"
+        lengthAdjust="spacing"
+        font-family="Instrument Sans, sans-serif"
+        font-size="360"
+        font-weight="700"
+        fill="currentColor"
+      >Spyke</text>
+    </svg>
   </div>
 </footer>
