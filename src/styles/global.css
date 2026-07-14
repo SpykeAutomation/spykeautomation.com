@@ -529,13 +529,15 @@ rect.mk { stroke-dasharray: var(--len); }
 .rung-row.add .sign { color: var(--add); }
 .rung-row svg { flex: 1; min-width: 0; width: 100%; height: auto; }
 .mr-comment { display: flex; gap: .6rem; margin-top: 1rem; align-items: flex-start; }
+/* Comments are the demo's script — larger than the tile-thread bubbles. */
+.mr-comment .bubble { font-size: .84rem; padding: .45rem .7rem; }
 .reactions { margin-top: .4rem; }
 /* transform-origin — the chip pops in place, growing from its own left edge,
    not sliding in from wherever the block's centre is. */
 .reaction {
-  display: inline-flex; align-items: center; gap: .3rem;
-  border: 1px solid var(--line); border-radius: 999px; padding: .15rem .45rem;
-  font-size: .72rem; color: var(--ink-2); background: #fff;
+  display: inline-flex; align-items: center; gap: .35rem;
+  border: 1px solid var(--line); border-radius: 999px; padding: .2rem .55rem;
+  font-size: .8rem; color: var(--ink-2); background: #fff;
   transform-origin: left center;
 }
 .rail-col { padding: 1.25rem 1rem; font-size: .8125rem; position: relative; }
