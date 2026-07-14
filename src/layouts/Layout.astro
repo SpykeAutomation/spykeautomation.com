@@ -141,6 +141,12 @@ const ogImage = new URL('/hero_card.png', Astro.site).href;
     tiles.forEach((el) => {
       if (el.hasAttribute('data-noreplay')) return;
       el.addEventListener('mouseenter', () => {
+        // A hover mid-sequence is ignored rather than restarting it. Only CSS
+        // animations count — hover/rise *transitions* are always in flight here.
+        const playing = el
+          .getAnimations({ subtree: true })
+          .some((a) => a instanceof CSSAnimation && a.playState === 'running');
+        if (playing) return;
         el.classList.remove('play');
         void el.offsetWidth; // reflow, so re-adding the class restarts the keyframes
         el.classList.add('play');
