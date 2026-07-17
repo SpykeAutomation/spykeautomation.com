@@ -1,0 +1,81 @@
+<section class="si-features">
+  <div class="wrap">
+    <div class="feature rise" data-rise>
+      <div class="copy">
+        <h2>One project history for the team</h2>
+        <p>
+          By the end of commissioning, copies of the program usually live
+          scattered on laptops and USB drives.
+        </p>
+        <p>
+          Spyke gives the team one shared place for every saved version,
+          with who added it, when, and a short note on why. Anyone on the
+          project can open it and see where things stand.
+        </p>
+      </div>
+      <div class="visual projhist" role="img" aria-label="A Spyke project card listing recent saved versions: v42 Retune PID loop, updated 2 hours ago by MK; v41 Add guard interlock, updated 1 day ago by JR; v40 Split infeed routine, updated 3 days ago by MK.">
+        <div class="ph-head">Spyke</div>
+        <div class="ph-list" aria-hidden="true">
+          <div class="ph-row"><span class="ph-v">v42</span><span class="ph-msg">Retune PID loop</span><span class="ph-when">2h ago</span><span class="ph-who">MK</span></div>
+          <div class="ph-row"><span class="ph-v">v41</span><span class="ph-msg">Add guard interlock</span><span class="ph-when">1d ago</span><span class="ph-who">JR</span></div>
+          <div class="ph-row"><span class="ph-v">v40</span><span class="ph-msg">Split infeed routine</span><span class="ph-when">3d ago</span><span class="ph-who">MK</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature flip rise" data-rise>
+      <div class="copy">
+        <h2>Review before handover</h2>
+        <p>
+          Before the customer gets the program, the team can walk through
+          the differences together. Teammates comment on individual changes,
+          question anything that looks off, and agree on the version being
+          delivered.
+        </p>
+        <p>
+          Engineers who were never on site can still take part in the review.
+        </p>
+      </div>
+      <div class="visual">
+        <div class="thread">
+          <div class="mr-line">
+            <span class="avatar" style="background:#0e7490">RD</span>
+            <span class="bubble">Swapped the reset interlock on R12 — can you check it against the FAT spec?</span>
+          </div>
+          <div class="mr-line me">
+            <span class="avatar" style="background:#7c3aed">KV</span>
+            <span class="bubble">Matches. One nit — add a note on the new debounce timer.</span>
+          </div>
+          <div class="mr-verdict">
+            <span class="pill green">✓ Approved</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature rise" data-rise>
+      <div class="copy">
+        <h2>Support after handover</h2>
+        <p>
+          When a customer calls a year later, the first question is whether
+          the program still matches what you left behind. Export the program
+          currently running at the site and compare it with the as-left
+          version.
+        </p>
+        <p>
+          Spyke shows whether the logic has changed since handover — and if
+          it has, where to begin investigating.
+        </p>
+      </div>
+      <div class="visual" role="img" aria-label="A Spyke structured-text diff of the program running on site against the as-left version: the infeed delay timer changed from 200 to 450 milliseconds.">
+        <div class="st-diff" aria-hidden="true">
+          <div class="st-line">  ConvRun := StartPB AND NOT EStop;</div>
+          <div class="st-line del">- InfeedDelay := T#200ms;</div>
+          <div class="st-line add">+ InfeedDelay := T#450ms;</div>
+          <div class="st-line">  RejectPulse := T#80ms;</div>
+          <div class="st-line">  Ready := ConvRun AND Homed;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
