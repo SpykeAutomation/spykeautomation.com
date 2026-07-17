@@ -630,7 +630,7 @@ rect.mk { stroke-dasharray: var(--len); }
 /* ===== FOOTER ===== */
 /* No bottom padding — the wordmark runs off the edge of the page. */
 .site-footer { border-top: 1px solid var(--line); padding: 3.5rem 0 0; }
-.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 2rem; }
 .site-footer .tagline { margin-top: .8rem; color: var(--ink-3); font-size: .875rem; max-width: 16rem; }
 .site-footer h5 { font-size: .8125rem; font-weight: 600; margin-bottom: .8rem; }
 .site-footer ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
