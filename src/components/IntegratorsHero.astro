@@ -1,0 +1,177 @@
+---
+const APP_URL = 'https://app.spykeautomation.com';
+const DOCS_URL = 'https://docs.spykeautomation.com';
+---
+
+<section class="hero-si">
+  <div class="wrap">
+    <div class="hero-copy">
+      <h1>Keep a clear record of every PLC program you deliver.</h1>
+      <p class="sub">
+        Spyke helps systems integrators save, compare, and review Studio 5000
+        program versions from development through FAT, commissioning, and
+        handover. Spyke gives the team one place to see what changed
+        between versions and why.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-dark" href={APP_URL}>Get started</a>
+        <a class="btn btn-ghost" href={DOCS_URL}>Read docs</a>
+      </div>
+    </div>
+  </div>
+
+  {/*
+    The Spyke compare view. The markup rests in the finished comparison —
+    FAT and SAT selected, diff visible — and the script below replays the
+    selection with a scripted pointer once the demo scrolls into view. With
+    reduced motion or no JS, viewers simply see the finished comparison.
+  */}
+  <div class="siviz-holder">
+    <div class="siapp" id="siApp" data-si="compare"
+         role="img"
+         aria-label="The Spyke app comparing two saved versions of the Packaging Line 3 program. A versions sidebar lists Dev, FAT, Commissioning, SAT, and As-left. FAT and SAT are selected, and the diff pane highlights what changed: two safety contacts and a MOV of 140 added, marked in green, and a timer-done contact removed, marked in red — three additions and one removal across two rungs.">
+      <div class="siapp-bar">
+        <svg class="siapp-logo" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 11l6-5 6 5M4 15l6-5 6 5"/></svg>
+        <span class="siapp-mark">Spyke</span>
+        <span class="siapp-crumb"><b>Packaging Line 3</b><span class="siapp-sep">/</span>Compare versions</span>
+      </div>
+      <div class="siapp-body">
+        <aside class="siapp-side">
+          <div class="side-head">Versions</div>
+          <div class="side-list">
+            <div class="ver" data-ver="dev"><span class="ver-box"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.3 6 10l5-6"/></svg></span><span class="ver-title">Dev</span><span class="ver-meta"><span class="ver-date">May 28</span><span class="ver-author">Alex</span></span></div>
+            <div class="ver" data-ver="fat"><span class="ver-box"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.3 6 10l5-6"/></svg></span><span class="ver-title">FAT</span><span class="ver-meta"><span class="ver-date">Jun 12</span><span class="ver-author">Alex</span></span></div>
+            <div class="ver" data-ver="comm"><span class="ver-box"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.3 6 10l5-6"/></svg></span><span class="ver-title">Commissioning</span><span class="ver-meta"><span class="ver-date">Jun 20</span><span class="ver-author">Maya</span></span></div>
+            <div class="ver" data-ver="sat"><span class="ver-box"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.3 6 10l5-6"/></svg></span><span class="ver-title">SAT</span><span class="ver-meta"><span class="ver-date">Jul 3</span><span class="ver-author">Maya</span></span></div>
+            <div class="ver" data-ver="asleft"><span class="ver-box"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.3 6 10l5-6"/></svg></span><span class="ver-title">As-left</span><span class="ver-meta"><span class="ver-date">Jul 9</span><span class="ver-author">Alex</span></span></div>
+          </div>
+        </aside>
+        <section class="siapp-main">
+          <div class="cmp-bar">
+            <div class="cmp-stat">
+              <span class="stat add">+3</span>
+              <span class="stat del">−1</span>
+              <span class="cmp-count">2 rungs changed</span>
+            </div>
+          </div>
+          <div class="cmp-pane">
+            <div class="cmp-empty"><span>Select two versions to compare</span></div>
+            <div class="cmp-diff">
+              <div class="drow"><span class="drow-n">1</span><div class="si-svg">
+<svg viewBox="0 0 700 210" role="img" aria-label="Snapshot SAT, rung 1: two contacts have been added — Cell.Automatic and Cell.HMI.StopRequest — in series with Cell.ReadyForWork">
+  <line x1="14" y1="8" x2="14" y2="202" stroke="#b4b4b4" stroke-width="2.5"/><line x1="686" y1="8" x2="686" y2="202" stroke="#b4b4b4" stroke-width="2.5"/>
+  <rect x="217" y="70" width="60" height="46" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2.5" class="mk m1" style="--len:240"/><rect x="466" y="70" width="60" height="46" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2.5" class="mk m2" style="--len:240"/>
+  <g stroke="#171717" stroke-width="2.5" fill="none" stroke-linecap="round"><line x1="14" y1="92" x2="40" y2="92"/><line x1="190" y1="92" x2="239" y2="92"/><line x1="239" y1="78" x2="239" y2="106"/><line x1="255" y1="78" x2="255" y2="106"/><line x1="255" y1="92" x2="353" y2="92"/><line x1="353" y1="78" x2="353" y2="106"/><line x1="369" y1="78" x2="369" y2="106"/><line x1="369" y1="92" x2="488" y2="92"/><line x1="488" y1="78" x2="488" y2="106"/><line x1="504" y1="78" x2="504" y2="106"/><line x1="488" y1="106" x2="504" y2="78"/><line x1="504" y1="92" x2="596" y2="92"/><path d="M610 78 A 14 14 0 0 0 610 106" fill="none"/><path d="M626 78 A 14 14 0 0 1 626 106" fill="none"/><text x="618" y="96" font-family="Instrument Sans, sans-serif" font-size="11" fill="#171717" text-anchor="middle">L</text><line x1="640" y1="92" x2="686" y2="92"/><line x1="532" y1="92" x2="532" y2="160"/><line x1="532" y1="160" x2="548" y2="160"/><line x1="666" y1="160" x2="686" y2="160"/></g>
+  <rect x="40" y="56" width="150" height="70" rx="4" fill="#fff" stroke="#171717" stroke-width="2"/><line x1="40" y1="78" x2="190" y2="78" stroke="#171717" stroke-width="1.5"/><text x="115" y="71" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#171717" text-anchor="middle">EQU</text><text x="48" y="94" font-family="Instrument Sans, sans-serif" font-size="12" fill="#6b6b6b">Source A</text><text x="182" y="94" font-family="Instrument Sans, sans-serif" font-size="12" fill="#171717" text-anchor="end">Cycle.Step</text><text x="48" y="118" font-family="Instrument Sans, sans-serif" font-size="12" fill="#6b6b6b">Source B</text><text x="182" y="118" font-family="Instrument Sans, sans-serif" font-size="12" fill="#171717" text-anchor="end">100</text><rect x="548" y="125" width="118" height="70" rx="4" fill="#fff" stroke="#171717" stroke-width="2"/><line x1="548" y1="147" x2="666" y2="147" stroke="#171717" stroke-width="1.5"/><text x="607" y="140" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#171717" text-anchor="middle">MOV</text><text x="556" y="163" font-family="Instrument Sans, sans-serif" font-size="12" fill="#6b6b6b">Source</text><text x="658" y="163" font-family="Instrument Sans, sans-serif" font-size="12" fill="#171717" text-anchor="end">120</text><text x="556" y="187" font-family="Instrument Sans, sans-serif" font-size="12" fill="#6b6b6b">Dest</text><text x="658" y="187" font-family="Instrument Sans, sans-serif" font-size="12" fill="#171717" text-anchor="end">Cycle.Step</text><text x="247" y="58" font-family="Instrument Sans, sans-serif" font-size="13" fill="#262626" text-anchor="middle">Cell.Automatic</text><text x="361" y="58" font-family="Instrument Sans, sans-serif" font-size="13" fill="#262626" text-anchor="middle">Cell.ReadyForWork</text><text x="496" y="58" font-family="Instrument Sans, sans-serif" font-size="13" fill="#262626" text-anchor="middle">Cell.HMI.StopRequest</text><text x="618" y="58" font-family="Instrument Sans, sans-serif" font-size="13" fill="#262626" text-anchor="middle">MachineStart</text>
+  <circle cx="277" cy="70" r="9" fill="#047857" class="mk m1"/><text x="277" y="74.5" class="mk m1" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">+</text><circle cx="526" cy="70" r="9" fill="#047857" class="mk m2"/><text x="526" y="74.5" class="mk m2" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">+</text>
+</svg></div></div>
+              <div class="drow"><span class="drow-n">2</span><div class="si-svg">
+<svg viewBox="0 0 700 210" role="img" aria-label="Snapshot SAT, rung 2: the MachineStartTime.DN contact has been removed, and a MOV of 140 into Cycle.Step has been added alongside the RequestPart coil">
+  <line x1="14" y1="8" x2="14" y2="202" stroke="#b4b4b4" stroke-width="2.5"/><line x1="686" y1="8" x2="686" y2="202" stroke="#b4b4b4" stroke-width="2.5"/>
+  <rect x="400" y="70" width="60" height="46" rx="8" fill="#fff1f2" stroke="#d20f39" stroke-width="2.5" class="mk m3" style="--len:240"/><rect x="542" y="119" width="130" height="82" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2.5" class="mk m4" style="--len:460"/>
+  <g stroke="#171717" stroke-width="2.5" fill="none" stroke-linecap="round"><line x1="14" y1="92" x2="40" y2="92"/><line x1="190" y1="92" x2="292" y2="92"/><line x1="292" y1="78" x2="292" y2="106"/><line x1="308" y1="78" x2="308" y2="106"/><line x1="308" y1="92" x2="422" y2="92"/><line x1="422" y1="78" x2="422" y2="106"/><line x1="438" y1="78" x2="438" y2="106"/><line x1="422" y1="106" x2="438" y2="78"/><line x1="438" y1="92" x2="596" y2="92"/><path d="M610 78 A 14 14 0 0 0 610 106" fill="none"/><path d="M626 78 A 14 14 0 0 1 626 106" fill="none"/><line x1="640" y1="92" x2="686" y2="92"/><line x1="532" y1="92" x2="532" y2="160"/><line x1="532" y1="160" x2="548" y2="160"/><line x1="666" y1="160" x2="686" y2="160"/></g>
+  <rect x="40" y="56" width="150" height="70" rx="4" fill="#fff" stroke="#171717" stroke-width="2"/><line x1="40" y1="78" x2="190" y2="78" stroke="#171717" stroke-width="1.5"/><text x="115" y="71" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#171717" text-anchor="middle">EQU</text><text x="48" y="94" font-family="Instrument Sans, sans-serif" font-size="12" fill="#6b6b6b">Source A</text><text x="182" y="94" font-family="Instrument Sans, sans-serif" font-size="12" fill="#171717" text-anchor="end">Cycle.Step</text><text x="48" y="118" font-family="Instrument Sans, sans-serif" font-size="12" fill="#6b6b6b">Source B</text><text x="182" y="118" font-family="Instrument Sans, sans-serif" font-size="12" fill="#171717" text-anchor="end">120</text><rect x="548" y="125" width="118" height="70" rx="4" fill="#ecfdf5" stroke="#171717" stroke-width="2"/><line x1="548" y1="147" x2="666" y2="147" stroke="#171717" stroke-width="1.5"/><text x="607" y="140" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#171717" text-anchor="middle">MOV</text><text x="556" y="163" font-family="Instrument Sans, sans-serif" font-size="12" fill="#6b6b6b">Source</text><text x="658" y="163" font-family="Instrument Sans, sans-serif" font-size="12" fill="#171717" text-anchor="end">140</text><text x="556" y="187" font-family="Instrument Sans, sans-serif" font-size="12" fill="#6b6b6b">Dest</text><text x="658" y="187" font-family="Instrument Sans, sans-serif" font-size="12" fill="#171717" text-anchor="end">Cycle.Step</text><text x="300" y="58" font-family="Instrument Sans, sans-serif" font-size="13" fill="#262626" text-anchor="middle">MachineStart</text><text x="430" y="58" font-family="Instrument Sans, sans-serif" font-size="13" fill="#262626" text-anchor="middle">MachineStartTime.DN</text><text x="618" y="58" font-family="Instrument Sans, sans-serif" font-size="13" fill="#262626" text-anchor="middle">RequestPart</text>
+  <circle cx="460" cy="70" r="9" fill="#d20f39" class="mk m3"/><text x="460" y="74.5" class="mk m3" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">−</text><circle cx="672" cy="119" r="9" fill="#047857" class="mk m4"/><text x="672" y="123.5" class="mk m4" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">+</text>
+</svg></div></div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="si-cursor" id="siCursor" aria-hidden="true"><svg class="si-ptr" viewBox="0 0 24 24"><path d="M3 2 L3 17.5 L7.2 13.6 L10 19.8 L12.3 18.7 L9.5 12.7 L14.8 12.6 Z"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Hero compare demo: a cursor selects two saved versions; picking the second
+  // reveals the whole diff at once. CSS owns the transitions; this only advances
+  // the scene and moves the cursor. The markup rests in the compared state, so
+  // reduced-motion and no-JS viewers land on the finished comparison.
+  (() => {
+    const app = document.getElementById('siApp');
+    const cursor = document.getElementById('siCursor');
+    if (!app || !cursor) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const rows = {
+      fat: app.querySelector('.ver[data-ver="fat"]'),
+      sat: app.querySelector('.ver[data-ver="sat"]'),
+    };
+    if (!rows.fat || !rows.sat) return;
+    const targets = {
+      fat: rows.fat.querySelector('.ver-box'),
+      sat: rows.sat.querySelector('.ver-box'),
+    };
+
+    const moveTo = (key: 'fat' | 'sat') => {
+      const el = targets[key];
+      if (!el) return;
+      const a = app.getBoundingClientRect();
+      const r = el.getBoundingClientRect();
+      // land the pointer TIP (near the SVG's top-left, at 24-unit coords 3,2) on the target
+      const tipX = cursor.offsetWidth * (3 / 24);
+      const tipY = cursor.offsetHeight * (2 / 24);
+      cursor.style.setProperty('--cx', `${r.left - a.left + r.width / 2 - tipX}px`);
+      cursor.style.setProperty('--cy', `${r.top - a.top + r.height / 2 - tipY}px`);
+    };
+
+    // The finished comparison — where the markup already rests.
+    const rest = () => {
+      app.classList.remove('play');
+      app.dataset.si = 'compare';
+      rows.fat!.classList.add('is-sel');
+      rows.sat!.classList.add('is-sel');
+      cursor.classList.remove('show');
+    };
+    if (reduced.matches) { rest(); return; }
+
+    type Step = {
+      si: string; at: 'fat' | 'sat' | null; show: boolean; click: boolean; ms: number;
+      pre?: () => void;
+    };
+    const STEPS: Step[] = [
+      { si: 'idle', at: null, show: false, click: false, ms: 1000,
+        pre: () => { app.classList.remove('play'); rows.fat!.classList.remove('is-sel'); rows.sat!.classList.remove('is-sel'); } },
+      { si: 'idle', at: 'fat', show: true, click: false, ms: 650 },
+      { si: 'one', at: 'fat', show: true, click: true, ms: 800,
+        pre: () => { rows.fat!.classList.add('is-sel'); } },
+      { si: 'one', at: 'sat', show: true, click: false, ms: 650 },
+      { si: 'compare', at: 'sat', show: true, click: true, ms: 1000,
+        pre: () => { rows.sat!.classList.add('is-sel'); void app.offsetWidth; app.classList.add('play'); } },
+      { si: 'compare', at: 'sat', show: false, click: false, ms: 3200 },
+    ];
+    let i = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let started = false;
+    const apply = (s: Step) => {
+      if (s.pre) s.pre();
+      app.dataset.si = s.si;
+      if (s.at) moveTo(s.at);
+      cursor.classList.toggle('show', s.show);
+      cursor.classList.remove('click');
+      if (s.click) { void cursor.offsetWidth; cursor.classList.add('click'); }
+    };
+    const step = () => {
+      if (timer) clearTimeout(timer);
+      apply(STEPS[i]);
+      timer = setTimeout(() => { i = (i + 1) % STEPS.length; step(); }, STEPS[i].ms);
+    };
+    const stop = () => { if (timer) clearTimeout(timer); timer = null; };
+    const begin = () => { if (started) return; started = true; i = 0; step(); };
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => { entries.forEach((e) => { if (e.isIntersecting) { begin(); io.disconnect(); } }); },
+        { threshold: 0.3 },
+      );
+      io.observe(app);
+    } else { begin(); }
+
+    // Pause while the visitor's own pointer is over the demo.
+    app.addEventListener('mouseenter', stop);
+    app.addEventListener('mouseleave', () => { if (!reduced.matches && started) step(); });
+    reduced.addEventListener('change', () => {
+      if (reduced.matches) { stop(); rest(); }
+      else if (started) step();
+    });
+  })();
+</script>

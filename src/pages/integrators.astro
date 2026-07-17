@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import IntegratorsHero from '../components/IntegratorsHero.astro';
+import IntegratorsFeatures from '../components/IntegratorsFeatures.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/integrators.css';
+
+const APP_URL = 'https://app.spykeautomation.com';
+const DOCS_URL = 'https://docs.spykeautomation.com';
+---
+
+<Layout
+  title="Spyke for systems integrators — a clear record of every PLC program you deliver"
+  description="Spyke helps systems integrators save, compare, and review Studio 5000 program versions from development through FAT, commissioning, and handover."
+>
+  <Nav />
+  <main id="main">
+    <IntegratorsHero />
+    <IntegratorsFeatures />
+
+    <section class="cta">
+      <div class="wrap rise" data-rise>
+        <h2>Try Spyke on your next project</h2>
+        <div class="cta-actions">
+          <a class="btn btn-dark" href={APP_URL}>Get started</a>
+          <a class="btn btn-ghost" href={DOCS_URL}>Read the setup guide</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
