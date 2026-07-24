@@ -1,0 +1,40 @@
+/* ===========================================================================
+   DEMO BOOKING PAGE (/demo/)
+   A shallow dark title band, then Google's booking page in an iframe.
+   =========================================================================== */
+
+/* Deliberately shallow: here the band is a title, not a hero, and every pixel
+   it takes is a pixel the calendar below doesn't get. Top padding still has to
+   clear the 4rem fixed nav. */
+.page-head {
+  background: linear-gradient(to bottom, var(--dark-1) 0%, var(--dark-1) 60%, var(--dark-2) 100%);
+  color: #fff; padding: 7rem 0 2.25rem; text-align: center;
+}
+/* No width cap — a cap is what forced the headline onto two lines. The lower
+   clamp bound stays small so it still wraps freely on a phone, where holding
+   one line was never possible. */
+.page-head h1 {
+  margin: 0 auto;
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  font-weight: 400; letter-spacing: -.04em; line-height: 1.1; text-wrap: balance;
+}
+
+.book-body { padding: 2rem 0 4.5rem; }
+.book-grid { max-width: 64rem; margin: 0 auto; }
+
+/* Everything inside the frame belongs to Google — layout, fonts, colours, and
+   the form. Nothing here can restyle it; this only sizes the box it sits in. */
+.gcal-frame {
+  border: 1px solid var(--line); border-radius: 1rem; background: #fff;
+  overflow: hidden; min-width: 0;
+}
+/* An iframe can't report its content height across origins, so the box is given
+   a fixed viewport rather than growing to fit. Sized generously to keep the
+   times in view without scrolling inside the frame. */
+.gcal-frame iframe { display: block; width: 100%; height: 52rem; border: 0; }
+
+@media (max-width: 48rem) {
+  .page-head { padding: 6rem 0 1.75rem; }
+  .book-body { padding: 1.5rem 0 3.5rem; }
+  .gcal-frame iframe { height: 46rem; }
+}

@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/booking.css';
+
+// Google Calendar → Booking pages → hover the page → Options → Sharing options
+// → Website embed. Paste the bare URL; gv=true is what renders the booking view
+// rather than the management view, and is appended below.
+const GOOGLE_SCHEDULE_URL =
+  'https://calendar.google.com/calendar/appointments/schedules/AcZssZ14NRrblWb_AJyPWy06gFeaW9FTfpGYtgEdu8QsGT8NLX4UQOM2eoxOpltzOFRfIjgoKdVtAtu4';
+
+// Any query string on the pasted URL is dropped before gv=true is added, so a
+// URL copied straight from Google's embed snippet can't end up with it twice.
+const embedSrc = `${GOOGLE_SCHEDULE_URL.split('?')[0]}?gv=true`;
+---
+
+<Layout
+  title="Book a meeting with Spyke"
+  description="Book a 30-minute meeting with us to see how Spyke can help you."
+>
+  <Nav />
+  <main id="main">
+    <section class="page-head">
+      <div class="wrap">
+        <h1>Book a meeting with us to see how we can help you</h1>
+      </div>
+    </section>
+
+    <section class="book-body">
+      <div class="wrap">
+        <div class="book-grid">
+          <div class="gcal-frame">
+            <iframe
+              src={embedSrc}
+              title="Book a meeting with Spyke"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
