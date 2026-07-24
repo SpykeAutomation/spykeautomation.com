@@ -104,11 +104,16 @@ a { color: inherit; text-decoration: none; }
 .nav-links a:hover { color: #fff; }
 .nav-spacer { flex: 1; }
 .nav-cta {
-  display: inline-flex; align-items: center; height: 2.25rem; padding: 0 1.1rem;
+  display: inline-flex; align-items: center; gap: .35rem;
+  height: 2.25rem; padding: 0 1.05rem;
   background: #fff; color: var(--dark-1); border-radius: 1.25rem;
   font-size: .9375rem; letter-spacing: -.01em; transition: background-color .2s;
 }
 .nav-cta:hover { background: rgba(255,255,255,.85); }
+/* The outbound arrow — app.spykeautomation.com is a different host. Sized in em
+   so it tracks the label, and nudged up to sit against the cap height rather
+   than the baseline. */
+.nav-cta .cta-arrow { width: .8em; height: .8em; margin-top: -.05em; flex: none; }
 .gh-link { display: inline-flex; align-items: center; gap: .5rem; }
 
 /* Hamburger — phone/tablet only */
