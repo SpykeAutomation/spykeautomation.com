@@ -1,0 +1,33 @@
+---
+// Google Calendar → Booking pages → hover the page → Options → Sharing options
+// → Website embed. Paste the bare URL; gv=true is what renders the booking view
+// rather than the management view, and is appended below.
+const GOOGLE_SCHEDULE_URL =
+  'https://calendar.google.com/calendar/appointments/schedules/AcZssZ14NRrblWb_AJyPWy06gFeaW9FTfpGYtgEdu8QsGT8NLX4UQOM2eoxOpltzOFRfIjgoKdVtAtu4';
+
+// Any query string on the pasted URL is dropped before gv=true is added, so a
+// URL copied straight from Google's embed snippet can't end up with it twice.
+const embedSrc = `${GOOGLE_SCHEDULE_URL.split('?')[0]}?gv=true`;
+---
+
+<section class="section book" id="book">
+  <div class="wrap">
+    <div class="section-head rise" data-rise>
+      <h2>Book a meeting with us to see how we can help you</h2>
+    </div>
+
+    <!-- No .rise here: the reveal blurs and transforms what it wraps, and doing
+         that to a full-height cross-origin iframe repaints Google's whole
+         calendar for a second on the way in. The heading above still rises. -->
+    <div class="book-grid">
+      <div class="gcal-frame">
+        <iframe
+          src={embedSrc}
+          title="Book a meeting with Spyke"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>

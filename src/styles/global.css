@@ -52,7 +52,7 @@ a { color: inherit; text-decoration: none; }
 .mono { font-family: var(--mono); }
 
 /* In-page anchors must clear the fixed nav */
-#how, #features, #review { scroll-margin-top: 5.5rem; }
+#how, #features, #review, #book { scroll-margin-top: 5.5rem; }
 
 /* Skip link — first tab stop on every page */
 .skip {
@@ -626,6 +626,20 @@ rect.mk { stroke-dasharray: var(--len); }
 .cur-in { display: block; transition: transform .12s ease-out; }
 .cursor.press .cur-in { transform: scale(.82); }
 
+/* ===== BOOKING =====
+   Google's booking page, embedded at the foot of the homepage. */
+.book-grid { max-width: 64rem; margin: 0 auto; }
+/* Everything inside the frame belongs to Google — layout, fonts, colours, and
+   the form. Nothing here can restyle it; this only sizes the box it sits in. */
+.gcal-frame {
+  border: 1px solid var(--line); border-radius: 1rem; background: #fff;
+  overflow: hidden; min-width: 0;
+}
+/* An iframe can't report its content height across origins, so the box is given
+   a fixed viewport rather than growing to fit. Sized generously to keep the
+   times in view without scrolling inside the frame. */
+.gcal-frame iframe { display: block; width: 100%; height: 52rem; border: 0; }
+
 /* ===== CTA ===== */
 .cta { padding: 9rem 0; text-align: center; }
 .cta h2 { font-size: clamp(2rem, 5vw, 4rem); font-weight: 400; letter-spacing: -.035em; line-height: 1; }
@@ -728,6 +742,7 @@ rect.mk { stroke-dasharray: var(--len); }
   .mr-body { grid-template-columns: 1fr; }
   .diff-col { border-right: 0; border-bottom: 1px solid var(--line); }
   .hero-actions .btn, .cta-actions .btn { width: 100%; }
+  .gcal-frame iframe { height: 46rem; }
   .cta { padding: 6rem 0; }
   .footer-grid { grid-template-columns: 1fr; row-gap: 2rem; }
   .legal { padding: 8rem 0 5rem; }
