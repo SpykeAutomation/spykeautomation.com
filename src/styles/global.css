@@ -264,8 +264,8 @@ rect.mk { stroke-dasharray: var(--len); }
 .section-head p { margin-top: 1rem; color: var(--ink-2); font-size: 1.125rem; letter-spacing: -.01em; }
 
 /* ===== FEATURE BENTO =====
-   Three-column grid. The lead tile (ladder diff) spans two columns, the wide
-   tile (commit graph) spans all three; the rest are single-column. */
+   Three-column grid. The lead tile (built for adoption) and the wide tile
+   (commit graph) span two columns; the rest are single-column. */
 .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 .tile {
   border: 1px solid var(--line); border-radius: .75rem; background: #fff;
@@ -284,7 +284,7 @@ rect.mk { stroke-dasharray: var(--len); }
 
 .tile-lead { grid-column: span 2; }
 .tile-lead h3 { font-size: 1.4rem; letter-spacing: -.025em; }
-.tile-lead p { font-size: 1rem; }
+.tile-lead p { font-size: 1rem; max-width: 62ch; }
 .tile-lead .frame { min-height: 15rem; padding: 1.25rem; }
 
 /* This tile's copy is shorter than the lead tile's beside it, so the frame
@@ -296,9 +296,45 @@ rect.mk { stroke-dasharray: var(--len); }
    frames themselves stay short and the row looks ragged. */
 .tile-mid .frame { flex: 1; }
 
-.tile-wide { grid-column: span 3; flex-direction: row; align-items: center; gap: 2.5rem; }
-.tile-wide .copy { flex: 0 0 22rem; display: flex; flex-direction: column; gap: .5rem; }
-.tile-wide .frame { margin-top: 0; flex: 1; min-height: 6rem; }
+/* Too narrow at two columns to sit the copy beside the graph — stack them. */
+.tile-wide { grid-column: span 2; gap: 1rem; }
+.tile-wide .copy { display: flex; flex-direction: column; gap: .5rem; }
+.tile-wide .frame { margin-top: auto; min-height: 6rem; }
+
+/* card — built for adoption: the engineer's editor on the left, Spyke's history
+   on the right, and the pipe between them doing the version-control steps. Both
+   windows share one chrome treatment so they read as two apps, not two diagrams. */
+.adopt { flex: 1; display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; gap: .8rem; }
+.miniwin {
+  min-width: 0; background: #fff; border: 1px solid var(--line); border-radius: .5rem;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.miniwin .bar {
+  display: flex; align-items: center; gap: .45rem; padding: .45rem .6rem;
+  border-bottom: 1px solid var(--line); background: var(--panel);
+  font-size: .68rem; color: var(--ink-3); white-space: nowrap;
+}
+.miniwin .dots { display: flex; gap: .25rem; }
+.miniwin .dots i { width: .38rem; height: .38rem; border-radius: 50%; background: var(--tint-1); }
+.miniwin .body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: .45rem; padding: .7rem .8rem; }
+.push-flag { margin-left: auto; color: var(--add); font-weight: 600; }
+.adopt-pipe { align-self: center; display: flex; flex-direction: column; align-items: center; gap: .3rem; }
+.adopt-pipe svg { width: 4rem; }
+.adopt-pipe .lbl { font-size: .66rem; color: var(--ink-3); text-align: center; line-height: 1.35; }
+/* commit rows share the audit-trail look but keep their own class so the audit
+   tile's nth-child animation timings don't leak in here */
+.crow {
+  display: flex; align-items: baseline; gap: .5rem;
+  font-size: .76rem; color: var(--ink-2); white-space: nowrap; overflow: hidden;
+  padding-inline: .3rem; margin-inline: -.3rem; border-radius: 4px;
+}
+.crow .id { font-family: var(--mono); color: var(--ink-3); flex: none; }
+.crow .who { margin-left: auto; color: var(--ink-3); flex: none; font-size: .7rem; }
+.crow .auto {
+  flex: none; align-self: center; font-size: .58rem; font-weight: 600; line-height: 1;
+  padding: .18rem .35rem; border-radius: 1rem;
+  background: var(--add-soft); border: 1px solid var(--add-line); color: var(--add);
+}
 
 /* card — centralized repository: the SVG fits its box rather than setting the
    box's height, so the diagram never overflows the frame at any tile width. */
@@ -381,19 +417,40 @@ rect.mk { stroke-dasharray: var(--len); }
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* 1. Ladder-first review — the rung scans in as it was BEFORE the edit, then the
+/* 1. Built for adoption — the contact lands in the editor exactly like any other
+      edit, a dot runs the pipe, and the commit drops into Spyke's history already
+      committed, already pushed. Nobody performed a version-control step. */
+.tile-lead .add-mini,
+.tile-lead .add-mini-badge { transform-box: view-box; transform-origin: 120px 53px; }
+.tile-lead .flow-dot { opacity: 0; } /* only exists while the pipe is carrying the change */
+.tile-lead.play .add-mini { animation: pop .5s cubic-bezier(.34, 1.4, .64, 1) .25s both; }
+.tile-lead.play .add-mini-badge { animation: pop .45s cubic-bezier(.34, 1.6, .64, 1) .55s both; }
+.tile-lead.play .flow-dot { animation: flowDot .8s ease-in-out 1.05s both; }
+.tile-lead.play .crow.new {
+  animation: histIn .45s cubic-bezier(.2, .8, .3, 1) 1.8s both,
+             flash 1.2s ease 1.85s both;
+}
+.tile-lead.play .push-flag { animation: pop .4s cubic-bezier(.34, 1.5, .64, 1) 2.5s both; }
+@keyframes flowDot {
+  0%   { opacity: 0; transform: translateX(0); }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(44px); }
+}
+
+/* 1b. Ladder-first review — the rung scans in as it was BEFORE the edit, then the
       added contact lands: bridging wire out, green contact and badge in. */
-.tile-lead .curtain { fill: var(--panel); opacity: 0; }
-.tile-lead .bridge { opacity: 0; }
+.tile-diff .curtain { fill: var(--panel); opacity: 0; }
+.tile-diff .bridge { opacity: 0; }
 /* The ring, the contact, its tag and the badge are separate elements at different
    depths in the paint order. Scaling each about its OWN box would pull them apart
    mid-pop, so they all scale about the contact's centre in viewBox coordinates. */
-.tile-lead .add-el,
-.tile-lead .add-badge { transform-box: view-box; transform-origin: 338px 100px; }
-.tile-lead.play .curtain { animation: scan .85s cubic-bezier(.45, 0, .15, 1) both; }
-.tile-lead.play .bridge { animation: bridgeOut .3s ease .85s both; }
-.tile-lead.play .add-el { animation: pop .5s cubic-bezier(.34, 1.4, .64, 1) .9s both; }
-.tile-lead.play .add-badge { animation: pop .45s cubic-bezier(.34, 1.6, .64, 1) 1.2s both; }
+.tile-diff .add-el,
+.tile-diff .add-badge { transform-box: view-box; transform-origin: 338px 100px; }
+.tile-diff.play .curtain { animation: scan .85s cubic-bezier(.45, 0, .15, 1) both; }
+.tile-diff.play .bridge { animation: bridgeOut .3s ease .85s both; }
+.tile-diff.play .add-el { animation: pop .5s cubic-bezier(.34, 1.4, .64, 1) .9s both; }
+.tile-diff.play .add-badge { animation: pop .45s cubic-bezier(.34, 1.6, .64, 1) 1.2s both; }
 @keyframes scan      { from { opacity: 1; transform: translateX(0); } to { opacity: 1; transform: translateX(560px); } }
 @keyframes bridgeOut { from { opacity: 1; } to { opacity: 0; } }
 
@@ -736,6 +793,11 @@ rect.mk { stroke-dasharray: var(--len); }
   .bento { grid-template-columns: 1fr; }
   .tile-lead, .tile-wide { grid-column: span 1; }
   .tile-lead .frame { min-height: 11rem; }
+  /* Too narrow for editor → pipe → history in a row — stack them, arrow down. */
+  .adopt { grid-template-columns: 1fr; }
+  .adopt-pipe { flex-direction: row; gap: .6rem; }
+  .adopt-pipe svg { width: 2.4rem; transform: rotate(90deg); }
+  .adopt-pipe .lbl br { display: none; }
   .appmock { grid-template-columns: 1fr; }
   .appnav { flex-direction: row; overflow-x: auto; align-items: center; }
   .appnav .proj { padding: .35rem .55rem; }

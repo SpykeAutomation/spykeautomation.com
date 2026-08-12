@@ -2,8 +2,8 @@
 // Each tile animates when it scrolls into view (see LIVING CARDS in global.css).
 // Everything here is authored in its FINAL state — the keyframes run from the
 // "before" state back to what you see below, so with no JS the cards just sit at
-// their finished frame. The only exceptions are .bridge and .curtain, which
-// exist solely for the animation and are transparent at rest.
+// their finished frame. The only exceptions are .bridge, .curtain and .flow-dot,
+// which exist solely for the animation and are transparent at rest.
 ---
 
 <section class="section" id="features">
@@ -16,59 +16,61 @@
     <div class="bento">
 
       <article class="tile tile-lead rise" data-rise data-live>
-        <h3>Easy reviews</h3>
-        <p>Changes between program versions appear as color-coded additions and removals, making it extremely easy to see differences between versions.</p>
+        <h3>Built for adoption</h3>
+        <p>Spyke makes version control effortless. Changes are automatically backed up &amp; versioned in the background, so engineers spend their time on real work instead of housekeeping.</p>
         <div class="frame" aria-hidden="true">
-          <svg viewBox="0 0 560 240" style="width:100%">
-            <line x1="24" y1="10" x2="24" y2="230" stroke="#171717" stroke-width="2.5"/>
-            <line x1="536" y1="10" x2="536" y2="230" stroke="#171717" stroke-width="2.5"/>
-            <text x="10" y="104" font-family="Geist Mono, monospace" font-size="12" fill="#737373" text-anchor="middle">6</text>
+          <div class="adopt">
+            <!-- The engineer's side: an edit lands in the editor they already use. -->
+            <div class="miniwin">
+              <div class="bar"><span class="dots"><i></i><i></i><i></i></span>Studio 5000 · MainRoutine</div>
+              <div class="body">
+                <svg viewBox="0 0 250 100" style="width:100%">
+                  <line x1="12" y1="8" x2="12" y2="92" stroke="#171717" stroke-width="2"/>
+                  <line x1="238" y1="8" x2="238" y2="92" stroke="#171717" stroke-width="2"/>
+                  <!-- Same diff treatment as the hero: ring under the ink, badge on top. -->
+                  <rect class="add-mini" x="104" y="34" width="44" height="36" rx="6" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+                  <g stroke="#171717" stroke-width="1.8">
+                    <line x1="12" y1="53" x2="52" y2="53"/><line x1="64" y1="53" x2="114" y2="53"/>
+                    <line x1="126" y1="53" x2="186" y2="53"/><line x1="210" y1="53" x2="238" y2="53"/>
+                    <line x1="52" y1="42" x2="52" y2="64"/><line x1="64" y1="42" x2="64" y2="64"/>
+                    <path d="M192 42 A 12 12 0 0 0 192 64" fill="none"/>
+                    <path d="M204 42 A 12 12 0 0 1 204 64" fill="none"/>
+                  </g>
+                  <g class="add-mini" stroke="#171717" stroke-width="1.8">
+                    <line x1="114" y1="42" x2="114" y2="64"/><line x1="126" y1="42" x2="126" y2="64"/>
+                  </g>
+                  <g font-family="Instrument Sans, sans-serif" font-size="11" fill="#525252" text-anchor="middle">
+                    <text x="58" y="26">Start_PB</text>
+                    <text class="add-mini" x="118" y="26">Jam_Clear</text>
+                    <text x="198" y="26">Run</text>
+                  </g>
+                  <circle class="add-mini-badge" cx="148" cy="34" r="7.5" fill="#047857"/>
+                  <text class="add-mini-badge" x="148" y="38" font-family="Instrument Sans, sans-serif" font-size="11.5" font-weight="600" fill="#fff" text-anchor="middle">+</text>
+                </svg>
+              </div>
+            </div>
 
-            <!-- Added elements follow the hero's diff treatment: a solid ring UNDER the
-                 ink (so the rung wire runs through it, not behind it), the element
-                 itself left black like any other, and a round + badge on the ring's
-                 top-right corner. -->
-            <rect class="add-el" x="308" y="78" width="60" height="46" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2.5"/>
+            <!-- Spyke's side of the deal: the version-control steps, done for you. -->
+            <div class="adopt-pipe">
+              <svg viewBox="0 0 64 20">
+                <line x1="4" y1="10" x2="50" y2="10" stroke="#a3a3a3" stroke-width="2" stroke-dasharray="3 4" stroke-linecap="round"/>
+                <path d="M50 4 L 59 10 L 50 16" fill="none" stroke="#737373" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+                <circle class="flow-dot" cx="8" cy="10" r="3.2" fill="#047857"/>
+              </svg>
+              <span class="lbl">auto&#8209;commit<br/>&amp; push</span>
+            </div>
 
-            <g stroke="#171717" stroke-width="2">
-              <line x1="24" y1="100" x2="102" y2="100"/><line x1="118" y1="100" x2="222" y2="100"/>
-              <line x1="238" y1="100" x2="330" y2="100"/><line x1="346" y1="100" x2="446" y2="100"/>
-              <line x1="494" y1="100" x2="536" y2="100"/>
-              <line x1="102" y1="86" x2="102" y2="114"/><line x1="118" y1="86" x2="118" y2="114"/>
-              <line x1="222" y1="86" x2="222" y2="114"/><line x1="238" y1="86" x2="238" y2="114"/>
-              <path d="M462 86 A 16 16 0 0 0 462 114" fill="none"/>
-              <path d="M478 86 A 16 16 0 0 1 478 114" fill="none"/>
-            </g>
-
-            <!-- The wire as it ran BEFORE the contact was inserted. Invisible at rest;
-                 only shows during the animation, and fades as the contact lands. -->
-            <line class="bridge" x1="330" y1="100" x2="346" y2="100" stroke="#171717" stroke-width="2"/>
-
-            <g class="add-el" stroke="#171717" stroke-width="2">
-              <line x1="330" y1="86" x2="330" y2="114"/><line x1="346" y1="86" x2="346" y2="114"/>
-            </g>
-
-            <!-- seal-in branch around Start_PB -->
-            <g stroke="#171717" stroke-width="2">
-              <line x1="64" y1="100" x2="64" y2="162"/><line x1="156" y1="100" x2="156" y2="162"/>
-              <line x1="64" y1="162" x2="102" y2="162"/><line x1="118" y1="162" x2="156" y2="162"/>
-              <line x1="102" y1="148" x2="102" y2="176"/><line x1="118" y1="148" x2="118" y2="176"/>
-            </g>
-
-            <!-- Tag names sit high enough to clear the badge on a marked contact -->
-            <g font-family="Instrument Sans, sans-serif" font-size="12.5" fill="#525252" text-anchor="middle">
-              <text x="110" y="66">Start_PB</text><text x="230" y="66">Stop_PB</text>
-              <text class="add-el" x="338" y="66">Guard_Door_OK</text>
-              <text x="470" y="66">Conveyor_Run</text>
-              <text x="110" y="196">Conveyor_Run</text>
-            </g>
-
-            <circle class="add-badge" cx="368" cy="78" r="9" fill="#047857"/>
-            <text class="add-badge" x="368" y="82.5" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">+</text>
-
-            <!-- scan wipe: sits on top, slides away left-to-right as the rung draws in -->
-            <rect class="curtain" x="0" y="0" width="560" height="240"/>
-          </svg>
+            <div class="miniwin">
+              <div class="bar"><span class="dots"><i></i><i></i><i></i></span>Spyke · Line 3<span class="push-flag">✓ pushed</span></div>
+              <div class="body">
+                <!-- Same repository the neighbouring tiles show: v43 is the edit
+                     landing on the left, v42/v41 match the audit-trail history. -->
+                <div class="crow new"><span class="id">v43</span> Add jam clear check <span class="auto">auto</span><span class="who">just now</span></div>
+                <div class="crow"><span class="id">v42</span> Retune PID loop <span class="who">today</span></div>
+                <div class="crow"><span class="id">v41</span> Add guard interlock <span class="who">yesterday</span></div>
+              </div>
+            </div>
+          </div>
         </div>
       </article>
 
@@ -129,7 +131,64 @@
         </div>
       </article>
 
-      <article class="tile tile-mid rise" data-rise data-live>
+      <article class="tile tile-mid tile-diff rise" data-rise data-live>
+        <h3>Easy reviews</h3>
+        <p>Changes between versions appear as color-coded additions and removals, so differences are easy to see at a glance.</p>
+        <div class="frame" aria-hidden="true">
+          <svg viewBox="0 0 560 240" style="width:100%">
+            <line x1="24" y1="10" x2="24" y2="230" stroke="#171717" stroke-width="2.5"/>
+            <line x1="536" y1="10" x2="536" y2="230" stroke="#171717" stroke-width="2.5"/>
+            <text x="10" y="104" font-family="Geist Mono, monospace" font-size="12" fill="#737373" text-anchor="middle">6</text>
+
+            <!-- Added elements follow the hero's diff treatment: a solid ring UNDER the
+                 ink (so the rung wire runs through it, not behind it), the element
+                 itself left black like any other, and a round + badge on the ring's
+                 top-right corner. -->
+            <rect class="add-el" x="308" y="78" width="60" height="46" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="2.5"/>
+
+            <g stroke="#171717" stroke-width="2">
+              <line x1="24" y1="100" x2="102" y2="100"/><line x1="118" y1="100" x2="222" y2="100"/>
+              <line x1="238" y1="100" x2="330" y2="100"/><line x1="346" y1="100" x2="446" y2="100"/>
+              <line x1="494" y1="100" x2="536" y2="100"/>
+              <line x1="102" y1="86" x2="102" y2="114"/><line x1="118" y1="86" x2="118" y2="114"/>
+              <line x1="222" y1="86" x2="222" y2="114"/><line x1="238" y1="86" x2="238" y2="114"/>
+              <path d="M462 86 A 16 16 0 0 0 462 114" fill="none"/>
+              <path d="M478 86 A 16 16 0 0 1 478 114" fill="none"/>
+            </g>
+
+            <!-- The wire as it ran BEFORE the contact was inserted. Invisible at rest;
+                 only shows during the animation, and fades as the contact lands. -->
+            <line class="bridge" x1="330" y1="100" x2="346" y2="100" stroke="#171717" stroke-width="2"/>
+
+            <g class="add-el" stroke="#171717" stroke-width="2">
+              <line x1="330" y1="86" x2="330" y2="114"/><line x1="346" y1="86" x2="346" y2="114"/>
+            </g>
+
+            <!-- seal-in branch around Start_PB -->
+            <g stroke="#171717" stroke-width="2">
+              <line x1="64" y1="100" x2="64" y2="162"/><line x1="156" y1="100" x2="156" y2="162"/>
+              <line x1="64" y1="162" x2="102" y2="162"/><line x1="118" y1="162" x2="156" y2="162"/>
+              <line x1="102" y1="148" x2="102" y2="176"/><line x1="118" y1="148" x2="118" y2="176"/>
+            </g>
+
+            <!-- Tag names sit high enough to clear the badge on a marked contact -->
+            <g font-family="Instrument Sans, sans-serif" font-size="12.5" fill="#525252" text-anchor="middle">
+              <text x="110" y="66">Start_PB</text><text x="230" y="66">Stop_PB</text>
+              <text class="add-el" x="338" y="66">Guard_Door_OK</text>
+              <text x="470" y="66">Conveyor_Run</text>
+              <text x="110" y="196">Conveyor_Run</text>
+            </g>
+
+            <circle class="add-badge" cx="368" cy="78" r="9" fill="#047857"/>
+            <text class="add-badge" x="368" y="82.5" font-family="Instrument Sans, sans-serif" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">+</text>
+
+            <!-- scan wipe: sits on top, slides away left-to-right as the rung draws in -->
+            <rect class="curtain" x="0" y="0" width="560" height="240"/>
+          </svg>
+        </div>
+      </article>
+
+      <article class="tile tile-mid rise d1" data-rise data-live>
         <h3>Privacy and security</h3>
         <p>We understand your programs are your critical assets, so we treat them that way. Spyke encrypts all your program data and never trains AI on it.</p>
         <div class="frame" aria-hidden="true">
@@ -189,7 +248,7 @@
         </div>
       </article>
 
-      <article class="tile tile-mid rise d1" data-rise data-live>
+      <article class="tile tile-mid rise d2" data-rise data-live>
         <h3>Merge requests</h3>
         <p>Propose a change, see the diffs, talk it through, approve. The review is saved in the project history so all your discussions and approvals stay in one place.</p>
         <div class="frame" aria-hidden="true">
@@ -218,7 +277,7 @@
         </div>
       </article>
 
-      <article class="tile tile-mid rise d2" data-rise data-live>
+      <article class="tile tile-mid rise" data-rise data-live>
         <h3>Audit trail</h3>
         <p>Every change carries who made it, when, what it touched, and who approved it — so an audit is a page you open, not a year of email to reconstruct.</p>
         <div class="frame" aria-hidden="true">
@@ -228,7 +287,7 @@
         </div>
       </article>
 
-      <article class="tile tile-wide rise" data-rise data-live>
+      <article class="tile tile-wide rise d1" data-rise data-live>
         <div class="copy">
           <h3>Based on Git</h3>
           <p>Make changes without touching the program running the line. Keep your work separate, review it with your team, and only add it to the main project once it is approved.</p>
