@@ -20,9 +20,14 @@
         <p>Spyke makes version control effortless. Changes are automatically backed up &amp; versioned in the background, so engineers spend their time on real work instead of housekeeping.</p>
         <div class="frame" aria-hidden="true">
           <div class="adopt">
-            <!-- The engineer's side: an edit lands in the editor they already use. -->
-            <div class="miniwin">
-              <div class="bar"><span class="dots"><i></i><i></i><i></i></span>Studio 5000 · MainRoutine</div>
+            <!-- The engineer's side: a Windows machine with Studio 5000 open.
+                 The zoomstage is what the "camera" scales toward the system tray
+                 in the lower-right corner, where Spyke quietly syncs. -->
+            <div class="screen">
+              <div class="zoomstage">
+              <div class="desk">
+              <div class="miniwin s5win">
+              <div class="bar">Studio 5000 · MainRoutine<span class="wctl" aria-hidden="true"><svg viewBox="0 0 10 10"><path d="M1 5h8" stroke="currentColor" stroke-width="1.1"/></svg><svg viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1.1"/></svg><svg viewBox="0 0 10 10"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" stroke-width="1.1"/></svg></span></div>
               <div class="body">
                 <svg viewBox="0 0 250 100" style="width:100%">
                   <line x1="12" y1="8" x2="12" y2="92" stroke="#171717" stroke-width="2"/>
@@ -47,6 +52,21 @@
                   <circle class="add-mini-badge" cx="148" cy="34" r="7.5" fill="#047857"/>
                   <text class="add-mini-badge" x="148" y="38" font-family="Instrument Sans, sans-serif" font-size="11.5" font-weight="600" fill="#fff" text-anchor="middle">+</text>
                 </svg>
+              </div>
+              </div>
+              </div>
+              <div class="taskbar">
+                <svg class="tb-start" viewBox="0 0 16 16" fill="#a3a3a3"><rect x="1" y="1" width="6.4" height="6.4" rx="1"/><rect x="8.6" y="1" width="6.4" height="6.4" rx="1"/><rect x="1" y="8.6" width="6.4" height="6.4" rx="1"/><rect x="8.6" y="8.6" width="6.4" height="6.4" rx="1"/></svg>
+                <span class="tb-app">Studio 5000</span>
+                <span class="tray">
+                  <span class="tray-icon">
+                    <svg class="spy-logo" viewBox="0 0 100 100" fill="none" stroke="#171717" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M22 46 L50 22 L78 46"/><path d="M22 74 L50 50 L78 74"/></svg>
+                    <svg class="sync-spin" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="26 12"/></svg>
+                  </span>
+                  <span class="tb-time">2:47 PM</span>
+                </span>
+              </div>
+              <div class="toast">✓ Change synced</div>
               </div>
             </div>
 

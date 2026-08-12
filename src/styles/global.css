@@ -318,6 +318,46 @@ rect.mk { stroke-dasharray: var(--len); }
 .miniwin .dots i { width: .38rem; height: .38rem; border-radius: 50%; background: var(--tint-1); }
 .miniwin .body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: .45rem; padding: .7rem .8rem; }
 .push-flag { margin-left: auto; color: var(--add); font-weight: 600; }
+/* the machine: a Windows desktop with Studio 5000 open and a taskbar whose
+   system tray holds Spyke's icon. The camera (.zoomstage) scales toward the
+   bottom-right corner, so the zoom lands on the tray next to the clock. */
+.screen {
+  position: relative; min-width: 0; overflow: hidden;
+  background: #fff; border: 1px solid var(--line); border-radius: .5rem;
+  display: flex; flex-direction: column;
+}
+.zoomstage { flex: 1; min-width: 0; display: flex; flex-direction: column; transform-origin: 100% 100%; }
+.desk {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: .7rem .8rem;
+  background: linear-gradient(135deg, #ececec, #f8f8f8); /* the wallpaper */
+}
+.s5win { flex: none; width: 100%; box-shadow: 0 8px 18px rgba(23, 23, 23, .1); }
+/* Windows-style window controls, right-aligned in the title bar */
+.wctl { margin-left: auto; display: flex; align-items: center; gap: .5rem; color: var(--ink-3); }
+.wctl svg { width: .5rem; height: .5rem; }
+.taskbar {
+  display: flex; align-items: center; gap: .5rem; padding: .3rem .55rem;
+  background: #fff; border-top: 1px solid var(--line);
+  font-size: .62rem; color: var(--ink-2);
+}
+.tb-start { width: .8rem; height: .8rem; flex: none; }
+.tb-app {
+  padding: .14rem .4rem; border: 1px solid var(--line); border-radius: .25rem;
+  background: var(--panel); font-size: .58rem;
+}
+.tray { margin-left: auto; display: flex; align-items: center; gap: .4rem; }
+.tray-icon { position: relative; width: .8rem; height: .8rem; flex: none; }
+.tray-icon svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sync-spin { opacity: 0; } /* only exists while the sync runs */
+.tb-time { color: var(--ink-3); }
+/* the notification the sync leaves behind, floating just above the tray */
+.toast {
+  position: absolute; right: .5rem; bottom: 1.8rem;
+  background: #fff; border: 1px solid var(--line); border-radius: .4rem;
+  box-shadow: 0 6px 16px rgba(23, 23, 23, .14);
+  padding: .28rem .55rem; font-size: .62rem; font-weight: 600; color: #2563eb;
+}
 .adopt-pipe { align-self: center; display: flex; flex-direction: column; align-items: center; gap: .3rem; }
 .adopt-pipe svg { width: 4rem; }
 .adopt-pipe .lbl { font-size: .66rem; color: var(--ink-3); text-align: center; line-height: 1.35; }
@@ -417,20 +457,42 @@ rect.mk { stroke-dasharray: var(--len); }
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* 1. Built for adoption — the contact lands in the editor exactly like any other
-      edit, a dot runs the pipe, and the commit drops into Spyke's history already
-      committed, already pushed. Nobody performed a version-control step. */
+/* 1. Built for adoption — the contact lands in Studio 5000 exactly like any
+      other edit, the camera zooms to the system tray where Spyke's icon ticks
+      over to a spinner and leaves a "Change synced" toast, zooms back out, and
+      the commit drops into Spyke's history already committed, already pushed.
+      Nobody performed a version-control step. */
 .tile-lead .add-mini,
 .tile-lead .add-mini-badge { transform-box: view-box; transform-origin: 120px 53px; }
 .tile-lead .flow-dot { opacity: 0; } /* only exists while the pipe is carrying the change */
 .tile-lead.play .add-mini { animation: pop .5s cubic-bezier(.34, 1.4, .64, 1) .25s both; }
 .tile-lead.play .add-mini-badge { animation: pop .45s cubic-bezier(.34, 1.6, .64, 1) .55s both; }
-.tile-lead.play .flow-dot { animation: flowDot .8s ease-in-out 1.05s both; }
+.tile-lead.play .zoomstage { animation: zoomBR 2.9s cubic-bezier(.5, 0, .2, 1) .9s both; }
+/* the tray icon hands over to the spinner for exactly the spinner's run */
+.tile-lead.play .spy-logo { animation: logoSwap 1.5s linear 1.35s both; }
+.tile-lead.play .sync-spin { animation: spinShow 1.5s linear 1.35s both; }
+.tile-lead.play .toast { animation: fadeUp .35s ease 2.85s both; }
+.tile-lead.play .flow-dot { animation: flowDot .8s ease-in-out 4s both; }
 .tile-lead.play .crow.new {
-  animation: histIn .45s cubic-bezier(.2, .8, .3, 1) 1.8s both,
-             flash 1.2s ease 1.85s both;
+  animation: histIn .45s cubic-bezier(.2, .8, .3, 1) 4.75s both,
+             flash 1.2s ease 4.8s both;
 }
-.tile-lead.play .push-flag { animation: pop .4s cubic-bezier(.34, 1.5, .64, 1) 2.5s both; }
+.tile-lead.play .push-flag { animation: pop .4s cubic-bezier(.34, 1.5, .64, 1) 5.45s both; }
+/* hold the zoom long enough to watch the spinner finish and the toast land */
+@keyframes zoomBR {
+  0%, 100% { transform: scale(1); }
+  22%, 78% { transform: scale(2); }
+}
+@keyframes logoSwap {
+  0%, 100% { opacity: 1; }
+  6%, 94%  { opacity: 0; }
+}
+@keyframes spinShow {
+  0%   { opacity: 0; transform: rotate(0turn); }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(2.5turn); }
+}
 @keyframes flowDot {
   0%   { opacity: 0; transform: translateX(0); }
   20%  { opacity: 1; }
