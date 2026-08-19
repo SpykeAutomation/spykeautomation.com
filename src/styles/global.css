@@ -52,7 +52,7 @@ a { color: inherit; text-decoration: none; }
 .mono { font-family: var(--mono); }
 
 /* In-page anchors must clear the fixed nav */
-#how, #features, #review, #book { scroll-margin-top: 5.5rem; }
+#how, #features, #review, #schematics, #book { scroll-margin-top: 5.5rem; }
 
 /* Skip link — first tab stop on every page */
 .skip {
@@ -683,7 +683,8 @@ rect.mk { stroke-dasharray: var(--len); }
 .swap .s-b { opacity: 0; }
 .swap .cnt-b { opacity: 0; }
 /* The typing caret on a comment being written. */
-.bubble.writing::after {
+.bubble.writing::after,
+.say.writing::after {
   content: ""; display: inline-block; width: 1.5px; height: .95em;
   background: var(--ink-2); margin-left: 1px; vertical-align: -2px;
   animation: caretBlink .8s step-end infinite;
@@ -703,11 +704,11 @@ rect.mk { stroke-dasharray: var(--len); }
 .appmock.reacted .cnt-b { animation: swapIn .25s cubic-bezier(.34, 1.6, .64, 1) both; }
 /* The cursor's second click: the button dips, springs back green, throws a ring
    and ten sparks, and every "Reviewing"/"Approve" swaps to its approved state. */
-.appmock.approved .rail-btn { animation: btnWin .85s cubic-bezier(.34, 1.3, .5, 1) both; }
-.appmock.approved .btn-ring { animation: btnRing .7s cubic-bezier(.2, .7, .3, 1) .08s forwards; }
+.appmock.approved .rail-btn, .smock.approved .rail-btn { animation: btnWin .85s cubic-bezier(.34, 1.3, .5, 1) both; }
+.appmock.approved .btn-ring, .smock.approved .btn-ring { animation: btnRing .7s cubic-bezier(.2, .7, .3, 1) .08s forwards; }
 .appmock.approved .burst i { animation: spark .8s cubic-bezier(.15, .75, .3, 1) .08s both; }
-.appmock.approved .s-a { animation: swapOut .3s ease .18s both; }
-.appmock.approved .s-b { animation: swapIn .3s ease .18s both; }
+.appmock.approved .s-a, .smock.approved .s-a { animation: swapOut .3s ease .18s both; }
+.appmock.approved .s-b, .smock.approved .s-b { animation: swapIn .3s ease .18s both; }
 .appmock.approved .pill.green.s-b {
   animation: swapIn .3s ease .18s both,
              winPop .55s cubic-bezier(.34, 1.6, .64, 1) .18s both;
@@ -744,6 +745,94 @@ rect.mk { stroke-dasharray: var(--len); }
 }
 .cur-in { display: block; transition: transform .12s ease-out; }
 .cursor.press .cur-in { transform: scale(.82); }
+
+/* ===== SCHEMATIC SYNC ===== */
+/* The schematic mock shares the app mock's shell and its rail furniture
+   (.rail-col, .rail-btn, .swap, .pill, .hist-row, .cursor). The markup is
+   authored in its RESTING state — the redline drafted and awaiting approval —
+   so no JS, or reduced motion, shows the most legible frame of the story. The
+   script's classes replay it from the blank sheet: .play (before the change),
+   .drafting (Spyke is working), .drafted (the redline draws on), .approved
+   (redline becomes plain ink, REV C stamps over to D). */
+.smock {
+  position: relative;
+  border: 1px solid var(--line); border-radius: .9rem; overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0,0,0,.05), 0 25px 25px rgba(0,0,0,.04), 0 56px 33px rgba(0,0,0,.02);
+  background: #fff;
+  text-align: left; font-size: .875rem;
+}
+/* The camera. The whole window sits on a zoom stage the state classes move:
+   in on the description while it types, over to the redline as it drafts,
+   then out to the full window for the approval (.panout, added by the script
+   just before the cursor appears, so the cursor flies at scale 1). The rest
+   state carries no transform, so no JS means the full window, in focus. */
+.szoom {
+  display: grid; grid-template-columns: 1fr 17rem;
+  transform-origin: 0 0;
+  transition: transform .8s cubic-bezier(.45, .05, .25, 1);
+}
+.smock.play .szoom { transform: translate(-75%, 0) scale(1.75); }
+.smock.drafted .szoom { transform: translate(-5%, -39%) scale(1.65); }
+.smock.panout .szoom { transform: none; }
+.sheet-col { padding: 1.25rem 1.5rem 1rem; min-width: 0; border-right: 1px solid var(--line); }
+.sheet-col .sheet { display: block; width: 100%; height: auto; }
+.srail { display: flex; flex-direction: column; gap: .6rem; }
+.srail h5 { margin-bottom: 0; }
+.srail .rail-btn { margin-top: .15rem; }
+.shist-head { margin-top: .7rem; }
+.shist { display: flex; flex-direction: column; gap: .5rem; }
+/* The change description, typed by the script like a review comment. */
+.say {
+  border: 1px solid var(--line); background: var(--panel); border-radius: .5rem;
+  padding: .5rem .7rem; font-size: .84rem; line-height: 1.45; color: var(--ink-2);
+}
+/* Three stacked status pills sized by the widest, same trick as .swap. */
+.swap3 { display: inline-grid; justify-items: start; }
+.swap3 > * { grid-area: 1 / 1; }
+.smock .n1, .smock .n3 { opacity: 0; }
+.smock .hist-new { opacity: 0; }
+.smock .rev-d { opacity: 0; }
+.smock .rl-ring { stroke-dasharray: var(--len); }
+.smock .rl-wire, .smock .rl-strike { stroke-dasharray: 1; }
+.smock .rl-dev, .smock .rl-badge, .smock .rl-strike-badge,
+.smock .rev-c, .smock .rev-d { transform-box: fill-box; transform-origin: center; }
+
+/* Playing but not yet drafted — the sheet as it was before the change: the
+   spare terminal still marked SPARE, no redline, and no status pill. */
+.smock.play:not(.drafted) .rl-new,
+.smock.play:not(.drafted) .rl-ring,
+.smock.play:not(.drafted) .rl-badge,
+.smock.play:not(.drafted) .rl-strike,
+.smock.play:not(.drafted) .rl-strike-badge,
+.smock.play:not(.drafted) .n2 { opacity: 0; }
+.smock.drafting:not(.drafted) .n1 { animation: fadeUp .35s ease both; }
+
+/* The redline drafts on: ring, field wire, device, panel wire, labels, then
+   the + badge, the strike through SPARE with its − badge, and the pill. */
+.smock.drafted .rl-ring { animation: ringDraw .5s cubic-bezier(.35, .8, .3, 1) both, tintIn .35s ease .28s both; }
+.smock.drafted .rl-wire { animation: drawOn .5s ease-out .15s both; }
+.smock.drafted .rl-wire.w2 { animation-delay: .55s; }
+.smock.drafted .rl-dev { animation: pop .45s cubic-bezier(.34, 1.4, .64, 1) .35s both; }
+.smock.drafted .rl-lbl { animation: fadeUp .35s ease .55s both; }
+.smock.drafted .rl-badge { animation: stamp .5s cubic-bezier(.34, 1.7, .64, 1) .8s both; }
+.smock.drafted .rl-strike { animation: drawOn .3s ease-out 1s both; }
+.smock.drafted .rl-strike-badge { animation: stamp .45s cubic-bezier(.34, 1.7, .64, 1) 1.15s both; }
+.smock.drafted .n2 { animation: swapIn .3s ease 1.35s both; }
+
+/* The cursor's click: the redline marks dissolve into plain ink, the title
+   block stamps REV D, and the new revision drops into the history. The button
+   itself wins via the shared .appmock/.smock.approved rules above. */
+.smock.approved .rl-ring, .smock.approved .rl-badge,
+.smock.approved .rl-strike, .smock.approved .rl-strike-badge,
+.smock.approved .lbl-spare { animation: swapOut .35s ease .15s both; }
+.smock.approved .rev-c { animation: swapOut .25s ease .35s both; }
+.smock.approved .rev-d { animation: stamp .55s cubic-bezier(.34, 1.7, .64, 1) .35s both; }
+.smock.approved .n2 { animation: swapOut .3s ease .3s both; }
+.smock.approved .n3 { animation: swapIn .3s ease .45s both; }
+.smock.approved .hist-new {
+  animation: histIn .45s cubic-bezier(.2, .8, .3, 1) .6s both,
+             flash 1.2s ease .65s both;
+}
 
 /* ===== BOOKING =====
    Google's booking page, embedded at the foot of the homepage. */
@@ -820,7 +909,8 @@ rect.mk { stroke-dasharray: var(--len); }
      case where the class arrives anyway. */
   .tile.play, .tile.play *, .tile.play *::after,
   .demo-holder.play, .demo-holder.play *, .demo-holder.play *::after,
-  .appmock.play, .appmock.play *, .appmock.play *::after { animation: none !important; }
+  .appmock.play, .appmock.play *, .appmock.play *::after,
+  .smock.play, .smock.play *, .smock.play *::after { animation: none !important; }
 }
 
 /* ===== RESPONSIVE ===== */
@@ -865,6 +955,11 @@ rect.mk { stroke-dasharray: var(--len); }
   .appnav .proj { padding: .35rem .55rem; }
   .mr-body { grid-template-columns: 1fr; }
   .diff-col { border-right: 0; border-bottom: 1px solid var(--line); }
+  .szoom { grid-template-columns: 1fr; }
+  /* Stacked, the desktop camera frames point at nothing — show the whole
+     window throughout. */
+  .smock.play .szoom, .smock.drafted .szoom { transform: none; }
+  .sheet-col { border-right: 0; border-bottom: 1px solid var(--line); }
   .hero-actions .btn, .cta-actions .btn { width: 100%; }
   .gcal-frame iframe { height: 46rem; }
   .cta { padding: 6rem 0; }
