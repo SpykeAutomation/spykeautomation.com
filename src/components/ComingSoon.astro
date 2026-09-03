@@ -1,0 +1,83 @@
+---
+// The whole site while PAUSED is true: the mark, the wordmark, one line.
+// Deliberately self-contained — no nav, no footer, no links, nothing to click.
+---
+
+<main class="soon" id="main">
+  <div class="soon-inner">
+    <svg
+      class="soon-mark"
+      viewBox="0 0 100 100"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M22 46 L50 22 L78 46" />
+      <path d="M22 74 L50 50 L78 74" />
+    </svg>
+
+    <p class="soon-name">Spyke Automation</p>
+    <h1>Something exciting is coming soon.</h1>
+  </div>
+</main>
+
+<style>
+  /* Fills the viewport on its own — this page has no nav bar above it and
+     nothing below it, so the block owns the full height and centres in it. */
+  .soon {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 2rem 1.25rem;
+    background: linear-gradient(to bottom, var(--dark-0) 0%, var(--dark-1) 60%, var(--dark-2) 100%);
+    color: #fff;
+    text-align: center;
+  }
+
+  .soon-inner {
+    max-width: 42rem;
+    /* The three pieces fade up together, staggered by the delays below. */
+    animation: soon-in .9s cubic-bezier(.2, .7, .3, 1) both;
+  }
+
+  .soon-mark {
+    width: 3.25rem;
+    height: 3.25rem;
+    margin: 0 auto;
+    color: #fff;
+  }
+
+  /* Small tracked-out label, the same treatment the site uses for eyebrows. */
+  .soon-name {
+    margin-top: 1.5rem;
+    font-family: var(--mono);
+    font-size: .8125rem;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--tint-1);
+  }
+
+  h1 {
+    margin-top: 1.25rem;
+    font-size: clamp(2rem, 6.5vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: -.045em;
+    line-height: 1.06;
+    text-wrap: balance;
+  }
+
+  @keyframes soon-in {
+    from { opacity: 0; transform: translateY(.75rem); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .soon-inner { animation: none; }
+  }
+</style>

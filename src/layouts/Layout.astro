@@ -1,19 +1,27 @@
 ---
 import '../styles/global.css';
+import { PAUSED } from '../config';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Keep this URL out of search results — used for the paused secondary pages. */
+  noindex?: boolean;
 }
 
 const {
   title = 'Spyke Automation — the system of record for the factory',
   description =
     'Spyke keeps a readable history of your controller projects. Snapshot each export, then review every edit as a ladder diff — not thousands of lines of XML.',
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const ogImage = new URL('/hero_card.png', Astro.site).href;
+
+// The social card is a screenshot of the product's diff view — the very thing a
+// paused site is holding back. Ship the link with no image rather than a preview
+// of what isn't public yet.
+const ogImage = PAUSED ? null : new URL('/hero_card.png', Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -22,6 +30,7 @@ const ogImage = new URL('/hero_card.png', Astro.site).href;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
@@ -31,11 +40,11 @@ const ogImage = new URL('/hero_card.png', Astro.site).href;
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
-    <meta name="twitter:card" content="summary_large_image" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

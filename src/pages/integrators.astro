@@ -4,12 +4,25 @@ import Nav from '../components/Nav.astro';
 import IntegratorsHero from '../components/IntegratorsHero.astro';
 import IntegratorsFeatures from '../components/IntegratorsFeatures.astro';
 import Footer from '../components/Footer.astro';
+import ComingSoon from '../components/ComingSoon.astro';
+import { PAUSED } from '../config';
 import '../styles/integrators.css';
 
 const APP_URL = 'https://app.spykeautomation.com';
 const DOCS_URL = 'https://docs.spykeautomation.com';
 ---
 
+{PAUSED && (
+  <Layout
+    title="Spyke Automation"
+    description="Something exciting is coming soon."
+    noindex
+  >
+    <ComingSoon />
+  </Layout>
+)}
+
+{!PAUSED && (
 <Layout
   title="Spyke for systems integrators — a clear record of every PLC program you deliver"
   description="Spyke helps systems integrators save, compare, and review Studio 5000 program versions from development through FAT, commissioning, and handover."
@@ -31,3 +44,4 @@ const DOCS_URL = 'https://docs.spykeautomation.com';
   </main>
   <Footer />
 </Layout>
+)}
