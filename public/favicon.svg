@@ -1,10 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- The Spyke mark: five bars rising left to right in the pipeline colours
-       (Draft, In Progress, In Review, Sent, Won). Coloured, so it reads on
-       light and dark tabs alike. -->
-  <rect x="3" y="18" width="4" height="10" rx="2" fill="#8e8e93" />
-  <rect x="8.5" y="14" width="4" height="14" rx="2" fill="#4f7fe0" />
-  <rect x="14" y="10" width="4" height="18" rx="2" fill="#e8a912" />
-  <rect x="19.5" y="7" width="4" height="21" rx="2" fill="#7b6cdb" />
-  <rect x="25" y="4" width="4" height="24" rx="2" fill="#3cad6b" />
+  <!-- The Spyke mark: five bands in the pipeline colours (Draft, In Progress,
+       In Review, Sent, Won) gathered by a cable tie, on a black tile so it
+       reads on light and dark tabs alike. -->
+  <rect width="32" height="32" rx="7" fill="#000" />
+  <g transform="translate(3 3) scale(0.1354167)">
+    <path fill="#8e8e93" d="M3 4.5C3 50.5 56 64 56 96S3 141.5 3 187.5H32C32 139.5 69 133 69 96S32 52.5 32 4.5Z" />
+    <path fill="#5a7ed9" d="M42 4.5C42 47.5 75.2 74 75.2 96S42 144.5 42 187.5H71C71 141.5 87 130 87 96S71 50.5 71 4.5Z" />
+    <path fill="#deac3e" d="M82 4.5C82 60.5 88 54 88 96S82 131.5 82 187.5H110C110 131.5 104 138 104 96S110 60.5 110 4.5Z" />
+    <path fill="#796dd4" d="M121 4.5C121 50.5 105 62 105 96S121 141.5 121 187.5H150C150 144.5 116.8 118 116.8 96S150 47.5 150 4.5Z" />
+    <path fill="#5eab71" d="M160 4.5C160 52.5 123 59 123 96S160 139.5 160 187.5H189C189 141.5 136 128 136 96S189 50.5 189 4.5Z" />
+    <path fill="#e8eaed" d="M44.2 81.7H124.2a4 4 0 0 1 4 4V107.3a4 4 0 0 1 -4 4H44.2a4 4 0 0 1 -4 -4V85.7a4 4 0 0 1 4 -4ZM129.2 72H154.6a7 7 0 0 1 7 7V114a7 7 0 0 1 -7 7H129.2a7 7 0 0 1 -7 -7V79a7 7 0 0 1 7 -7Z" />
+    <path fill="#000" d="M136.2 86.7H147.6a2.5 2.5 0 0 1 2.5 2.5V103.8a2.5 2.5 0 0 1 -2.5 2.5H136.2a2.5 2.5 0 0 1 -2.5 -2.5V89.2a2.5 2.5 0 0 1 2.5 -2.5Z" />
+  </g>
 </svg>

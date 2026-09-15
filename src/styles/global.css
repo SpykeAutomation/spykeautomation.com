@@ -18,7 +18,7 @@
   --ink-muted: #8b8b93;
   --ink-line: rgba(255, 255, 255, .09);
 
-  /* The logo's five bars laid flat, in its order: Draft, In Progress,
+  /* The logo's five bands laid flat, in its order: Draft, In Progress,
      In Review, Sent, Won. Drawn as a 3px line under the top bar and along
      the top of the black closing call. */
   --stripe: linear-gradient(90deg, #8e8e93 0 20%, #4f7fe0 20% 40%, #e8a912 40% 60%, #7b6cdb 60% 80%, #3cad6b 80%);
