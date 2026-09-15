@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 
-// Drawings to a BOM: a stack of drawing sheets with the three kinds of input
+// Drawings to a BOM: a stack of schematic sheets with the three kinds of input
 // over them, a bracket joining them, and what comes out.
 const inputs = [
   { label: 'Drawings', icon: 'file-text' },
@@ -21,18 +21,6 @@ const results = ['Identified components', 'Matched to your library', 'Applied la
     <div class="flow">
       <div class="sheets">
         <svg class="art" viewBox="0 0 160 214" aria-hidden="true" focusable="false">
-          <defs>
-            <!-- One rung of a ladder diagram: a wire, a contact, a coil -->
-            <pattern id="rung" width="70" height="12" patternUnits="userSpaceOnUse" x="14" y="18">
-              <g fill="none" stroke="#c2c2c8" stroke-width=".7">
-                <path d="M0 6h16M22 6h28M58 6h12" /><path d="M16 2.5v7M22 2.5v7" /><circle cx="54" cy="6" r="3.4" />
-              </g>
-            </pattern>
-            <!-- A terminal list: a box and two lines of text -->
-            <pattern id="terminals" width="36" height="9" patternUnits="userSpaceOnUse" x="96" y="18">
-              <g fill="none" stroke="#cfcfd4" stroke-width=".6"><rect x=".5" y="1.5" width="5" height="5" /><path d="M9 3h22M9 6h14" /></g>
-            </pattern>
-          </defs>
           <g fill="#fff" stroke="#d9d9de">
             <rect x="16.5" y="14.5" width="141" height="197" rx="1" />
             <rect x="8.5" y="7.5" width="141" height="197" rx="1" />
@@ -40,11 +28,12 @@ const results = ['Identified components', 'Matched to your library', 'Applied la
           </g>
           <g fill="none" stroke="#c2c2c8" stroke-width=".7">
             <rect x="6" y="6" width="130" height="185" />
-            <path d="M14 14v146M84 14v146" />
             <path d="M6 166h130M78 166v25M78 178h58M106 178v13" />
           </g>
-          <rect x="14" y="18" width="70" height="140" fill="url(#rung)" />
-          <rect x="96" y="18" width="36" height="135" fill="url(#terminals)" />
+          <!-- A control panel schematic: three-phase power to a motor, a control
+               transformer, a PLC input card wired through a terminal strip, and
+               the parts list -->
+          <g fill="none" stroke="#b4b4ba" stroke-width=".7"><path d="M16 12V20M16 20L19 25M16 26V30M16 36V47M14 47H18M14 50H18M16 50V57M16 63V70M22 12V20M22 20L25 25M22 26V30M22 36V47M20 47H24M20 50H24M22 50V57M22 63V70M28 12V20M28 20L31 25M28 26V30M28 36V47M26 47H30M26 50H30M28 50V57M28 63V70M16 70L18 75M22 70V73M28 70L26 75M22 87V92M17 92H27M19 94.5H25M21 97H23M16 40H36M22 44H36M36 40a2 2 0 0 1 0 4M40 39V45M41.5 39V45M45 40a2 2 0 0 0 0 4M45 40H60M45 44H60M36 58V85M36 58H43M43 56v4M45.5 56v4M45.5 58H50M53 58H60M36 67H43M43 65v4M45.5 65v4M45.5 67H50M53 67H60M36 76H43M43 74v4M45.5 74v4M45.5 76H50M53 76H60M36 85H43M43 83v4M45.5 83v4M45.5 85H50M53 85H60"/><rect x="50" y="56.5" width="3" height="3"/><rect x="50" y="65.5" width="3" height="3"/><rect x="50" y="74.5" width="3" height="3"/><rect x="50" y="83.5" width="3" height="3"/><rect x="15" y="30" width="2" height="6"/><rect x="14.5" y="57" width="3" height="6"/><rect x="21" y="30" width="2" height="6"/><rect x="20.5" y="57" width="3" height="6"/><rect x="27" y="30" width="2" height="6"/><rect x="26.5" y="57" width="3" height="6"/><rect x="60" y="12" width="26" height="82"/><path d="M60 19H86"/><circle cx="60" cy="26" r="1.2"/><circle cx="60" cy="35" r="1.2"/><circle cx="60" cy="44" r="1.2"/><circle cx="60" cy="53" r="1.2"/><circle cx="60" cy="62" r="1.2"/><circle cx="60" cy="71" r="1.2"/><circle cx="60" cy="80" r="1.2"/><circle cx="60" cy="89" r="1.2"/><circle cx="22" cy="80" r="7"/><rect x="94" y="12" width="38" height="72"/><path d="M102 12V84M118 12V84M94 20H132M94 28H132M94 36H132M94 44H132M94 52H132M94 60H132M94 68H132M94 76H132"/><path d="M14 23H33" stroke-dasharray="1.5 1.5"/></g><g fill="#b4b4ba"><circle cx="16" cy="40" r=".9"/><circle cx="22" cy="44" r=".9"/><circle cx="36" cy="67" r=".9"/><circle cx="36" cy="76" r=".9"/><text x="22" y="82.3" font-size="6" font-weight="600" text-anchor="middle">M</text></g>
           <path d="M12 172h54M12 177h40M12 182h48M84 172h44M84 184h16M112 184h18" stroke="#d4d4d8" stroke-width=".8" />
         </svg>
         {inputs.map((c) => <div class="chip"><Icon name={c.icon} />{c.label}</div>)}
