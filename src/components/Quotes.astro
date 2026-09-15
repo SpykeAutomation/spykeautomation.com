@@ -1,0 +1,61 @@
+---
+import Icon from './Icon.astro';
+
+// A sample quote: Acme Controls quoting Riverton Foods, with the first lines
+// of the same job as the price list above. Total is quantity times unit
+// price; the table fades out to show there is more below.
+const lines = [
+  { desc: 'ControlLogix 5570 Controller', qty: 1, price: '$4,180', total: '$4,180' },
+  { desc: 'Digital Input Module, 16 Point', qty: 4, price: '$520', total: '$2,080' },
+  { desc: 'Circuit Breaker, 1 Pole, 10 A', qty: 2, price: '$58', total: '$116' },
+  { desc: 'Pilot Light, 30 mm, Red', qty: 6, price: '$96', total: '$576' },
+];
+---
+
+<section class="section plain" id="quote">
+  <div class="wrap split">
+    <div class="text">
+      <h2 class="h2">Accurate quotes.<br /> More winning work.</h2>
+      <p class="lead">Generate a professional quote in minutes, with a clear breakdown of material, labor, and terms. Spend less time on data entry and more time growing your business.</p>
+    </div>
+
+    <div class="card quote" role="img" aria-label="A sample quote, Q-1042, from Acme Controls to Riverton Foods for a packaging line control panel.">
+      <div aria-hidden="true">
+        <div class="quote-head">
+          <b>Quote Preview</b>
+          <div>
+            <span class="btn tiny"><Icon name="download" size="xs" />Download PDF</span>
+            <span class="btn tiny dark">Send Quote <Icon name="arrow-right" size="xs" /></span>
+          </div>
+        </div>
+        <div class="quote-body">
+          <div class="doc-top">
+            <div class="doc-co">
+              <Icon name="acme" />
+              <div><b>Acme Controls</b><span>1234 Industrial Dr.<br />Chicago, IL 60611</span></div>
+            </div>
+            <dl class="meta">
+              <dt>Quote #</dt><dd>Q-1042</dd>
+              <dt>Date</dt><dd>Sep 10, 2026</dd>
+              <dt>Valid Until</dt><dd>Oct 10, 2026</dd>
+            </dl>
+          </div>
+          <div class="doc-to">
+            <div><b>Bill To</b><span>Riverton Foods<br />456 Lake Industrial Way<br />Madison, WI 53703</span></div>
+            <div><b>Project</b><span>Packaging Line Control Panel</span></div>
+          </div>
+          <div class="fade">
+            <table class="table">
+              <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Unit Price</th><th class="num">Total</th></tr></thead>
+              <tbody>
+                {lines.map((l) => (
+                  <tr><td>{l.desc}</td><td class="num">{l.qty}</td><td class="num">{l.price}</td><td class="num">{l.total}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

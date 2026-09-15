@@ -1,15 +1,22 @@
 ---
-// Spyke wordmark + chevron logo. Sizing and colour come from the `.brand`
-// rules in global.css (`.nav .brand` swaps it to white on the dark bar).
+// The Spyke mark and name. The mark is five bars rising left to right in the
+// app's pipeline colours (Draft, In Progress, In Review, Sent, Won); being
+// coloured, it reads on the white top bar and the black footer alike. Sizing
+// comes from the `.brand` rules in global.css. With no href it renders as
+// plain text, as it does inside a product illustration.
 interface Props {
-  href?: string;
+  href?: string | null;
 }
 const { href = '/' } = Astro.props;
+const Tag = href ? 'a' : 'span';
 ---
 
-<a class="brand" href={href}>
-  <svg class="logo" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M22 46 L50 22 L78 46" />
-    <path d="M22 74 L50 50 L78 74" />
-  </svg>Spyke
-</a>
+<Tag class="brand" href={href ?? undefined}>
+  <svg class="logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+    <rect x="3" y="18" width="4" height="10" rx="2" fill="#8e8e93" />
+    <rect x="8.5" y="14" width="4" height="14" rx="2" fill="#4f7fe0" />
+    <rect x="14" y="10" width="4" height="18" rx="2" fill="#e8a912" />
+    <rect x="19.5" y="7" width="4" height="21" rx="2" fill="#7b6cdb" />
+    <rect x="25" y="4" width="4" height="24" rx="2" fill="#3cad6b" />
+  </svg>Spyke Automation
+</Tag>

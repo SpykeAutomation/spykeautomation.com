@@ -1,0 +1,36 @@
+---
+// A sample of a shop's own price list and labor codes, for the first lines
+// of the sample job. Total is quantity times unit cost.
+const rows = [
+  { part: '1756-L71', qty: 1, cost: '$4,180', code: 'PLC-001', mins: 45, total: '$4,180' },
+  { part: '1756-IB16', qty: 4, cost: '$520', code: 'IO-001', mins: 30, total: '$2,080' },
+  { part: '1489-M1C100', qty: 2, cost: '$58', code: 'CB-001', mins: 15, total: '$116' },
+  { part: '800T-P16R', qty: 6, cost: '$96', code: 'PL-001', mins: 10, total: '$576' },
+];
+---
+
+<section class="section" id="pricing">
+  <!-- The words come first in the page, for readers and screen readers; on
+       wide screens the card is placed to their left (see .split.flip). -->
+  <div class="wrap split flip">
+    <div class="text">
+      <h2 class="h2">Use your pricing,<br /> labor rules, and templates.</h2>
+      <p class="lead">Spyke Automation adapts to your shop's estimating logic&nbsp;— from custom pricing and labor assumptions to reusable templates. Keep full control with complete transparency into how every number is calculated.</p>
+    </div>
+    <div class="card pricing">
+      <h3>Your pricing. Your rules.</h3>
+      <div class="scroll" tabindex="0" role="region" aria-label="Sample price list">
+        <table class="table">
+          <thead>
+            <tr><th>Component</th><th class="num">Qty</th><th class="num">Unit Cost</th><th>Labor Code</th><th class="num">Labor (min)</th><th class="num">Total</th></tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr><td>{r.part}</td><td class="num">{r.qty}</td><td class="num">{r.cost}</td><td class="code">{r.code}</td><td class="num">{r.mins}</td><td class="num">{r.total}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,66 @@
+---
+import Icon from './Icon.astro';
+
+// Drawings to a BOM: a stack of drawing sheets with the three kinds of input
+// over them, a bracket joining them, and what comes out.
+const inputs = [
+  { label: 'Drawings', icon: 'file-text' },
+  { label: 'BOMs', icon: 'sheet' },
+  { label: 'Specifications', icon: 'file-text' },
+];
+const results = ['Identified components', 'Matched to your library', 'Applied labor rules', 'Detected enclosures', 'Ready for pricing'];
+---
+
+<section class="section" id="how">
+  <div class="wrap split">
+    <div class="text">
+      <h2 class="h2">From drawings<br /> to a complete BOM.</h2>
+      <p class="lead">Upload PDFs, DWGs, BOMs, or specs. Spyke Automation extracts components, matches them to your library, identifies enclosures and hardware, and applies your labor rules&nbsp;— so you can focus on what matters.</p>
+    </div>
+
+    <div class="flow">
+      <div class="sheets">
+        <svg class="art" viewBox="0 0 160 214" aria-hidden="true" focusable="false">
+          <defs>
+            <!-- One rung of a ladder diagram: a wire, a contact, a coil -->
+            <pattern id="rung" width="70" height="12" patternUnits="userSpaceOnUse" x="14" y="18">
+              <g fill="none" stroke="#c2c2c8" stroke-width=".7">
+                <path d="M0 6h16M22 6h28M58 6h12" /><path d="M16 2.5v7M22 2.5v7" /><circle cx="54" cy="6" r="3.4" />
+              </g>
+            </pattern>
+            <!-- A terminal list: a box and two lines of text -->
+            <pattern id="terminals" width="36" height="9" patternUnits="userSpaceOnUse" x="96" y="18">
+              <g fill="none" stroke="#cfcfd4" stroke-width=".6"><rect x=".5" y="1.5" width="5" height="5" /><path d="M9 3h22M9 6h14" /></g>
+            </pattern>
+          </defs>
+          <g fill="#fff" stroke="#d9d9de">
+            <rect x="16.5" y="14.5" width="141" height="197" rx="1" />
+            <rect x="8.5" y="7.5" width="141" height="197" rx="1" />
+            <rect x=".5" y=".5" width="141" height="197" rx="1" />
+          </g>
+          <g fill="none" stroke="#c2c2c8" stroke-width=".7">
+            <rect x="6" y="6" width="130" height="185" />
+            <path d="M14 14v146M84 14v146" />
+            <path d="M6 166h130M78 166v25M78 178h58M106 178v13" />
+          </g>
+          <rect x="14" y="18" width="70" height="140" fill="url(#rung)" />
+          <rect x="96" y="18" width="36" height="135" fill="url(#terminals)" />
+          <path d="M12 172h54M12 177h40M12 182h48M84 172h44M84 184h16M112 184h18" stroke="#d4d4d8" stroke-width=".8" />
+        </svg>
+        {inputs.map((c) => <div class="chip"><Icon name={c.icon} />{c.label}</div>)}
+      </div>
+
+      <svg class="bracket" viewBox="0 0 36 230" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false">
+        <path d="M0 55h10a6 6 0 0 1 6 6v108a6 6 0 0 1-6 6H0M16 115h18" />
+        <path d="m30 111 4 4-4 4" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+
+      <div class="card result">
+        <h3>Extracted and ready to review</h3>
+        <ul>
+          {results.map((r) => <li><span class="okmark"><Icon name="check" /></span>{r}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
