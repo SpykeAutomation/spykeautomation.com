@@ -1,0 +1,12 @@
+---
+// One icon from the sprite in Icons.astro. `size` picks one of the .icon sizes
+// in global.css; decorative, so hidden from screen readers.
+interface Props {
+  name: string;
+  size?: 'xs' | 'sm' | 'md';
+  class?: string;
+}
+const { name, size = 'md', class: extra = '' } = Astro.props;
+---
+
+<svg class:list={['icon', size !== 'md' && size, extra]} aria-hidden="true" focusable="false"><use href={`#i-${name}`} /></svg>

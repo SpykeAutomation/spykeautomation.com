@@ -1,92 +1,43 @@
 ---
 import Brand from './Brand.astro';
-const GITHUB_URL = 'https://github.com/SpykeAutomation';
-const DOCS_URL = 'https://docs.spykeautomation.com';
-const year = 2026;
+import { APP_URL, CONTACT_EMAIL } from '../config';
+// The year the site was built; the deploy runs on every push.
+const year = new Date().getFullYear();
+// Only links to things that exist: the home page's sections, the contact
+// address, the app, and the legal pages. The section links are written as
+// "/#…" so they also work from the privacy and terms pages.
 ---
 
-<footer class="site-footer">
+<footer class="foot">
   <div class="wrap">
-    <div class="footer-grid">
-      <div>
-        <Brand href="/" />
-        <p class="tagline">The system of record for the factory.</p>
-      </div>
-
-      <div>
-        <h5>Product</h5>
-        <ul>
-          <li><a href="/#how">How it works</a></li>
-          <li><a href="/#features">Features</a></li>
-          <li><a href="/#review">Review</a></li>
-          <li><a href="/#schematics">Schematics</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h5>Solutions</h5>
-        <ul>
-          <li><a href="/integrators/">For integrators</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h5>Resources</h5>
-        <ul>
-          <li><a href={DOCS_URL}>Documentation</a></li>
-          <li><a href={`${DOCS_URL}/reference/cli/`}>CLI reference</a></li>
-          <li><a href={GITHUB_URL}>GitHub</a></li>
-          <li><a href={`${GITHUB_URL}/releases`}>Changelog</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h5>Company</h5>
-        <ul>
-          <li><a href={`${DOCS_URL}/company/`}>About</a></li>
-          <li><a href="mailto:hello@spykeautomation.com">Contact</a></li>
-        </ul>
-      </div>
+    <div>
+      <Brand href="/" />
     </div>
 
-    <div class="footer-base">
-      <span>© {year} Spyke Automation</span>
-      <span class="footer-legal">
-        <a href="/privacy/">Privacy</a>
-        <a href="/terms/">Terms</a>
-      </span>
+    <div>
+      <p class="foot-head">Product</p>
+      <ul>
+        <li><a href="/#how">How it works</a></li>
+        <li><a href="/#pricing">Your rules</a></li>
+        <li><a href="/#quote">Quotes</a></li>
+      </ul>
     </div>
 
-    {/*
-      Oversized wordmark, bleeding off the bottom of the page.
+    <div>
+      <p class="foot-head">Company</p>
+      <ul>
+        <li><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
+        <li><a href={APP_URL}>Log in</a></li>
+      </ul>
+    </div>
 
-      This is an SVG rather than styled text because the mark has to span the
-      container exactly. Sizing text with `vw` would depend on Instrument Sans's
-      advance widths, which vary by weight and would leave a ragged gap at one
-      edge. `textLength` pins the width to the viewBox and `lengthAdjust="spacing"`
-      absorbs the difference in the gaps between letters, so the letterforms
-      themselves are never stretched.
-
-      The viewBox is shorter than the glyphs are tall, which is what crops them.
-      Decorative — "Spyke" is already announced by the brand link above.
-    */}
-    <svg
-      class="wordmark"
-      viewBox="0 0 1000 300"
-      role="presentation"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <text
-        x="0"
-        y="259"
-        textLength="1000"
-        lengthAdjust="spacing"
-        font-family="Instrument Sans, sans-serif"
-        font-size="360"
-        font-weight="700"
-        fill="currentColor"
-      >Spyke</text>
-    </svg>
+    <div class="legal-links">
+      <p>© {year} Spyke Automation<br />All rights reserved.</p>
+      <div><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></div>
+    </div>
   </div>
+
+  <!-- SPYKE in letters as wide as the column, cut off by the bottom of the
+       page. Decorative; the brand link above already names the site. -->
+  <div class="giant" aria-hidden="true"><span>SPYKE</span></div>
 </footer>

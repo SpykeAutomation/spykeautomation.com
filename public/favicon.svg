@@ -1,6 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <g fill="none" stroke="#16181D" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" transform="translate(50 48) scale(1.2) translate(-50 -48)">
-    <path d="M22 46 L50 22 L78 46" />
-    <path d="M22 74 L50 50 L78 74" />
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- The Spyke mark: five bars rising left to right in the pipeline colours
+       (Draft, In Progress, In Review, Sent, Won). Coloured, so it reads on
+       light and dark tabs alike. -->
+  <rect x="3" y="18" width="4" height="10" rx="2" fill="#8e8e93" />
+  <rect x="8.5" y="14" width="4" height="14" rx="2" fill="#4f7fe0" />
+  <rect x="14" y="10" width="4" height="18" rx="2" fill="#e8a912" />
+  <rect x="19.5" y="7" width="4" height="21" rx="2" fill="#7b6cdb" />
+  <rect x="25" y="4" width="4" height="24" rx="2" fill="#3cad6b" />
 </svg>

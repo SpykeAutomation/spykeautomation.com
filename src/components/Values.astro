@@ -1,0 +1,21 @@
+---
+import Icon from './Icon.astro';
+
+// Three short reasons, side by side, between the quote and the closing call.
+const values = [
+  { icon: 'zap', title: 'Win more work', text: 'Quote faster and respond to more opportunities.' },
+  { icon: 'users', title: 'Operate more efficiently', text: 'Turn estimating knowledge into a durable advantage.' },
+  { icon: 'shield', title: 'Built for the real world', text: 'Your data stays yours. Secure, reliable, and private.' },
+];
+---
+
+<section class="wrap values" aria-labelledby="values-title">
+  <h2 class="sr-only" id="values-title">Why shops choose Spyke</h2>
+  {values.map((v) => (
+    <div>
+      <Icon name={v.icon} />
+      <h3>{v.title}</h3>
+      <p>{v.text}</p>
+    </div>
+  ))}
+</section>
