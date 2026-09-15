@@ -203,6 +203,11 @@ a.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary
   .shot { animation: shot-grow 1ms ease-out both; animation-timeline: scroll(root); animation-range: 0 450px; }
 }
 
+/* Where scroll-linked animation isn't supported, the script in Hero.astro
+   sets these from the scroll position instead. */
+.glow.by-script::before { opacity: var(--deepen, .55); }
+.glow.by-script::after { transform: scale(var(--lift-x, 1), var(--lift-y, 1)); }
+
 /* The picture of the app, in a Mac-style window: a title bar with the three
    window buttons, over public/home-shot.png, a 2x screenshot of the app's
    home page at 1280 by 1020 */

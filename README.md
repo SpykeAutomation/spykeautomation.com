@@ -33,9 +33,9 @@ home page with sample data, 1280 by 1020. The other product illustrations
 (the drawing-to-BOM flow, the pricing table, the quote) are plain HTML and
 inline SVG with the same sample job. The hero's glow, its colour cycle, the
 picture growing on scroll and the exploded drawing in Reading.astro are CSS
-animations. The exploded drawing's build-up has a short script for browsers
-without scroll-linked animation (Firefox today); the hero's scroll effects show
-still there. There is no other JavaScript.
+animations. The hero's scroll effects and the exploded drawing's build-up each
+have a short script for browsers without scroll-linked animation (Firefox
+today). There is no other JavaScript.
 Demo requests and sales questions open an email to the address in
 `src/config.ts`.
 

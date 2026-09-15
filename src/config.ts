@@ -27,5 +27,3 @@ const demoBody = [
 ].join('\r\n');
 export const DEMO_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Demo request')}&body=${encodeURIComponent(demoBody)}`;
 
-/** The closing call's "Talk to sales" button: an email with the subject set. */
-export const SALES_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Sales question')}`;

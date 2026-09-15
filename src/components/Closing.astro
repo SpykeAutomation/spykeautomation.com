@@ -1,8 +1,8 @@
 ---
-import { DEMO_MAILTO, SALES_MAILTO } from '../config';
+import { DEMO_MAILTO } from '../config';
 
 // The page's last word, on the black ground it shares with the footer, over
-// a fine grid. Both buttons open an email; the address is also in the
+// a fine grid. The button opens an email; the address is also in the
 // footer as text, for a computer with no mail app set up.
 ---
 
@@ -12,7 +12,6 @@ import { DEMO_MAILTO, SALES_MAILTO } from '../config';
     <p>Book a personalized demo and see how Spyke fits your workflow.</p>
     <div class="actions">
       <a href={DEMO_MAILTO} class="btn light">Get a demo</a>
-      <a href={SALES_MAILTO} class="btn">Talk to sales</a>
     </div>
   </div>
 </section>

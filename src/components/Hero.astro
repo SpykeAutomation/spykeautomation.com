@@ -31,3 +31,34 @@ import { DEMO_MAILTO } from '../config';
     </div>
   </div>
 </section>
+
+<script>
+// Firefox and older browsers have no scroll-linked animation, so there the
+// hero's scroll effects are driven from the scroll position instead, with
+// the same values and ranges as the CSS in global.css: over the first 560px
+// the glow deepens and the white oval over it shrinks, and over the first
+// 450px the picture grows from 88% to full size. Nothing runs where the CSS
+// already does the work, or where the reader has asked for reduced motion.
+(() => {
+  if (CSS.supports('animation-timeline: scroll()')) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const glow = document.querySelector('.glow');
+  const shot = document.querySelector('.shot');
+  if (!glow || !shot) return;
+  glow.classList.add('by-script');
+  const clamp = (t) => Math.min(1, Math.max(0, t));
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const g = clamp(scrollY / 560);
+    glow.style.setProperty('--deepen', String(0.55 + 0.35 * g));
+    glow.style.setProperty('--lift-x', String(1 - 0.429 * g));
+    glow.style.setProperty('--lift-y', String(1 - 0.25 * g));
+    const s = clamp(scrollY / 450);
+    shot.style.transform = `scale(${0.88 + 0.12 * (1 - (1 - s) * (1 - s))})`;
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', queue, { passive: true });
+  update();
+})();
+</script>
