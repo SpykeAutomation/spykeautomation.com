@@ -129,6 +129,7 @@ a.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary
 
 /* ===== HERO ===== */
 .hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: 120px; padding-block: 140px 96px; }
+.hero .h1 { text-align: center; }
 .hero .lead { max-width: 30em; margin: 36px auto 0; font-size: 18px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; color: #6f7988; text-align: center; text-wrap: balance; }
 .hero .actions { justify-content: center; margin-top: 40px; }
 
