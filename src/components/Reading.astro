@@ -1,0 +1,102 @@
+---
+// How a drawing is read: a dark band with one control panel drawing,
+// exploded into the five steps Spyke takes. The base sheet is the scan as it arrives; each layer above it is a see-through
+// overlay showing only what that step adds: straightened, ruled lines
+// traced, parts list found, read twice and checked, as in backend/extraction
+// in the app. The build-up animation is in global.css, with a script below
+// for browsers that can't link an animation to the scroll.
+---
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="sheet" viewBox="0 0 400 280">
+    <rect width="400" height="280" fill="var(--paper, #fff)" stroke="none"/>
+    <g fill="none" stroke="var(--ink, #71717a)" stroke-width="1"><rect x="8" y="8" width="384" height="264"/><path d="M58 8v4M58 272v-4M108 8v4M108 272v-4M158 8v4M158 272v-4M208 8v4M208 272v-4M258 8v4M258 272v-4M308 8v4M308 272v-4M358 8v4M358 272v-4M8 78h4M392 78h-4M8 148h4M392 148h-4M8 218h4M392 218h-4M26 18V34M26 34L31 43M26 44V52M26 64V96M23 96H29M23 100H29M26 100V112M26 122V134M26 134L28 146M36 18V34M36 34L41 43M36 44V52M36 64V96M33 96H39M33 100H39M36 100V112M36 122V134M36 134L36 142M46 18V34M46 34L51 43M46 44V52M46 64V96M43 96H49M43 100H49M46 100V112M46 122V134M46 134L44 146M23.5 122L28.5 112M33.5 122L38.5 112M43.5 122L48.5 112M36 166V176M28 176H44M31 179H41M34 182H38M26 74H64M36 86H64M64 74a3 3 0 0 1 0 6a3 3 0 0 1 0 6M71 72V88M73 72V88M80 74a3 3 0 0 0 0 6a3 3 0 0 0 0 6M80 74H98M110 74H122M80 86H122M126 38H178M64 98V134M64 98H82M82 95v6M86 95v6M86 98H104M110 98H124M64 110H82M82 107v6M86 107v6M86 110H104M110 110H124M64 122H82M82 119v6M86 119v6M86 122H104M110 122H124M64 134H82M82 131v6M86 131v6M86 134H104M110 134H124M84 93v-3M81 90h6M84 117v-3M81 114h6"/><path d="M24 39H53" stroke-dasharray="2 2"/><rect x="24" y="52" width="4" height="12"/><rect x="23.5" y="112" width="5" height="10"/><rect x="34" y="52" width="4" height="12"/><rect x="33.5" y="112" width="5" height="10"/><rect x="44" y="52" width="4" height="12"/><rect x="43.5" y="112" width="5" height="10"/><rect x="98" y="72" width="12" height="4"/><rect x="126" y="26" width="52" height="120"/><circle cx="126" cy="50" r="2"/><circle cx="126" cy="62" r="2"/><circle cx="126" cy="74" r="2"/><circle cx="126" cy="86" r="2"/><circle cx="126" cy="98" r="2"/><circle cx="126" cy="110" r="2"/><circle cx="126" cy="122" r="2"/><circle cx="126" cy="134" r="2"/><rect x="104" y="95" width="6" height="6"/><rect x="104" y="107" width="6" height="6"/><rect x="104" y="119" width="6" height="6"/><rect x="104" y="131" width="6" height="6"/><circle cx="36" cy="154" r="12"/></g><g fill="var(--ink, #71717a)" stroke="none"><circle cx="26" cy="74" r="1.6"/><circle cx="36" cy="86" r="1.6"/><rect x="132" y="48.5" width="16" height="3"/><rect x="132" y="60.5" width="16" height="3"/><rect x="132" y="72.5" width="16" height="3"/><rect x="132" y="84.5" width="16" height="3"/><rect x="132" y="96.5" width="16" height="3"/><rect x="132" y="108.5" width="16" height="3"/><rect x="132" y="120.5" width="16" height="3"/><rect x="132" y="132.5" width="16" height="3"/><rect x="130" y="30" width="30" height="4"/><circle cx="64" cy="110" r="1.6"/><circle cx="64" cy="122" r="1.6"/><text x="36" y="157.5" font-size="9" font-weight="600" text-anchor="middle">M</text></g><g fill="var(--ink, #71717a)" stroke="none" font-size="5.5" font-weight="500"><text x="54" y="42">DS1</text><text x="52" y="60">FU1</text><text x="52" y="100">K1</text><text x="52" y="119">OL1</text><text x="52" y="156">M1</text><text x="66" y="70">T1</text><text x="100" y="92">TB1</text><text x="150" y="158">PLC</text></g>
+    <rect x="196" y="24" width="180" height="136" fill="var(--list-fill, none)" stroke="none"/>
+    <rect x="196" y="24" width="180" height="16" fill="var(--head-fill, none)" stroke="none"/>
+    <g fill="none" stroke="var(--grid, #71717a)" stroke-width="var(--grid-w, 1)"><rect x="196" y="24" width="180" height="136"/><path d="M196 40H376"/><path d="M196 57H376"/><path d="M196 74H376"/><path d="M196 91H376"/><path d="M196 108H376"/><path d="M196 125H376"/><path d="M196 142H376"/><path d="M216 24V160M286 24V160M336 24V160"/><rect x="256" y="222" width="128" height="42"/><path d="M256 236H384M256 250H384M320 222V264"/></g>
+    <rect x="196" y="24" width="180" height="136" fill="none" stroke="var(--list, none)" stroke-width="2.5"/>
+    <g fill="var(--head, #52525b)" stroke="none"><rect x="200" y="30" width="10" height="4"/><rect x="220" y="30" width="36" height="4"/><rect x="290" y="30" width="30" height="4"/><rect x="342" y="30" width="14" height="4"/></g>
+    <g fill="var(--cell, #a1a1aa)" stroke="none"><rect x="200" y="46" width="10" height="4"/><rect x="220" y="46" width="44" height="4"/><rect x="290" y="46" width="38" height="4"/><rect x="342" y="46" width="8" height="4"/><rect x="200" y="63" width="10" height="4"/><rect x="220" y="63" width="37" height="4"/><rect x="290" y="63" width="33" height="4"/><rect x="342" y="63" width="11" height="4"/><rect x="200" y="80" width="10" height="4"/><rect x="220" y="80" width="30" height="4"/><rect x="290" y="80" width="28" height="4"/><rect x="342" y="80" width="14" height="4"/><rect x="200" y="97" width="10" height="4"/><rect x="220" y="97" width="41" height="4"/><rect x="290" y="97" width="37" height="4"/><rect x="342" y="97" width="9" height="4"/><rect x="200" y="114" width="10" height="4"/><rect x="220" y="114" width="34" height="4"/><rect x="290" y="114" width="32" height="4"/><rect x="342" y="114" width="12" height="4"/><rect x="200" y="131" width="10" height="4"/><rect x="220" y="131" width="27" height="4"/><rect x="290" y="131" width="27" height="4"/><rect x="342" y="131" width="15" height="4"/><rect x="200" y="148" width="10" height="4"/><rect x="220" y="148" width="38" height="4"/><rect x="290" y="148" width="36" height="4"/><rect x="342" y="148" width="10" height="4"/></g>
+    <g fill="var(--text, #a1a1aa)" stroke="none"><rect x="20" y="228" width="120" height="4"/><rect x="20" y="238" width="96" height="4"/><rect x="20" y="248" width="108" height="4"/><rect x="262" y="227" width="50" height="4"/><rect x="326" y="227" width="40" height="4"/><rect x="262" y="241" width="44" height="4"/><rect x="262" y="255" width="56" height="4"/><rect x="326" y="255" width="30" height="4"/></g>
+  </symbol>
+</svg>
+
+<section class="reading" id="reading" aria-labelledby="reading-title">
+    <div class="wrap">
+      <div class="reading-head">
+        <h2 class="h2" id="reading-title">Built for accuracy.</h2>
+        <p>Every drawing is processed, structured, and checked before it reaches your estimate, reducing manual data entry work and giving your team more time to build.</p>
+      </div>
+
+      <div class="explode" aria-hidden="true">
+        <div class="stack">
+          <!-- 1: the scan as it arrives, tilted and speckled: the base sheet -->
+          <div class="layer base" style="--i:0;--paper:#f3f1ea;--ink:#8f8f95;--grid:#8f8f95;--text:#a1a1aa;--cell:#a1a1aa;--head:#71717a">
+            <svg viewBox="0 0 400 280">
+              <defs><pattern id="speckle" width="23" height="17" patternUnits="userSpaceOnUse"><circle cx="3" cy="4" r=".7" fill="#9a968c"/><circle cx="15" cy="11" r=".5" fill="#9a968c"/><circle cx="9" cy="15" r=".4" fill="#b3aea2"/></pattern></defs>
+              <use href="#sheet" transform="rotate(1.8 200 140)"/>
+              <rect width="400" height="280" fill="url(#speckle)" opacity=".9"/>
+            </svg>
+          </div>
+          <!-- 2: straightened and cleaned -->
+          <div class="layer" style="--i:1;--paper:rgba(255,255,255,.9);--ink:#52525b;--grid:#52525b;--text:#8e8e93;--cell:#8e8e93;--head:#3f3f46">
+            <svg viewBox="0 0 400 280"><use href="#sheet"/></svg>
+          </div>
+          <!-- 3: the ruled lines traced, and nothing else -->
+          <div class="layer" style="--i:2;--paper:transparent;--ink:transparent;--text:transparent;--head:transparent;--cell:transparent;--grid:#6ea0ff;--grid-w:2.2">
+            <svg viewBox="0 0 400 280"><use href="#sheet"/></svg>
+          </div>
+          <!-- 4: the parts list found -->
+          <div class="layer" style="--i:3;--paper:transparent;--ink:transparent;--text:transparent;--grid:transparent;--cell:transparent;--list:#f5b83d;--list-fill:rgba(245,184,61,.2);--head-fill:rgba(245,184,61,.55);--head:#fde7b0">
+            <svg viewBox="0 0 400 280"><use href="#sheet"/></svg>
+          </div>
+          <!-- 5: the parts list read twice and checked: one cell flagged, the rest ticked -->
+          <div class="layer" style="--i:4;--paper:transparent;--ink:transparent;--text:transparent;--grid:transparent;--head:#ffffff;--cell:#e4e4e7">
+            <svg viewBox="0 0 400 280"><use href="#sheet"/>
+              <rect x="287" y="92" width="48" height="16" fill="rgba(167,139,250,.32)" stroke="#a78bfa" stroke-width="1.5"/>
+              <g fill="none" stroke="#4ade80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M381 47l3 3 5-6M381 64l3 3 5-6M381 81l3 3 5-6M381 115l3 3 5-6M381 132l3 3 5-6M381 149l3 3 5-6"/></g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+// Firefox and older browsers have no scroll-linked animation, so there the
+// build-up is driven from the scroll position instead, with the same ranges
+// as the CSS in global.css. Nothing runs where the CSS already does the
+// work, or where the reader has asked for reduced motion.
+(() => {
+  const explode = document.querySelector('.explode');
+  if (!explode || CSS.supports('animation-timeline: view()')) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const stack = explode.querySelector('.stack');
+  const layers = [...explode.querySelectorAll('.layer:not(.base)')];
+  // Progress through a range of the section's passage, eased out.
+  const part = (p, from, to) => {
+    const t = Math.min(1, Math.max(0, (p - from) / (to - from)));
+    return 1 - (1 - t) * (1 - t);
+  };
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const box = explode.getBoundingClientRect();
+    // 0 as the section's top enters at the bottom of the window, 1 as its
+    // bottom leaves at the top: the CSS "cover" range.
+    const p = (innerHeight - box.top) / (innerHeight + box.height);
+    const spread = part(p, 0.05, 0.48);
+    stack.style.setProperty('--gap', `${6 + 58 * spread}px`);
+    stack.style.setProperty('--spin', `${-14 + 14 * spread}deg`);
+    layers.forEach((layer, i) => {
+      const t = part(p, 0.08 + i * 0.08, 0.24 + i * 0.08);
+      layer.style.opacity = String(t);
+      layer.style.translate = `0 0 ${180 * (1 - t)}px`;
+    });
+  };
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  update();
+})();
+</script>

@@ -225,6 +225,49 @@ a.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary
   font-size: clamp(24px, 2.8vw, 32px); font-weight: 500; line-height: 1.2; letter-spacing: -0.025em;
 }
 
+/* ===== HOW A DRAWING IS READ: THE EXPLODED VIEW ===== */
+/* A dark band across the page: the heading and one control panel drawing
+   exploded into the five steps Spyke takes.
+   The base sheet is the scan as it arrives; each layer above it is a
+   see-through overlay showing only what that step adds. As the band
+   scrolls into view the overlays drop onto the stack one after another,
+   and the stack spreads apart and turns. Where scroll-linked animation
+   isn't supported, a script in Reading.astro does the same. */
+@property --gap { syntax: "<length>"; inherits: true; initial-value: 64px; }
+@property --spin { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+@keyframes explode { from { --gap: 6px; --spin: -14deg; } to { --gap: 64px; --spin: 0deg; } }
+@keyframes drop { from { opacity: 0; translate: 0 0 180px; } }
+.reading { position: relative; isolation: isolate; overflow: clip; padding-block: 120px 110px; background: var(--ink); color: #fafafa; }
+.reading::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: radial-gradient(55% 45% at 50% 52%, rgba(123, 108, 219, .30), transparent 70%);
+}
+.reading-head { max-width: 760px; margin-inline: auto; text-align: center; }
+.reading-head .h2 { font-size: clamp(34px, 4.4vw, 52px); line-height: 1.06; letter-spacing: -0.04em; }
+.reading-head p { margin: 20px auto 0; max-width: 40em; font-size: 18px; line-height: 1.5; color: var(--ink-soft); text-wrap: balance; }
+.explode { position: relative; height: 860px; margin-top: 40px; perspective: 2200px; view-timeline: --reading block; }
+.stack {
+  position: absolute; left: 50%; top: 50%; width: 400px; height: 280px; margin: 10px 0 0 -200px;
+  transform-style: preserve-3d; transform: scale(1.55) rotateX(58deg) rotateZ(calc(-38deg + var(--spin)));
+}
+.layer {
+  position: absolute; inset: 0; transform-style: preserve-3d;
+  transform: translateZ(calc(var(--i) * var(--gap)));
+  border: 1px solid rgba(255, 255, 255, .28); border-radius: 3px; background: rgba(255, 255, 255, .04);
+}
+.layer.base { background: #f3f1ea; border-color: transparent; box-shadow: 0 60px 90px -30px rgba(0, 0, 0, .75); }
+.layer svg { display: block; width: 100%; height: 100%; }
+@supports (animation-timeline: view()) {
+  .stack { animation: explode 1ms ease-out both; animation-timeline: --reading; animation-range: cover 5% cover 48%; }
+  .layer:not(.base) { animation: drop 1ms ease-out both; animation-timeline: --reading; }
+  .layer:nth-child(2) { animation-range: cover 8% cover 24%; }
+  .layer:nth-child(3) { animation-range: cover 16% cover 32%; }
+  .layer:nth-child(4) { animation-range: cover 24% cover 40%; }
+  .layer:nth-child(5) { animation-range: cover 32% cover 48%; }
+}
+@media (prefers-reduced-motion: reduce) { .stack, .layer { animation: none; } }
+
+
 /* ===== SECTIONS ===== */
 .section { padding-block: 88px; border-bottom: 1px solid var(--line); }
 .section.plain { border-bottom: 0; }
@@ -369,6 +412,8 @@ a.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary
 
 /* ===== NARROW SCREENS ===== */
 @media (max-width: 1000px) {
+  .explode { height: 640px; }
+  .stack { transform: scale(1.15) rotateX(58deg) rotateZ(calc(-38deg + var(--spin))); }
   .split, .split.flip { grid-template-columns: minmax(0, 1fr); gap: 44px; }
   .split.flip > .text { order: 0; }
   .foot .wrap { grid-template-columns: repeat(2, 1fr); }
@@ -376,6 +421,9 @@ a.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary
   .legal-links { grid-column: 1 / -1; padding-left: 0; border-left: 0; }
 }
 @media (max-width: 640px) {
+  .reading { padding-block: 88px 72px; }
+  .explode { height: 420px; }
+  .stack { transform: translateX(-10px) scale(.62) rotateX(58deg) rotateZ(calc(-38deg + var(--spin))); }
   .wrap { padding-inline: 16px; }
   .top .wrap { height: 72px; }
   .top .brand { gap: 10px; font-size: 18px; }

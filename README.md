@@ -31,9 +31,11 @@ src/
 The hero picture, `public/home-shot.png`, is a 2x screenshot of the app's
 home page with sample data, 1280 by 1020. The other product illustrations
 (the drawing-to-BOM flow, the pricing table, the quote) are plain HTML and
-inline SVG with the same sample job. The page has no JavaScript of its own:
-the hero's glow, its colour cycle and the picture growing on scroll are CSS
-animations, and browsers without scroll-linked animation show them still.
+inline SVG with the same sample job. The hero's glow, its colour cycle, the
+picture growing on scroll and the exploded drawing in Reading.astro are CSS
+animations. The exploded drawing's build-up has a short script for browsers
+without scroll-linked animation (Firefox today); the hero's scroll effects show
+still there. There is no other JavaScript.
 Demo requests and sales questions open an email to the address in
 `src/config.ts`.
 
