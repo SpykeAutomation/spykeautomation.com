@@ -119,7 +119,12 @@ a.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary
 .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 84px; }
 .top .brand { gap: 11px; font-size: 20px; }
 .top .brand .logo { width: 28px; height: 28px; }
-.login { font-size: 15px; font-weight: 500; color: var(--soft); }
+/* The tappable area is 44px tall and runs 10px past the text on each side;
+   the negative margin keeps the text lined up with the column's edge. */
+.login {
+  display: inline-flex; align-items: center; min-height: 44px; padding-inline: 10px; margin-right: -10px;
+  font-size: 17px; font-weight: 500; color: var(--soft);
+}
 .login:hover { color: var(--text); }
 
 /* ===== HERO ===== */
