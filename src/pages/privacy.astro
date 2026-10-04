@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import ComingSoon from '../components/ComingSoon.astro';
 import { PAUSED, CONTACT_EMAIL as CONTACT } from '../config';
 
-const updated = 'October 3, 2026';
+const updated = 'October 4, 2026';
 ---
 
 {PAUSED && (
@@ -45,18 +45,19 @@ const updated = 'October 3, 2026';
         <li>
           <strong>Usage data.</strong> We use PostHog, hosted in the United States, to understand how
           the site is used: the pages you view, the site that referred you, your device and browser,
-          and what you click. Nothing is collected until you answer the cookie banner.
+          and what you click.
           <ul>
             <li>
-              If you <strong>decline</strong>, visits are still counted, but with no cookies and
-              nothing stored on your device to identify you. Each visit is tied to an identifier
-              that changes daily, and your IP address isn't kept.
-            </li>
-            <li>
-              If you <strong>accept</strong>, PostHog sets a cookie so return visits are recognised,
+              <strong>By default</strong>, PostHog sets a cookie so return visits are recognised,
               and records your visits as session replays, with anything you type masked. Your
               approximate location is worked out from your IP address; the IP address itself isn't
               stored.
+            </li>
+            <li>
+              If you choose <strong>Reject all</strong> in the cookie banner, the cookie is deleted
+              and session replay stops. Visits are still counted, but with no cookies and nothing
+              stored on your device to identify you. Each visit is tied to an identifier that
+              changes daily, and your IP address isn't kept.
             </li>
           </ul>
           You can change your answer at any time with "Cookie settings" at the bottom of every page.
@@ -69,11 +70,11 @@ const updated = 'October 3, 2026';
 
       <h2>Cookies and similar storage</h2>
       <p>
-        Only if you accept analytics, PostHog sets a cookie named
+        Unless you reject analytics, PostHog sets a cookie named
         <code>ph_&lt;project key&gt;_posthog</code>, which lasts 365 days and is shared across
         spykeautomation.com and its subdomains, along with related entries starting with
-        <code>ph_</code> in your browser's local and session storage. Whichever answer you give, one
-        entry in local storage remembers it, so we don't ask again. We use no advertising cookies.
+        <code>ph_</code> in your browser's local and session storage. Whichever answer you give in the
+        cookie banner, entries in local storage remember it, so we don't ask again. We use no advertising cookies.
       </p>
 
       <h2>How we use information</h2>

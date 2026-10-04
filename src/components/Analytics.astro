@@ -2,9 +2,10 @@
 // PostHog, loaded from its CDN without blocking the page. Only in production
 // builds with a key set (see ANALYTICS_ON in config.ts).
 //
-// Consent is strict: `cookieless_mode: 'on_reject'` captures nothing until the
-// visitor answers the cookie banner. Accept → PostHog's normal cookie and
-// session replay. Decline → counted with no cookies or tracking storage.
+// Tracking is on by default: a visitor who hasn't answered the cookie banner is
+// opted in at load, so PostHog's cookie and session replay start straight away.
+// Reject all switches to cookieless counting (`cookieless_mode: 'on_reject'`):
+// no cookies or tracking storage, and the cookie already set is deleted.
 //
 // ?notrack=1 turns analytics off in this browser (for our own visits);
 // ?notrack=0 turns it back on.
@@ -26,20 +27,24 @@ import { ANALYTICS_ON, POSTHOG_KEY as key, POSTHOG_HOST as host } from '../confi
     posthog.init(key, {
       api_host: host,
       defaults: '2026-08-30',
-      // Nothing until the banner is answered; Accept → cookie, Decline → cookieless.
+      // Rejecting switches to cookieless counting rather than stopping it.
       cookieless_mode: 'on_reject',
-      // The /flags request carries a visitor ID and would go out before consent.
-      // We use no flags. (Not advanced_disable_flags: that also stops the remote
-      // config that switches session replay on.)
+      // We use no feature flags, so skip the /flags request. (Not
+      // advanced_disable_flags: that also stops the remote config that switches
+      // session replay on.)
       advanced_disable_feature_flags: true,
-      // When `loaded` runs, window.posthog is still the snippet's stub, so hand
-      // the real instance to the cookie banner.
-      loaded: (ph) => document.dispatchEvent(new CustomEvent('ph:loaded', { detail: ph })),
+      loaded: (ph) => {
+        // Not answered yet → track as if accepted. `on_reject` alone would wait
+        // for an answer. No $opt_in event: the visitor didn't click anything.
+        if (ph.get_explicit_consent_status() === 'pending') ph.opt_in_capturing({ captureEventName: false });
+        // window.posthog is still the snippet's stub here, so hand the real
+        // instance to the cookie banner.
+        document.dispatchEvent(new CustomEvent('ph:loaded', { detail: ph }));
+      },
     });
 
     // Named events for the buttons that matter, from data-track / data-location.
     // Sent at once: "Log in" leaves the page, and a batched event could be lost.
-    // Before the banner is answered, PostHog drops these.
     document.addEventListener('click', (e) => {
       const el = e.target.closest?.('[data-track]');
       if (el) posthog.capture(el.dataset.track, { location: el.dataset.location }, { send_instantly: true });
