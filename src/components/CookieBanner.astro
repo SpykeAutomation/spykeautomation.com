@@ -1,0 +1,74 @@
+---
+// The cookie consent bar. It stays hidden until PostHog has loaded, and then
+// shows only if the visitor hasn't answered yet. If PostHog is blocked or
+// switched off, neither this bar nor the footer's "Cookie settings" appears:
+// nothing is being tracked, so there is nothing to ask.
+import { ANALYTICS_ON } from '../config';
+---
+
+{ANALYTICS_ON && (
+  <div class="cookie-banner" id="cookieBanner" role="region" aria-label="Cookie consent" hidden>
+    <p>We use cookies to understand how people use the site. <a href="/privacy/">Privacy</a></p>
+    <div class="cookie-actions">
+      {/* Same style on both: a choice, not a nudge. */}
+      <button type="button" class="btn" data-consent="granted">Accept</button>
+      <button type="button" class="btn" data-consent="denied">Decline</button>
+    </div>
+  </div>
+)}
+
+<script>
+  type PostHog = {
+    __loaded?: boolean;
+    get_explicit_consent_status(): 'granted' | 'denied' | 'pending';
+    opt_in_capturing(): void;
+    opt_out_capturing(): void;
+    capture(event: string): void;
+  };
+
+  const bar = document.getElementById('cookieBanner');
+  const settings = document.getElementById('cookie-settings');
+
+  const start = (ph: PostHog) => {
+    if (!bar) return;
+    let openedFrom: HTMLElement | null = null;
+
+    const close = () => {
+      bar.hidden = true;
+      if (openedFrom) openedFrom.focus();
+      else document.getElementById('main')?.focus({ preventScroll: true });
+      openedFrom = null;
+    };
+
+    bar.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const choice = button.dataset.consent;
+        // Picking the same answer again changes nothing and isn't counted twice.
+        if (choice !== ph.get_explicit_consent_status()) {
+          if (choice === 'granted') {
+            ph.opt_in_capturing();
+          } else {
+            ph.opt_out_capturing();
+            ph.capture('consent_declined');
+          }
+        }
+        close();
+      });
+    });
+
+    if (settings) {
+      settings.hidden = false;
+      settings.addEventListener('click', () => {
+        openedFrom = settings;
+        bar.hidden = false;
+        bar.querySelector<HTMLButtonElement>('[data-consent="granted"]')?.focus();
+      });
+    }
+
+    if (ph.get_explicit_consent_status() === 'pending') bar.hidden = false;
+  };
+
+  const w = window as unknown as { posthog?: PostHog };
+  if (w.posthog?.__loaded) start(w.posthog);
+  else document.addEventListener('ph:loaded', (e) => start((e as CustomEvent<PostHog>).detail), { once: true });
+</script>

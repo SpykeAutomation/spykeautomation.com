@@ -61,6 +61,9 @@ img, svg { max-width: 100%; }
    page scroll sideways. */
 main { overflow-x: clip; }
 :focus-visible { outline: 2px solid #4f7fe0; outline-offset: 2px; border-radius: 4px; }
+/* <main> takes focus from the skip link and after the cookie banner closes;
+   it's a landing spot, not a control, so no ring. */
+main:focus { outline: none; }
 .wrap { max-width: var(--col); margin-inline: auto; padding-inline: 24px; }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
 .sr-only {
@@ -98,7 +101,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; text-wrap: balance; }
   font: inherit; font-size: 15px; font-weight: 500; white-space: nowrap;
   cursor: pointer; transition: background .15s, border-color .15s;
 }
-a.btn:hover { border-color: var(--border-strong); background: #fcfcfc; }
+a.btn:hover, button.btn:hover { border-color: var(--border-strong); background: #fcfcfc; }
 .btn.dark { background: var(--primary); border-color: var(--primary); color: #fff; }
 a.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
 .btn.tiny { height: 30px; padding: 0 11px; font-size: 12.5px; border-radius: 6px; gap: 6px; }
@@ -397,7 +400,28 @@ a.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary
 .foot a:hover { color: #fafafa; }
 .legal-links { padding-left: 32px; border-left: 1px solid var(--ink-line); font-size: 12.5px; color: var(--ink-muted); }
 .legal-links p { margin: 0 0 20px; line-height: 1.6; white-space: nowrap; }
-.legal-links div { display: flex; gap: 18px; }
+.legal-links div { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+/* "Cookie settings" is a button (it opens the cookie banner) dressed as the links beside it */
+.legal-links button { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; white-space: nowrap; }
+.legal-links button:hover { color: #fafafa; }
+.legal-links button[hidden] { display: none; }
+
+/* ===== COOKIE BANNER ===== */
+.cookie-banner {
+  position: fixed; z-index: 50; left: 16px; right: 16px; bottom: 16px;
+  max-width: 640px; margin-inline: auto;
+  display: flex; align-items: center; gap: 16px 24px; flex-wrap: wrap;
+  padding: 14px 16px 14px 20px;
+  background: var(--card); color: var(--soft);
+  border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .12);
+  font-size: 14px; line-height: 1.5;
+}
+.cookie-banner[hidden] { display: none; }
+.cookie-banner p { margin: 0; flex: 1 1 260px; }
+.cookie-banner p a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
+.cookie-actions { display: flex; gap: 8px; }
+.cookie-actions .btn { height: 36px; padding: 0 16px; font-size: 14px; }
 /* SPYKE in letters as wide as the column, cut off by the bottom of the page
    so a quarter of their height is hidden */
 .giant { overflow: hidden; height: calc(var(--giant) * .66); margin-top: 120px; --giant: min(25vw, 368px); }

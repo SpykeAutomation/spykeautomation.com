@@ -1,0 +1,48 @@
+---
+// PostHog, loaded from its CDN without blocking the page. Only in production
+// builds with a key set (see ANALYTICS_ON in config.ts).
+//
+// Consent is strict: `cookieless_mode: 'on_reject'` captures nothing until the
+// visitor answers the cookie banner. Accept → PostHog's normal cookie and
+// session replay. Decline → counted with no cookies or tracking storage.
+//
+// ?notrack=1 turns analytics off in this browser (for our own visits);
+// ?notrack=0 turns it back on.
+import { ANALYTICS_ON, POSTHOG_KEY as key, POSTHOG_HOST as host } from '../config';
+---
+
+{ANALYTICS_ON && (
+  <script define:vars={{ key, host }}>
+    try {
+      const flag = new URLSearchParams(location.search).get('notrack');
+      if (flag === '1') localStorage.setItem('spyke_notrack', '1');
+      if (flag === '0') localStorage.removeItem('spyke_notrack');
+      if (localStorage.getItem('spyke_notrack') === '1') return;
+    } catch {}
+
+    // PostHog's web snippet, as given in the project settings.
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagResult reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+
+    posthog.init(key, {
+      api_host: host,
+      defaults: '2026-08-30',
+      // Nothing until the banner is answered; Accept → cookie, Decline → cookieless.
+      cookieless_mode: 'on_reject',
+      // The /flags request carries a visitor ID and would go out before consent.
+      // We use no flags. (Not advanced_disable_flags: that also stops the remote
+      // config that switches session replay on.)
+      advanced_disable_feature_flags: true,
+      // When `loaded` runs, window.posthog is still the snippet's stub, so hand
+      // the real instance to the cookie banner.
+      loaded: (ph) => document.dispatchEvent(new CustomEvent('ph:loaded', { detail: ph })),
+    });
+
+    // Named events for the buttons that matter, from data-track / data-location.
+    // Sent at once: "Log in" leaves the page, and a batched event could be lost.
+    // Before the banner is answered, PostHog drops these.
+    document.addEventListener('click', (e) => {
+      const el = e.target.closest?.('[data-track]');
+      if (el) posthog.capture(el.dataset.track, { location: el.dataset.location }, { send_instantly: true });
+    });
+  </script>
+)}
