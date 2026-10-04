@@ -1,6 +1,8 @@
 ---
-// The cookie consent bar. It stays hidden until PostHog has loaded, and then
-// shows only if the visitor hasn't answered yet. If PostHog is blocked or
+// The cookie banner. Tracking is already on when it appears (see
+// Analytics.astro); Reject all turns cookies and session replay off. It stays
+// hidden until PostHog has loaded, and then shows only if the visitor hasn't
+// answered yet. If PostHog is blocked or
 // switched off, neither this bar nor the footer's "Cookie settings" appears:
 // nothing is being tracked, so there is nothing to ask.
 import { ANALYTICS_ON } from '../config';
@@ -10,8 +12,8 @@ import { ANALYTICS_ON } from '../config';
   <div class="cookie-banner" id="cookieBanner" role="region" aria-labelledby="cookieTitle" hidden>
     <p class="cookie-title" id="cookieTitle">We use cookies</p>
     <p class="cookie-text">
-      With your consent, we use analytics cookies to understand how visitors use our site and to
-      improve it. You can change your choice at any time under "Cookie settings".
+      We use analytics cookies to understand how visitors use our site and to improve it. Choose
+      Reject all to turn them off. You can change your choice at any time under "Cookie settings".
       <a href="/privacy/">Privacy Policy</a>
     </p>
     <div class="cookie-actions">
@@ -26,9 +28,19 @@ import { ANALYTICS_ON } from '../config';
   type PostHog = {
     __loaded?: boolean;
     get_explicit_consent_status(): 'granted' | 'denied' | 'pending';
-    opt_in_capturing(): void;
+    opt_in_capturing(options?: { captureEventName?: string | false }): void;
     opt_out_capturing(): void;
     capture(event: string): void;
+  };
+
+  // PostHog's own consent state reads "granted" for everyone who hasn't
+  // rejected, answered or not, so the visitor's actual answer is kept here.
+  const CHOICE = 'spyke_cookie_choice';
+  const readChoice = () => {
+    try { return localStorage.getItem(CHOICE); } catch { return null; }
+  };
+  const saveChoice = (choice: string) => {
+    try { localStorage.setItem(CHOICE, choice); } catch {}
   };
 
   const bar = document.getElementById('cookieBanner');
@@ -47,12 +59,15 @@ import { ANALYTICS_ON } from '../config';
 
     bar.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach((button) => {
       button.addEventListener('click', () => {
-        const choice = button.dataset.consent;
+        const choice = button.dataset.consent!;
         // Picking the same answer again changes nothing and isn't counted twice.
-        if (choice !== ph.get_explicit_consent_status()) {
+        if (choice !== readChoice()) {
+          saveChoice(choice);
+          const status = ph.get_explicit_consent_status();
           if (choice === 'granted') {
-            ph.opt_in_capturing();
-          } else {
+            if (status !== 'granted') ph.opt_in_capturing({ captureEventName: false });
+            ph.capture('consent_accepted');
+          } else if (status !== 'denied') {
             ph.opt_out_capturing();
             ph.capture('consent_declined');
           }
@@ -70,7 +85,8 @@ import { ANALYTICS_ON } from '../config';
       });
     }
 
-    if (ph.get_explicit_consent_status() === 'pending') bar.hidden = false;
+    // Visitors who rejected before this change have no saved answer, but have answered.
+    if (!readChoice() && ph.get_explicit_consent_status() !== 'denied') bar.hidden = false;
   };
 
   const w = window as unknown as { posthog?: PostHog };

@@ -9,8 +9,8 @@ export const PAUSED = false;
 
 /**
  * PostHog analytics. The project key is public by design: it can only send
- * events, not read them. Empty key = analytics off. Nothing is tracked until a
- * visitor answers the cookie banner (see components/Analytics.astro).
+ * events, not read them. Empty key = analytics off. Tracking is on until a
+ * visitor rejects it in the cookie banner (see components/Analytics.astro).
  */
 export const POSTHOG_KEY = 'phc_n9YdFvUAD6teKRMVohWXZQZDzTWnj2BUq8kREo5f28JW';
 export const POSTHOG_HOST = 'https://us.i.posthog.com';
