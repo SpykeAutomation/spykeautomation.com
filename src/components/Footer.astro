@@ -1,6 +1,6 @@
 ---
 import Brand from './Brand.astro';
-import { APP_URL, CONTACT_EMAIL } from '../config';
+import { APP_URL, CONTACT_EMAIL, ANALYTICS_ON } from '../config';
 // The year the site was built; the deploy runs on every push.
 const year = new Date().getFullYear();
 // Only links to things that exist: the home page's sections, the contact
@@ -26,14 +26,18 @@ const year = new Date().getFullYear();
     <div>
       <p class="foot-head">Company</p>
       <ul>
-        <li><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
-        <li><a href={APP_URL}>Log in</a></li>
+        <li><a href={`mailto:${CONTACT_EMAIL}`} data-track="contact_email_clicked" data-location="footer">{CONTACT_EMAIL}</a></li>
+        <li><a href={APP_URL} data-track="login_clicked" data-location="footer">Log in</a></li>
       </ul>
     </div>
 
     <div class="legal-links">
       <p>© {year} Spyke Automation<br />All rights reserved.</p>
-      <div><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></div>
+      <div>
+        <a href="/privacy/">Privacy</a><a href="/terms/">Terms</a>
+        {/* Shown by the cookie banner once analytics has loaded. */}
+        {ANALYTICS_ON && <button type="button" id="cookie-settings" hidden>Cookie settings</button>}
+      </div>
     </div>
   </div>
 

@@ -7,6 +7,16 @@
  */
 export const PAUSED = false;
 
+/**
+ * PostHog analytics. The project key is public by design: it can only send
+ * events, not read them. Empty key = analytics off. Nothing is tracked until a
+ * visitor answers the cookie banner (see components/Analytics.astro).
+ */
+export const POSTHOG_KEY = 'phc_n9YdFvUAD6teKRMVohWXZQZDzTWnj2BUq8kREo5f28JW';
+export const POSTHOG_HOST = 'https://us.i.posthog.com';
+/** One switch for the analytics script, the cookie banner, and "Cookie settings". */
+export const ANALYTICS_ON = import.meta.env.PROD && !!POSTHOG_KEY && !PAUSED;
+
 /** The quoting app itself; "Log in" goes here. */
 export const APP_URL = 'https://app.spykeautomation.com';
 
