@@ -407,21 +407,31 @@ a.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary
 .legal-links button[hidden] { display: none; }
 
 /* ===== COOKIE BANNER ===== */
+/* A card in the bottom-left corner, clear of the page's content column on
+   wide screens; a full-width sheet along the bottom on phones. */
 .cookie-banner {
-  position: fixed; z-index: 50; left: 16px; right: 16px; bottom: 16px;
-  max-width: 640px; margin-inline: auto;
-  display: flex; align-items: center; gap: 16px 24px; flex-wrap: wrap;
-  padding: 14px 16px 14px 20px;
-  background: var(--card); color: var(--soft);
-  border: 1px solid var(--border); border-radius: 12px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, .12);
-  font-size: 14px; line-height: 1.5;
+  position: fixed; z-index: 50; left: 24px; bottom: 24px;
+  width: min(400px, calc(100vw - 48px));
+  padding: 20px;
+  background: var(--card); color: var(--muted);
+  border: 1px solid var(--border); border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 12px 40px rgba(0, 0, 0, .14);
+  font-size: 13.5px; line-height: 1.55;
+  animation: cookie-in .35s cubic-bezier(.2, .8, .2, 1);
 }
 .cookie-banner[hidden] { display: none; }
-.cookie-banner p { margin: 0; flex: 1 1 260px; }
-.cookie-banner p a { color: var(--text); text-decoration: underline; text-underline-offset: 2px; }
-.cookie-actions { display: flex; gap: 8px; }
-.cookie-actions .btn { height: 36px; padding: 0 16px; font-size: 14px; }
+.cookie-title { margin: 0 0 6px; color: var(--text); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.cookie-text { margin: 0; text-wrap: pretty; }
+.cookie-text a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; white-space: nowrap; }
+.cookie-text a:hover { text-decoration-color: currentColor; }
+.cookie-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+.cookie-actions .btn { height: 40px; padding: 0 14px; font-size: 14px; }
+button.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+@keyframes cookie-in { from { opacity: 0; transform: translateY(12px); } }
+@media (prefers-reduced-motion: reduce) { .cookie-banner { animation: none; } }
+@media (max-width: 640px) {
+  .cookie-banner { left: 12px; right: 12px; bottom: 12px; width: auto; padding: 18px; }
+}
 /* SPYKE in letters as wide as the column, cut off by the bottom of the page
    so a quarter of their height is hidden */
 .giant { overflow: hidden; height: calc(var(--giant) * .66); margin-top: 120px; --giant: min(25vw, 368px); }

@@ -7,12 +7,17 @@ import { ANALYTICS_ON } from '../config';
 ---
 
 {ANALYTICS_ON && (
-  <div class="cookie-banner" id="cookieBanner" role="region" aria-label="Cookie consent" hidden>
-    <p>We use cookies to understand how people use the site. <a href="/privacy/">Privacy</a></p>
+  <div class="cookie-banner" id="cookieBanner" role="region" aria-labelledby="cookieTitle" hidden>
+    <p class="cookie-title" id="cookieTitle">We use cookies</p>
+    <p class="cookie-text">
+      With your consent, we use analytics cookies to understand how visitors use our site and to
+      improve it. You can change your choice at any time under "Cookie settings".
+      <a href="/privacy/">Privacy Policy</a>
+    </p>
     <div class="cookie-actions">
       {/* Same style on both: a choice, not a nudge. */}
-      <button type="button" class="btn" data-consent="granted">Accept</button>
-      <button type="button" class="btn" data-consent="denied">Decline</button>
+      <button type="button" class="btn dark" data-consent="denied">Reject all</button>
+      <button type="button" class="btn dark" data-consent="granted">Accept all</button>
     </div>
   </div>
 )}
