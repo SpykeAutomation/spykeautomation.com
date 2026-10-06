@@ -13,7 +13,8 @@ export const PAUSED = false;
  * visitor rejects it in the cookie banner (see components/Analytics.astro).
  */
 export const POSTHOG_KEY = 'phc_n9YdFvUAD6teKRMVohWXZQZDzTWnj2BUq8kREo5f28JW';
-export const POSTHOG_HOST = 'https://us.i.posthog.com';
+/** Our managed reverse proxy, so ad blockers don't drop events. */
+export const POSTHOG_HOST = 'https://e.spykeautomation.com';
 /** One switch for the analytics script, the cookie banner, and "Cookie settings". */
 export const ANALYTICS_ON = import.meta.env.PROD && !!POSTHOG_KEY && !PAUSED;
 
