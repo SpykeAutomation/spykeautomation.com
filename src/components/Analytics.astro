@@ -4,7 +4,7 @@
 //
 // Tracking is on by default: a visitor who hasn't answered the cookie banner is
 // opted in at load, so PostHog's cookie and session replay start straight away.
-// Reject all switches to cookieless counting (`cookieless_mode: 'on_reject'`):
+// Switching analytics off in the cookie prompt moves to cookieless counting (`cookieless_mode: 'on_reject'`):
 // no cookies or tracking storage, and the cookie already set is deleted.
 //
 // ?notrack=1 turns analytics off in this browser (for our own visits);

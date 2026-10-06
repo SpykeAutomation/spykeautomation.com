@@ -1,27 +1,52 @@
 ---
-// The cookie banner. Tracking is already on when it appears (see
-// Analytics.astro); Reject all turns cookies and session replay off. It stays
-// hidden until PostHog has loaded, and then shows only if the visitor hasn't
-// answered yet. If PostHog is blocked or
-// switched off, neither this bar nor the footer's "Cookie settings" appears:
-// nothing is being tracked, so there is nothing to ask.
+// The cookie prompt: a modal in the middle of the page that blocks it until
+// the visitor answers. Continue keeps analytics on; "Manage your cookies"
+// opens a second view with an on/off switch. Tracking is already on when it
+// appears (see Analytics.astro); switching analytics off turns cookies and
+// session replay off.
+//
+// It stays closed until PostHog has loaded, and then opens only if the visitor
+// hasn't answered yet, and never on the privacy policy itself, so the policy
+// it links to can be read. If PostHog is blocked or switched off, neither this
+// nor the footer's "Cookie settings" appears: nothing is being tracked, so
+// there is nothing to ask.
 import { ANALYTICS_ON } from '../config';
 ---
 
 {ANALYTICS_ON && (
-  <div class="cookie-banner" id="cookieBanner" role="region" aria-labelledby="cookieTitle" hidden>
-    <p class="cookie-title" id="cookieTitle">We use cookies</p>
-    <p class="cookie-text">
-      We use analytics cookies to understand how visitors use our site and to improve it. Choose
-      Reject all to turn them off. You can change your choice at any time under "Cookie settings".
-      <a href="/privacy/">Privacy Policy</a>
-    </p>
-    <div class="cookie-actions">
-      {/* Same style on both: a choice, not a nudge. */}
-      <button type="button" class="btn dark" data-consent="denied">Reject all</button>
-      <button type="button" class="btn dark" data-consent="granted">Accept all</button>
+  <dialog class="cookie-dialog" id="cookieBanner" aria-labelledby="cookieTitle">
+    <div data-view="intro">
+      <h2 class="cookie-title" id="cookieTitle">We value your privacy</h2>
+      <p class="cookie-text">
+        By continuing, you agree to our <a href="/privacy/">privacy policy</a>.
+        <button type="button" class="cookie-link" data-show="manage">Manage your cookies</button>.
+      </p>
+      <div class="cookie-actions">
+        <button type="button" class="btn dark" data-consent="granted" autofocus>Continue</button>
+      </div>
     </div>
-  </div>
+
+    <div data-view="manage" hidden>
+      <h2 class="cookie-title" id="cookieManageTitle">Managing your data</h2>
+      <p class="cookie-text">
+        We use PostHog analytics to see how visitors use this site: the pages you view, what you
+        click, recordings of your visit, how fast pages load, and your approximate location. We
+        don't sell it or use it for advertising.
+      </p>
+      <label class="cookie-switch">
+        <span>Analytics cookies</span>
+        <input type="checkbox" role="switch" id="cookieAnalytics" checked />
+      </label>
+      <p class="cookie-text">
+        With analytics cookies off, visits are still counted, but with no cookies, no recordings,
+        and nothing stored on your device to identify you. See our
+        <a href="/privacy/">privacy policy</a>.
+      </p>
+      <div class="cookie-actions">
+        <button type="button" class="btn dark" data-save>Save and close</button>
+      </div>
+    </div>
+  </dialog>
 )}
 
 <script>
@@ -43,50 +68,71 @@ import { ANALYTICS_ON } from '../config';
     try { localStorage.setItem(CHOICE, choice); } catch {}
   };
 
-  const bar = document.getElementById('cookieBanner');
+  const dialog = document.getElementById('cookieBanner') as HTMLDialogElement | null;
   const settings = document.getElementById('cookie-settings');
 
   const start = (ph: PostHog) => {
-    if (!bar) return;
-    let openedFrom: HTMLElement | null = null;
+    if (!dialog) return;
+    const intro = dialog.querySelector<HTMLElement>('[data-view="intro"]')!;
+    const manage = dialog.querySelector<HTMLElement>('[data-view="manage"]')!;
+    const toggle = dialog.querySelector<HTMLInputElement>('#cookieAnalytics')!;
+    // A first-time visitor must answer; reopened from "Cookie settings", Escape just closes.
+    let mustAnswer = false;
 
-    const close = () => {
-      bar.hidden = true;
-      if (openedFrom) openedFrom.focus();
-      else document.getElementById('main')?.focus({ preventScroll: true });
-      openedFrom = null;
+    const show = (view: 'intro' | 'manage') => {
+      intro.hidden = view !== 'intro';
+      manage.hidden = view !== 'manage';
+      dialog.setAttribute('aria-labelledby', view === 'intro' ? 'cookieTitle' : 'cookieManageTitle');
+      if (view === 'manage') {
+        toggle.checked = readChoice() !== 'denied' && ph.get_explicit_consent_status() !== 'denied';
+        toggle.focus();
+      }
     };
 
-    bar.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach((button) => {
-      button.addEventListener('click', () => {
-        const choice = button.dataset.consent!;
-        // Picking the same answer again changes nothing and isn't counted twice.
-        if (choice !== readChoice()) {
-          saveChoice(choice);
-          const status = ph.get_explicit_consent_status();
-          if (choice === 'granted') {
-            if (status !== 'granted') ph.opt_in_capturing({ captureEventName: false });
-            ph.capture('consent_accepted');
-          } else if (status !== 'denied') {
-            ph.opt_out_capturing();
-            ph.capture('consent_declined');
-          }
+    const open = (view: 'intro' | 'manage') => {
+      show(view);
+      if (!dialog.open) dialog.showModal();
+      if (view === 'manage') toggle.focus();
+    };
+
+    const answer = (choice: 'granted' | 'denied') => {
+      // Picking the same answer again changes nothing and isn't counted twice.
+      if (choice !== readChoice()) {
+        saveChoice(choice);
+        const status = ph.get_explicit_consent_status();
+        if (choice === 'granted') {
+          if (status !== 'granted') ph.opt_in_capturing({ captureEventName: false });
+          ph.capture('consent_accepted');
+        } else if (status !== 'denied') {
+          ph.opt_out_capturing();
+          ph.capture('consent_declined');
         }
-        close();
-      });
-    });
+      }
+      mustAnswer = false;
+      dialog.close();
+    };
+
+    dialog.querySelector('[data-consent="granted"]')!.addEventListener('click', () => answer('granted'));
+    dialog.querySelector('[data-show="manage"]')!.addEventListener('click', () => show('manage'));
+    dialog.querySelector('[data-save]')!.addEventListener('click', () => answer(toggle.checked ? 'granted' : 'denied'));
+    // Escape can't skip the first answer. Chrome lets Escape close a dialog
+    // whose cancel was blocked if the page hasn't been clicked yet, so stop the
+    // key itself, and reopen if it closes anyway.
+    dialog.addEventListener('keydown', (e) => { if (mustAnswer && e.key === 'Escape') e.preventDefault(); });
+    dialog.addEventListener('cancel', (e) => { if (mustAnswer) e.preventDefault(); });
+    dialog.addEventListener('close', () => { if (mustAnswer) dialog.showModal(); });
 
     if (settings) {
       settings.hidden = false;
-      settings.addEventListener('click', () => {
-        openedFrom = settings;
-        bar.hidden = false;
-        bar.querySelector<HTMLButtonElement>('[data-consent="granted"]')?.focus();
-      });
+      settings.addEventListener('click', () => open('manage'));
     }
 
-    // Visitors who rejected before this change have no saved answer, but have answered.
-    if (!readChoice() && ph.get_explicit_consent_status() !== 'denied') bar.hidden = false;
+    // Visitors who rejected before the saved answer existed have answered too.
+    const answered = readChoice() || ph.get_explicit_consent_status() === 'denied';
+    if (!answered && !location.pathname.startsWith('/privacy')) {
+      mustAnswer = true;
+      open('intro');
+    }
   };
 
   const w = window as unknown as { posthog?: PostHog };
