@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import ComingSoon from '../components/ComingSoon.astro';
 import { PAUSED, CONTACT_EMAIL as CONTACT } from '../config';
 
-const updated = 'October 4, 2026';
+const updated = 'October 6, 2026';
 ---
 
 {PAUSED && (
@@ -49,9 +49,11 @@ const updated = 'October 4, 2026';
           <ul>
             <li>
               <strong>By default</strong>, PostHog sets a cookie so return visits are recognised,
-              and records your visits as session replays, with anything you type masked. Your
-              approximate location is worked out from your IP address; the IP address itself isn't
-              stored.
+              keeps a profile of your visits, and records them as session replays, including
+              mouse movement, clicks, scrolling and anything typed into the site. It also records
+              how fast pages load for you and builds heatmaps of where visitors click and how far
+              they scroll. Your approximate location is worked out from your IP address; the IP
+              address itself isn't stored.
             </li>
             <li>
               If you choose <strong>Reject all</strong> in the cookie banner, the cookie is deleted
@@ -88,7 +90,8 @@ const updated = 'October 4, 2026';
       <p>
         We do <strong>not</strong> sell your personal information. We share it only with service
         providers that help us run the site and our early-access program (for example, form,
-        email, and hosting providers, and PostHog for analytics), and only as needed to provide
+        email, and hosting providers, PostHog for analytics, and Cloudflare, which carries
+        analytics traffic to PostHog), and only as needed to provide
         those services. We may also
         disclose information if required by law.
       </p>

@@ -26,6 +26,8 @@ import { ANALYTICS_ON, POSTHOG_KEY as key, POSTHOG_HOST as host } from '../confi
 
     posthog.init(key, {
       api_host: host,
+      // Links from the toolbar and replays still open PostHog's own app.
+      ui_host: 'https://us.posthog.com',
       defaults: '2026-08-30',
       // Rejecting switches to cookieless counting rather than stopping it.
       cookieless_mode: 'on_reject',
@@ -33,6 +35,19 @@ import { ANALYTICS_ON, POSTHOG_KEY as key, POSTHOG_HOST as host } from '../confi
       // advanced_disable_flags: that also stops the remote config that switches
       // session replay on.)
       advanced_disable_feature_flags: true,
+      // A person profile for every visitor, not only identified ones, so each
+      // carries its device, location, referrer and UTM properties.
+      person_profiles: 'always',
+      // Heatmaps (clicks, mouse movement, scroll depth) and dead clicks: clicks
+      // that change nothing on the page.
+      capture_heatmaps: true,
+      capture_dead_clicks: true,
+      // Web vitals (LCP, CLS, FCP, INP) and the timing of every request.
+      capture_performance: { web_vitals: true, network_timing: true },
+      // Session replay still needs "Record user sessions" switched on in the
+      // project settings; these only widen what a replay captures once it runs.
+      enable_recording_console_log: true,
+      session_recording: { maskAllInputs: false, recordCrossOriginIframes: true },
       loaded: (ph) => {
         // Not answered yet → track as if accepted. `on_reject` alone would wait
         // for an answer. No $opt_in event: the visitor didn't click anything.
