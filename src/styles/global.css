@@ -406,31 +406,52 @@ a.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary
 .legal-links button:hover { color: #fafafa; }
 .legal-links button[hidden] { display: none; }
 
-/* ===== COOKIE BANNER ===== */
-/* A card in the bottom-left corner, clear of the page's content column on
-   wide screens; a full-width sheet along the bottom on phones. */
-.cookie-banner {
-  position: fixed; z-index: 50; left: 24px; bottom: 24px;
-  width: min(400px, calc(100vw - 48px));
-  padding: 20px;
-  background: var(--card); color: var(--muted);
-  border: 1px solid var(--border); border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 12px 40px rgba(0, 0, 0, .14);
-  font-size: 13.5px; line-height: 1.55;
-  animation: cookie-in .35s cubic-bezier(.2, .8, .2, 1);
+/* ===== COOKIE PROMPT ===== */
+/* A modal in the middle of the page; the page behind is dimmed, can't be
+   clicked, and doesn't scroll until the visitor answers. */
+.cookie-dialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  margin: auto; padding: 32px;
+  background: var(--card); color: var(--soft);
+  border: 0; border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 24px 64px rgba(0, 0, 0, .28);
+  font-size: 15px; line-height: 1.6;
+  animation: cookie-in .3s cubic-bezier(.2, .8, .2, 1);
 }
-.cookie-banner[hidden] { display: none; }
-.cookie-title { margin: 0 0 6px; color: var(--text); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-.cookie-text { margin: 0; text-wrap: pretty; }
-.cookie-text a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; white-space: nowrap; }
-.cookie-text a:hover { text-decoration-color: currentColor; }
-.cookie-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
-.cookie-actions .btn { height: 40px; padding: 0 14px; font-size: 14px; }
+.cookie-dialog::backdrop { background: rgba(14, 14, 16, .55); }
+html:has(.cookie-dialog[open]) { overflow: hidden; }
+.cookie-dialog [hidden] { display: none; }
+.cookie-title { margin: 0 0 10px; color: var(--text); font-size: 24px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.2; }
+.cookie-text { margin: 0 0 12px; text-wrap: pretty; }
+.cookie-text a, .cookie-link { color: var(--text); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+.cookie-text a:hover, .cookie-link:hover { text-decoration-color: currentColor; }
+.cookie-link { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+.cookie-switch {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin: 20px 0; padding: 14px 0; border-block: 1px solid var(--line);
+  color: var(--text); font-weight: 500; cursor: pointer;
+}
+.cookie-switch input {
+  appearance: none; flex: none; position: relative; width: 40px; height: 24px; margin: 0;
+  border-radius: 999px; background: var(--border-strong); cursor: pointer; transition: background .15s;
+}
+.cookie-switch input::after {
+  content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+  border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .2); transition: transform .15s;
+}
+.cookie-switch input:checked { background: var(--primary); }
+.cookie-switch input:checked::after { transform: translateX(16px); }
+.cookie-switch input:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.cookie-actions { display: flex; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+.cookie-actions .btn { height: 44px; padding: 0 28px; font-size: 15px; }
 button.btn.dark:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
-@keyframes cookie-in { from { opacity: 0; transform: translateY(12px); } }
-@media (prefers-reduced-motion: reduce) { .cookie-banner { animation: none; } }
+@keyframes cookie-in { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+@media (prefers-reduced-motion: reduce) { .cookie-dialog { animation: none; } }
 @media (max-width: 640px) {
-  .cookie-banner { left: 12px; right: 12px; bottom: 12px; width: auto; padding: 18px; }
+  .cookie-dialog { padding: 22px; }
+  .cookie-title { font-size: 21px; }
+  .cookie-actions .btn { width: 100%; }
 }
 /* SPYKE in letters as wide as the column, cut off by the bottom of the page
    so a quarter of their height is hidden */
