@@ -8,4 +8,14 @@ export default defineConfig({
   redirects: {
     '/integrators': '/',
   },
+  vite: {
+    build: {
+      // Script files named only by hash, so none carries a word ("analytics")
+      // a privacy list could match. Not chunkFileNames: that reaches into
+      // Astro's server build too.
+      rollupOptions: { output: { entryFileNames: '_astro/[hash].js' } },
+      // The PostHog bundle (scripts/site.ts) is about 650 KB before gzip.
+      chunkSizeWarningLimit: 800,
+    },
+  },
 });
