@@ -4,7 +4,8 @@ Marketing site for Spyke — quoting software for control panel shops. The app
 itself is at [app.spykeautomation.com](https://app.spykeautomation.com).
 
 Built with [Astro](https://astro.build). A push to `main` builds the site and
-publishes it to GitHub Pages (`.github/workflows/deploy.yml`).
+publishes it to Cloudflare Pages (build command `npm run build`, output
+directory `dist`).
 
 ## Develop
 
@@ -18,7 +19,7 @@ npm run preview  # preview the production build
 ## Structure
 
 ```
-public/            static assets (favicon, share card, the hero picture, CNAME)
+public/            static assets (favicon, share card, the hero picture)
 src/
   config.ts        the PAUSED switch, the app's address, the contact email
   layouts/         page shell (head, fonts, the icon sprite)
